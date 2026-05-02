@@ -1,54 +1,111 @@
-# RLM-FORGE
+<p align="center">
+  <img src="assets/rlm-forge-hero.webp" alt="RLM-FORGE — Frontier Recursion Lab" />
+</p>
 
-A runtime layer for executing **Recursive Language Model** sub-calls through
-**Hermes Agent** (Nous Research), with Ouroboros owning recursion, trace replay,
-and evidence validation.
+<p align="center">
+  <img alt="RLM-FORGE sigil" src="https://img.shields.io/badge/RLM--FORGE-Hermes%20Inner%20Runtime-7170ff?style=for-the-badge&labelColor=08090a" />
+  <img alt="TraceGuard" src="https://img.shields.io/badge/TraceGuard-evidence--gated-10b981?style=for-the-badge&labelColor=08090a" />
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.12-0f1011?style=for-the-badge&labelColor=08090a" />
+</p>
 
-> **Implementation artifact for runtime-lifted RLM over Hermes Agent.**
-> Inspired by Zhang/Kraska/Khattab — *Recursive Language Models* (arXiv 2512.24601).
+<h1 align="center">RLM-FORGE</h1>
+
+<p align="center">
+  <strong>A tiny recursive-runtime forge for Hermes Agent.</strong>
+  <br />
+  Ouroboros owns the recursion. Hermes performs bounded inner calls. TraceGuard refuses unsupported synthesis.
+</p>
+
+<p align="center">
+  <a href="#quickstart">Quickstart</a>
+  ·
+  <a href="#what-this-proves">What this proves</a>
+  ·
+  <a href="#traceguard">TraceGuard</a>
+  ·
+  <a href="docs/architecture.md">Architecture</a>
+  ·
+  <a href="paper/main.pdf">Paper</a>
+</p>
 
 ---
 
-## Current benchmark status
+> **Implementation artifact for runtime-lifted RLM over Hermes Agent.**  
+> Inspired by Zhang/Kraska/Khattab — *Recursive Language Models* (arXiv 2512.24601).
 
-This is not a new model architecture. It is a runtime-hosted realization of
-RLM: Hermes executes bounded inner calls, Ouroboros manages recursive state,
-and TraceGuard enforces parent synthesis against accepted child evidence.
+```text
+╭────────────────────────────────────────────────────────────────────╮
+│                            RLM-FORGE                               │
+│                                                                    │
+│  user request                                                      │
+│      │                                                             │
+│      ▼                                                             │
+│  Ouroboros outer scaffold       recursion · state · trace replay   │
+│      │                                                             │
+│      ▼                                                             │
+│  Hermes Agent inner runtime      bounded JSON sub-calls            │
+│      │                                                             │
+│      ▼                                                             │
+│  TraceGuard                    parent claims must cite evidence    │
+╰────────────────────────────────────────────────────────────────────╯
+```
 
-On the same long-context truncation fixture (real Hermes via `HermesCliRuntime`
-v0.11.0, four chunks selected and two omitted), the claim-aware scorer now
-rates the vanilla single call and recursive RLM as a **tie**:
+RLM-FORGE is not a new model architecture. It is a runtime-hosted realization of a Recursive Language Model style execution loop:
 
-| | vanilla single call | recursive RLM |
-| --- | --- | --- |
+- **Hermes Agent** acts as the inner LM runtime.
+- **Ouroboros** owns recursion, scheduling, state mutation, termination, and trace replay.
+- **TraceGuard** validates that parent synthesis only claims facts backed by accepted child evidence handles.
+
+The result is a compact, replayable, evidence-gated RLM scaffold built on top of the existing Hermes tool/runtime interface.
+
+---
+
+## What this proves
+
+RLM-FORGE makes one careful claim:
+
+> Recursive execution is useful when it creates structured evidence handles that an outer scaffold can validate. Recursion alone is not trusted.
+
+On the current live Hermes long-context truncation fixture, recursive RLM and vanilla single-call Hermes are an honest **tie**:
+
+| Metric | Vanilla single call | Recursive RLM |
+| --- | ---: | ---: |
 | Hermes sub-calls | 1 | 5 |
 | Quality score | 1.00 | 1.00 |
-| Score delta | | +0.00 |
+| Score delta | — | +0.00 |
 | `omitted_fact_safety_score` | 1.00 | 1.00 |
 | `claimed_omitted_fact_ids` | `[]` | `[]` |
 | `cited_retained_fact_ids` | `LC-001..LC-004` | `LC-001..LC-004` |
 
-Earlier artifacts reported a `+0.20` RLM advantage because the scorer treated
-guarded residual-gap text such as “LC-005 and LC-006 cannot be claimed” as a
-positive omitted-fact claim. The corrected scorer distinguishes unavailable
-gap mentions from observed evidence claims. The remaining contribution is the
-Hermes/RLM integration path and replayable trace, not a demonstrated quality
-win on this single fixture.
+Earlier artifacts reported a `+0.20` RLM advantage because the scorer treated guarded residual-gap text such as “LC-005 and LC-006 cannot be claimed” as a positive omitted-fact claim. The claim-aware scorer fixes that. The contribution here is **not** a quality win on one fixture; it is the Hermes-backed recursive runtime path plus deterministic evidence enforcement.
 
-Persisted side-by-side artifact: [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json).
+Persisted artifact: [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json)
 
-TraceGuard enforcement demo:
-[`experiments/traceguard-demo.md`](experiments/traceguard-demo.md)
-shows the new evidence gate in action. Safe parent synthesis is accepted,
-an omitted fact is rejected with `unsupported_fact_id`, and chunk-only
-evidence is rejected with `chunk_handle_without_fact`. This turns the main
-claim from “we measured unsupported claims” into “we can enforce the evidence
-contract at parent synthesis time.”
+---
 
-TraceGuard's public entry point is:
+## Why Hermes
+
+Hermes is unusually well-suited to this kind of runtime experiment:
+
+| Hermes property | Why it matters for RLM-FORGE |
+| --- | --- |
+| Provider-agnostic runtime | The inner LM can be swapped with `hermes model` without changing the recursion scaffold. |
+| Tool/RPC-shaped execution | Hermes' structured “one bounded task in, one result out” style maps naturally to RLM sub-call envelopes. |
+| Quiet structured I/O | Ouroboros can call Hermes like a function and validate the resulting JSON. |
+| Isolated subagent potential | Future RLM trees can expand horizontally through Hermes subagents instead of a single serial path. |
+
+RLM-FORGE treats Hermes as the only recursive inference boundary. Hermes proposes local decomposition, atomic execution, summary, or synthesis for one bounded node. Ouroboros alone decides recursion, mutation, retry, and termination.
+
+---
+
+## TraceGuard
+
+TraceGuard is the small deterministic layer that turns a trace into an enforceable contract.
 
 ```python
-validate_parent_synthesis(
+from rlm_forge import build_manifest_from_fixture, validate_parent_synthesis
+
+result = validate_parent_synthesis(
     evidence_manifest=build_manifest_from_fixture(fixture),
     parent_synthesis=parent_json,
 )
@@ -62,7 +119,87 @@ unsafe_omitted_fact: REJECT (unsupported_claim_rate=0.2000)
 chunk_only_no_fact: REJECT (unsupported_claim_rate=1.0000)
 ```
 
-Judge verification checklist:
+TraceGuard rejects two important failure modes:
+
+| Failure mode | Rejection reason |
+| --- | --- |
+| Parent claims an omitted fact not present in accepted child evidence | `unsupported_fact_id` |
+| Parent cites a chunk handle but no supported fact | `chunk_handle_without_fact` |
+
+Demo artifact: [`experiments/traceguard-demo.md`](experiments/traceguard-demo.md)
+
+---
+
+## Quickstart
+
+RLM-FORGE requires **Python 3.12+**.
+
+### 1. Install Hermes
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+source ~/.bashrc       # or ~/.zshrc
+hermes setup           # configure provider + API key
+hermes --version       # confirm v0.11+
+```
+
+The simplest provider for judges is OpenRouter: set `OPENROUTER_API_KEY` and select any model.
+
+### 2. Install RLM-FORGE
+
+```bash
+git clone https://github.com/Q00/rlm-forge.git
+cd rlm-forge
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -e '.[dev]'
+```
+
+The package pins a git-ref dependency on the Ouroboros commit that contains the RLM modules and claim-aware scorer until those APIs are released on PyPI.
+
+### 3. Verify without a Hermes API key
+
+```bash
+pytest -q
+python3 -m rlm_forge.replay benchmarks/rlm-long-context-truncation-v1.json
+python3 scripts/run-traceguard-demo.py
+```
+
+Expected replay signal:
+
+```text
+quality: vanilla=1.00, rlm=1.00, delta=+0.00, rlm_outperforms_vanilla=False
+```
+
+### 4. Run the live truncation benchmark
+
+```bash
+ooo rlm --truncation-benchmark
+```
+
+Expected live shape:
+
+```text
+Shared truncation benchmark completed; vanilla Hermes and recursive RLM outputs were recorded.
+hermes_subcalls: vanilla=1, rlm=5
+chunks: selected=4, omitted=2
+quality: vanilla=1.00, rlm=1.00, delta=+0.00, rlm_outperforms_vanilla=False
+```
+
+---
+
+## Two integration paths
+
+| Path | Entry point | Where Hermes is called |
+| --- | --- | --- |
+| Recursive scaffold | `ooo rlm --truncation-benchmark` | `ouroboros.rlm.loop.RLMOuterScaffoldLoop` drives 1 root + 4 chunk sub-calls through `HermesCliRuntime`. |
+| AC decomposition pipeline | `decompose_ac(hermes_runtime=...)` | `ouroboros.execution.decomposition.decompose_ac` accepts an `AgentRuntime` and delegates child-AC generation to Hermes. |
+
+The default `ooo run` and `ooo evolve` flows keep their original LLM-only behaviour. Passing `hermes_runtime=None` bypasses every RLM-specific branch.
+
+---
+
+## Evidence map for judges
 
 | Claim | Artifact |
 | --- | --- |
@@ -70,7 +207,10 @@ Judge verification checklist:
 | Evidence-gated recursion is the mechanism, not recursion alone | [`experiments/unsupported-claim-rate-benchmark.md`](experiments/unsupported-claim-rate-benchmark.md) |
 | Claim-aware scorer avoids the earlier false win | [`experiments/claim-aware-omitted-fact-suite.md`](experiments/claim-aware-omitted-fact-suite.md) |
 | Broad deterministic scorer coverage | [`experiments/synthetic-omitted-fact-benchmark.md`](experiments/synthetic-omitted-fact-benchmark.md) |
-| Live Hermes fixture shows score parity | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
+| Live Hermes fixture remains an honest tie | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
+| Architecture boundary | [`docs/architecture.md`](docs/architecture.md) |
+| Hermes setup notes | [`docs/hermes-setup.md`](docs/hermes-setup.md) |
+| Technical note | [`paper/main.pdf`](paper/main.pdf) |
 
 These offline artifacts do not require a Hermes API key. TraceGuard improves
 unsupported-claim enforcement; it does not change the live fixture quality
@@ -101,148 +241,49 @@ alone makes hallucination impossible.
 
 ---
 
-## Why Hermes
+## Repository layout
 
-Hermes was the right inner LM precisely because we did not have to fight it:
-
-1. **Provider-agnostic** — swap the inner model with `hermes model` (OpenRouter,
-   NIM, custom endpoints). The recursion is independent of the chosen LLM.
-2. **Existing RPC tool reuse** — Hermes' "multi-step pipeline → zero-context
-   turn" RPC pattern is structurally identical to an RLM sub-call envelope.
-   No new REPL, sandbox, or transport was built.
-3. **Quiet, structured I/O** — Hermes accepts a JSON envelope and returns one,
-   so Ouroboros can call it like a function. The `HermesCliRuntime` adapter is
-   ~750 lines and ships with Ouroboros; we did not modify it.
-4. **Subagent spawn potential** — Hermes' isolated subagent mechanism opens a
-   path to *horizontal* RLM tree expansion in future work.
-
-The RLM scaffold treats Hermes as the only recursive boundary. Hermes proposes
-local decomposition, atomic execution, summary, or synthesis for one bounded
-node; Ouroboros owns the recursion, termination, and trace replay.
-
-TraceGuard adds the missing enforcement step: parent synthesis is valid only
-when every structured claim cites an accepted child evidence handle. Recursive
-shape alone is not trusted.
-
----
-
-## Two empirically-verified integration paths
-
-| Path | Entry point | Where Hermes is called |
-| --- | --- | --- |
-| **Recursive scaffold** | `ooo rlm --benchmark` | `ouroboros.rlm.loop.RLMOuterScaffoldLoop` drives 1 root + 4 chunk sub-calls through `HermesCliRuntime` |
-| **AC decomposition pipeline** | `decompose_ac(hermes_runtime=...)` | `ouroboros.execution.decomposition.decompose_ac` accepts an `AgentRuntime` and delegates child-AC generation to Hermes |
-
-The same `HermesCliRuntime` adapter serves both. The default `ooo run` and
-`ooo evolve` flow keep their original LLM-only behaviour; passing
-`hermes_runtime=None` (the default) bypasses every RLM-specific branch.
-
----
-
-## Quickstart (judges, ~5 minutes)
-
-### 1. Install Hermes
-
-Hermes Agent is a separate project from Nous Research:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
-source ~/.bashrc       # or ~/.zshrc
-hermes setup           # configure your provider and API key
-hermes --version       # confirm v0.11+ is installed
-```
-
-The simplest provider for judges is OpenRouter — set `OPENROUTER_API_KEY`
-and pick any model.
-
-### 2. Install this submission
-
-```bash
-git clone https://github.com/<user>/rlm-forge.git
-cd rlm-forge
-pip install -e .
-```
-
-The `pyproject.toml` pins a git-ref dependency on the Ouroboros commit that
-contains the RLM modules and the claim-aware scorer until upstream releases
-them on PyPI.
-
-### 3. Run the truncation benchmark
-
-```bash
-ooo rlm --truncation-benchmark
-```
-
-Expected output (real Hermes, ~1 minute):
-
-```
-Shared truncation benchmark completed; vanilla Hermes and recursive RLM
-outputs were recorded.
-hermes_subcalls: vanilla=1, rlm=5
-chunks: selected=4, omitted=2
-quality: vanilla=1.00, rlm=1.00, delta=+0.00, rlm_outperforms_vanilla=False
-```
-
-### 4. Replay the persisted artifact (no Hermes call)
-
-```bash
-python3 -m rlm_forge.replay benchmarks/rlm-long-context-truncation-v1.json
-```
-
-This prints the committed JSON metrics, so judges without a Hermes API key can
-still inspect the recorded run.
-
----
-
-## Examples
-
-| Script | What it does | Hermes calls |
-| --- | --- | --- |
-| `examples/01-dry-run.sh` | Validate the RLM path, no side effects | 0 |
-| `examples/02-vanilla-baseline.sh` | One vanilla Hermes call on the truncation fixture | 1 |
-| `examples/03-truncation-comparison.sh` | Side-by-side vanilla vs recursive RLM | 1 + 5 |
-
-Each script is a one-liner that wraps the Ouroboros CLI.
-
----
-
-## Architecture
-
-See [`docs/architecture.md`](docs/architecture.md) for the layer model,
-orchestration boundaries, and 6-step sub-call lifecycle. The full concept
-design is `docs/guides/recursive-language-model.md` in the upstream
-Ouroboros repository (1,580 lines).
-
-```
-User
-  |
-  v
-ooo rlm
-  |
-  v
-Ouroboros outer scaffold
-  - validates ambiguity <= 0.2
-  - owns ACTree recursion, max depth 5
-  - owns RLM tree state, scheduling, termination, trace persistence
-  - calls Hermes through HermesCliRuntime
-  |
-  v
-Hermes inner LM layer
-  - receives one bounded recursive sub-call at a time
-  - proposes decomposition, atomic execution, summary, or synthesis
-  - returns structured JSON evidence to Ouroboros
+```text
+rlm-forge/
+├─ src/rlm_forge/
+│  ├─ traceguard.py       # evidence-gated parent synthesis validator
+│  ├─ replay.py           # offline artifact replay CLI
+│  └─ __init__.py         # public API surface
+├─ tests/                 # no-API CI tests
+├─ experiments/           # deterministic scorer + TraceGuard artifacts
+├─ benchmarks/            # persisted Hermes truncation benchmark
+├─ docs/                  # architecture, setup, benchmark notes
+├─ examples/              # small command wrappers
+└─ paper/                 # hackathon technical note
 ```
 
 ---
 
 ## What this submission is and is not
 
-This is an **MVP** designed to demonstrate that Hermes can serve as the inner
-recursive LM in an RLM-style scaffold with replayable traces and deterministic
-evaluation. It is not a production-ready RLM service, does not claim novelty
-over the Zhang et al. paper, and no longer claims a quality advantage from the
-single truncation fixture. Its contribution is a practical integration recipe
-built on top of the Hermes Agent runtime.
+| It is | It is not |
+| --- | --- |
+| A Hermes-backed RLM runtime MVP | A new model architecture |
+| A replayable trace and evidence-validation scaffold | A claim that recursion alone prevents hallucination |
+| A practical integration recipe for Hermes + Ouroboros | A production RLM service |
+| A deterministic TraceGuard enforcement demo | A benchmark suite proving model-quality superiority |
+
+---
+
+## Development
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -e '.[dev]'
+pytest -q
+```
+
+Current local verification:
+
+```text
+9 passed
+```
 
 ---
 
@@ -252,7 +293,6 @@ MIT. See [`LICENSE`](LICENSE).
 
 ## Acknowledgements
 
-- **Hermes Agent** — Nous Research. The inner LM runtime that made this practical.
-- **Ouroboros** — the workflow scaffold that owns the recursion and traces.
-- **Zhang, Kraska, Khattab (MIT, 2025)** — *Recursive Language Models*
-  (arXiv 2512.24601), the conceptual seed for this work.
+- **Hermes Agent** — Nous Research. The inner runtime that made the experiment practical.
+- **Ouroboros** — the outer scaffold that owns recursion, state, and traces.
+- **Zhang, Kraska, Khattab** — *Recursive Language Models*, the conceptual seed for this work.
