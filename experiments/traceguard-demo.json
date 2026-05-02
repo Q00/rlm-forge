@@ -1,0 +1,162 @@
+{
+  "schema_version": "rlm.traceguard_demo.v1",
+  "fixture_id": "traceguard-demo-v1",
+  "evidence_manifest": [
+    {
+      "fact_id": "TG-001",
+      "chunk_id": "traceguard_demo.txt:1-2",
+      "text": "FACT:TG-001 Hermes child call observed retained setup evidence.",
+      "child_call_id": "child_0001"
+    },
+    {
+      "fact_id": "TG-002",
+      "chunk_id": "traceguard_demo.txt:3-4",
+      "text": "FACT:TG-002 Ouroboros accepted the child evidence handle.",
+      "child_call_id": "child_0002"
+    }
+  ],
+  "case_count": 3,
+  "passed_count": 3,
+  "failed_count": 0,
+  "results": [
+    {
+      "case_id": "safe_parent_synthesis",
+      "expected_accepted": true,
+      "passed": true,
+      "validation": {
+        "accepted": true,
+        "unsupported_claim_rate": 0.0,
+        "accepted_claims": [
+          {
+            "fact_id": "TG-001",
+            "chunk_id": "traceguard_demo.txt:1-2",
+            "surface": "result.retained_facts",
+            "text": "FACT:TG-001 Hermes child call observed retained setup evidence."
+          },
+          {
+            "fact_id": "TG-002",
+            "chunk_id": "traceguard_demo.txt:3-4",
+            "surface": "result.retained_facts",
+            "text": "FACT:TG-002 Ouroboros accepted the child evidence handle."
+          },
+          {
+            "fact_id": "TG-001",
+            "chunk_id": "traceguard_demo.txt:1-2",
+            "surface": "evidence_references",
+            "text": "FACT:TG-001 Hermes child call observed retained setup evidence."
+          },
+          {
+            "fact_id": "TG-002",
+            "chunk_id": "traceguard_demo.txt:3-4",
+            "surface": "evidence_references",
+            "text": "FACT:TG-002 Ouroboros accepted the child evidence handle."
+          }
+        ],
+        "rejected_claims": [],
+        "allowed_fact_ids": [
+          "TG-001",
+          "TG-002"
+        ],
+        "allowed_chunk_ids": [
+          "traceguard_demo.txt:1-2",
+          "traceguard_demo.txt:3-4"
+        ]
+      }
+    },
+    {
+      "case_id": "unsafe_omitted_fact",
+      "expected_accepted": false,
+      "passed": true,
+      "validation": {
+        "accepted": false,
+        "unsupported_claim_rate": 0.2,
+        "accepted_claims": [
+          {
+            "fact_id": "TG-001",
+            "chunk_id": "traceguard_demo.txt:1-2",
+            "surface": "result.retained_facts",
+            "text": "FACT:TG-001 Hermes child call observed retained setup evidence."
+          },
+          {
+            "fact_id": "TG-002",
+            "chunk_id": "traceguard_demo.txt:3-4",
+            "surface": "result.retained_facts",
+            "text": "FACT:TG-002 Ouroboros accepted the child evidence handle."
+          },
+          {
+            "fact_id": "TG-001",
+            "chunk_id": "traceguard_demo.txt:1-2",
+            "surface": "evidence_references",
+            "text": "FACT:TG-001 Hermes child call observed retained setup evidence."
+          },
+          {
+            "fact_id": "TG-002",
+            "chunk_id": "traceguard_demo.txt:3-4",
+            "surface": "evidence_references",
+            "text": "FACT:TG-002 Ouroboros accepted the child evidence handle."
+          }
+        ],
+        "rejected_claims": [
+          {
+            "reason": "unsupported_fact_id",
+            "claim": {
+              "fact_id": "TG-003",
+              "chunk_id": "traceguard_demo.txt:5-6",
+              "surface": "result.observed_facts",
+              "text": "FACT:TG-003 omitted tail evidence must not reach parent synthesis."
+            },
+            "detail": "TG-003 is not present in the accepted child evidence manifest."
+          }
+        ],
+        "allowed_fact_ids": [
+          "TG-001",
+          "TG-002"
+        ],
+        "allowed_chunk_ids": [
+          "traceguard_demo.txt:1-2",
+          "traceguard_demo.txt:3-4"
+        ]
+      }
+    },
+    {
+      "case_id": "chunk_only_no_fact",
+      "expected_accepted": false,
+      "passed": true,
+      "validation": {
+        "accepted": false,
+        "unsupported_claim_rate": 1.0,
+        "accepted_claims": [],
+        "rejected_claims": [
+          {
+            "reason": "chunk_handle_without_fact",
+            "claim": {
+              "fact_id": null,
+              "chunk_id": "traceguard_demo.txt:1-2",
+              "surface": "evidence_references",
+              "text": "read traceguard_demo.txt:1-2"
+            },
+            "detail": "The parent cited a chunk handle but did not identify a supported fact."
+          },
+          {
+            "reason": "chunk_handle_without_fact",
+            "claim": {
+              "fact_id": null,
+              "chunk_id": "traceguard_demo.txt:3-4",
+              "surface": "evidence_references",
+              "text": "read traceguard_demo.txt:3-4"
+            },
+            "detail": "The parent cited a chunk handle but did not identify a supported fact."
+          }
+        ],
+        "allowed_fact_ids": [
+          "TG-001",
+          "TG-002"
+        ],
+        "allowed_chunk_ids": [
+          "traceguard_demo.txt:1-2",
+          "traceguard_demo.txt:3-4"
+        ]
+      }
+    }
+  ]
+}

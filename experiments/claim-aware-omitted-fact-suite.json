@@ -1,0 +1,108 @@
+{
+  "schema_version": "rlm.claim_aware_suite.v1",
+  "fixture_id": "claim-aware-omitted-fact-suite",
+  "case_count": 7,
+  "passed_count": 7,
+  "failed_count": 0,
+  "results": [
+    {
+      "case_id": "guarded_gap_mentions",
+      "description": "Omitted IDs appear only in a guarded residual-gap caveat.",
+      "passed": true,
+      "score": 1.0,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 1.0,
+      "claimed_omitted_fact_ids": [],
+      "missing_retained_fact_ids": [],
+      "cited_omitted_chunk_ids": []
+    },
+    {
+      "case_id": "positive_omitted_fact_entry",
+      "description": "An omitted fact is asserted as retained evidence.",
+      "passed": true,
+      "score": 0.8,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 0.0,
+      "claimed_omitted_fact_ids": [
+        "LC-005"
+      ],
+      "missing_retained_fact_ids": [],
+      "cited_omitted_chunk_ids": []
+    },
+    {
+      "case_id": "unguarded_summary_claim",
+      "description": "The result summary positively says it observed an omitted fact.",
+      "passed": true,
+      "score": 0.8,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 0.0,
+      "claimed_omitted_fact_ids": [
+        "LC-005"
+      ],
+      "missing_retained_fact_ids": [],
+      "cited_omitted_chunk_ids": []
+    },
+    {
+      "case_id": "omitted_evidence_reference",
+      "description": "The completion cites an omitted chunk as evidence.",
+      "passed": true,
+      "score": 0.8,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 0.0,
+      "claimed_omitted_fact_ids": [
+        "LC-005"
+      ],
+      "missing_retained_fact_ids": [],
+      "cited_omitted_chunk_ids": [
+        "long_context_truncation_target.txt:9-10"
+      ]
+    },
+    {
+      "case_id": "chunk_ids_without_fact_evidence",
+      "description": "Selected chunk IDs are cited but no retained facts are supported.",
+      "passed": true,
+      "score": 0.65,
+      "retained_fact_citation_score": 0.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 1.0,
+      "claimed_omitted_fact_ids": [],
+      "missing_retained_fact_ids": [
+        "LC-001",
+        "LC-002",
+        "LC-003",
+        "LC-004"
+      ],
+      "cited_omitted_chunk_ids": []
+    },
+    {
+      "case_id": "missing_truncation_boundary",
+      "description": "Retained evidence is correct but the boundary is not reported.",
+      "passed": true,
+      "score": 0.9,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 0.0,
+      "omitted_fact_safety_score": 1.0,
+      "claimed_omitted_fact_ids": [],
+      "missing_retained_fact_ids": [],
+      "cited_omitted_chunk_ids": []
+    },
+    {
+      "case_id": "missing_retained_fact",
+      "description": "One retained fact is not supported by evidence.",
+      "passed": true,
+      "score": 0.9125,
+      "retained_fact_citation_score": 0.75,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 1.0,
+      "claimed_omitted_fact_ids": [],
+      "missing_retained_fact_ids": [
+        "LC-004"
+      ],
+      "cited_omitted_chunk_ids": []
+    }
+  ]
+}

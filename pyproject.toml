@@ -1,0 +1,48 @@
+[project]
+name = "rlm-forge"
+version = "0.1.0"
+description = "Runtime for executing Recursive Language Model sub-calls through Hermes Agent, with Ouroboros trace validation."
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Q00", email = "jqyu.lee@gmail.com" }]
+readme = "README.md"
+keywords = [
+  "recursive-language-model",
+  "rlm",
+  "hermes-agent",
+  "nous-research",
+  "ouroboros",
+  "long-context",
+]
+
+# The RLM module lives in Ouroboros until upstream releases it on PyPI.
+# This dependency is pinned to the commit that includes claim-aware scoring.
+dependencies = [
+  "ouroboros-ai @ git+https://github.com/Q00/ouroboros.git@5b4bc10e7d942d7d4a63776f68afc80927b43a70",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24",
+]
+
+[project.scripts]
+rlm-forge-replay = "rlm_forge.replay:main"
+
+[project.urls]
+Homepage = "https://github.com/Q00/rlm-forge"
+Issues = "https://github.com/Q00/rlm-forge/issues"
+Hermes = "https://github.com/NousResearch/hermes-agent"
+Ouroboros = "https://github.com/Q00/ouroboros"
+Paper = "https://arxiv.org/abs/2512.24601"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rlm_forge"]

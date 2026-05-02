@@ -1,0 +1,500 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{authblk}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{natbib}
+\setlength{\emergencystretch}{3em}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{gray!30},
+  showstringspaces=false,
+  columns=fullflexible,
+}
+
+\title{RLM-FORGE: \\
+       Evidence-Gated Recursive Inference in an Agent Runtime}
+
+\author[1]{Q00}
+\affil[1]{Independent}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We report on RLM-FORGE, a runtime-hosted realization of the
+Recursive Language Models (RLM) paradigm of \citet{zhang2025rlm} using the
+Hermes Agent runtime \citep{nous2025hermes} as the inner execution layer.
+This is not a new model architecture. The contribution is an execution
+scaffold: RLM sub-calls are mapped onto Hermes' existing remote-procedure-call
+mechanism, while Ouroboros owns recursion, trace state, evidence validation,
+and replay. We also introduce TraceGuard, a deterministic parent-synthesis
+evidence gate, plus a claim-aware omitted-fact safety evaluator and a contract
+ablation for context truncation. An earlier string-matching scorer reported a
+$+0.20$ recursive-RLM advantage, but audit showed that it misclassified
+guarded residual-gap text as an omitted-fact claim. After correcting the
+scorer, the persisted live fixture is a tie. The strongest current result is
+therefore not a live quality win, but a systems finding: recursive boundaries
+are useful when they expose evidence handles that the outer scaffold can
+validate.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Recursive Language Models, recently introduced by \citet{zhang2025rlm},
+treat long prompts as part of an external environment that the language
+model can programmatically partition and recurse over.
+The paradigm is attractive precisely because it does not require new
+model architectures: any LLM that can be invoked as a structured
+function call becomes a candidate inner LM for a recursive scaffold.
+
+This implementation study answers a narrowly engineering question. Given an
+existing agent runtime that already supports structured remote procedure calls
+(Hermes Agent, by Nous Research), what runtime contract is required to host
+RLM sub-calls inside it, and does the resulting system preserve traceable
+omitted-fact safety on at least one controlled fixture?
+
+We make three concrete claims, each scoped narrowly:
+
+\begin{enumerate}[leftmargin=*]
+\item Hermes' existing RPC pattern --- ``write Python scripts that call
+tools via RPC, collapsing multi-step pipelines into zero-context
+turns''~\citep{nous2025hermes} --- maps one-to-one onto the structure of
+an RLM sub-call envelope. No new REPL, sandbox, or transport is
+required.
+
+\item Two integration paths that share the same Hermes adapter coexist
+without modifying the host system's default control flow: a dedicated
+recursive scaffold (Section~\ref{sec:scaffold}) and an existing
+acceptance-criterion decomposition pipeline (Section~\ref{sec:decomposition}).
+
+\item TraceGuard enforces the parent-synthesis contract by rejecting
+structured claims that lack accepted child evidence handles. A claim-aware
+omitted-fact evaluator then measures the same failure mode. On the live
+fixture (Section~\ref{sec:experiment}), the corrected scorer reports a tie
+rather than the earlier false $+0.20$ recursive-RLM win. In deterministic
+contract ablations, evidence-gated Hermes-RLM preserves a 0.0
+unsupported-claim rate while an ungated RLM-shaped policy fails at 1.0.
+We propose \texttt{omitted\_fact\_safety\_score} as a useful evaluation
+axis, but not as a proven live-model advantage from this fixture alone.
+\end{enumerate}
+
+We do not claim novelty over the RLM paradigm itself, nor do we compare
+to the natively recursive RLM-Qwen3-8B model post-trained by
+\citet{zhang2025rlm}. Section~\ref{sec:limits} lists these and other
+limits explicitly.
+
+\section{Background}
+\label{sec:bg}
+
+\paragraph{Recursive Language Models.}
+\citet{zhang2025rlm} formalise an inference strategy in which an outer
+LLM call invokes itself --- or another LLM --- on a transformed slice of
+its input via a tool call $\mathrm{RLM}_M(\hat{q}, \hat{C})$. The original
+paper realises the environment as a Python REPL that holds the input
+context as a variable and exposes \texttt{peek}, \texttt{partition},
+\texttt{transform}, and recursive call operations to the LM. The headline
+result is that this strategy processes inputs up to two orders of
+magnitude beyond model context windows while frequently outperforming
+vanilla calls and common long-context scaffolds across four diverse
+tasks.
+
+\paragraph{Hermes Agent.}
+Hermes Agent is an open-source self-improving AI agent runtime by Nous
+Research. Two of its features matter for our purposes. First, Hermes is
+provider-agnostic: a single CLI subcommand, \texttt{hermes model},
+swaps the inner LLM across hundreds of providers. Second, Hermes ships
+an RPC tool mechanism described in its README as ``write Python scripts
+that call tools via RPC, collapsing multi-step pipelines into
+zero-context turns,'' along with isolated subagent spawn for parallel
+work. The combination yields a runtime that is callable like a function
+with structured JSON in and out, which is exactly what an RLM scaffold
+needs as its recursive boundary.
+
+\paragraph{Ouroboros.}
+Ouroboros~\citep{ouroboros2026} is a workflow scaffold for AI coding
+agents. It contributes two pieces relevant to our integration: a typed
+acceptance-criteria
+tree (\texttt{ACTree}) with a depth cap of five, and a runtime adapter
+(\texttt{HermesCliRuntime}) that wraps the Hermes CLI as a callable
+\texttt{AgentRuntime}. We use both unchanged.
+
+\section{System Design}
+\label{sec:system}
+
+\subsection{Two layers, one orchestration owner}
+\label{sec:layers}
+
+The integration has two layers. Ouroboros is the recursion controller and
+owns scheduling, termination, guardrails, and trace persistence. Hermes is
+the inner LM, called through the existing adapter for one bounded
+inference at a time. Hermes never recursively calls Ouroboros or invokes
+\texttt{ooo} commands as part of the RLM loop; this constraint is encoded
+both in the system prompt sent to Hermes and in the structured contract
+that validates its responses.
+
+Each outer-to-inner handoff is a single envelope rendered as the prompt
+passed through the \texttt{HermesCliRuntime} adapter. The envelope carries:
+
+\begin{itemize}[leftmargin=*]
+\item \texttt{mode}: one of \texttt{decompose\_ac}, \texttt{execute\_atomic},
+      \texttt{summarize\_chunk}, or \texttt{synthesize\_parent};
+\item \texttt{call\_context}: \texttt{call\_id}, \texttt{parent\_call\_id},
+      \texttt{rlm\_node\_id}, \texttt{ac\_node\_id};
+\item \texttt{constraints}: \texttt{must\_not\_call\_ouroboros: true},
+      ambiguity threshold, depth cap;
+\item \texttt{context}: only the chunks, summaries, ancestry, and child
+      results selected by the outer scaffold;
+\item \texttt{evidence\_handles}: the set of identifiers Hermes is
+      permitted to cite.
+\end{itemize}
+
+The response carries \texttt{verdict}, \texttt{confidence}, \texttt{result},
+evidence references, and residual gaps. All of this is validated before the
+outer scaffold mutates state.
+
+\subsection{Sub-call lifecycle}
+\label{sec:lifecycle}
+
+For one node at depth $d$ with mode $m$:
+
+\begin{enumerate}[leftmargin=*]
+\item Validate guardrails ($d \le 5$, ambiguity $\le 0.2$).
+\item Bind bounded context and write a call-start trace event with a
+      stable \texttt{parent\_call\_id}.
+\item Invoke Hermes through \texttt{HermesCliRuntime}.
+\item Parse and validate the JSON envelope, including schema version,
+      echoed identifiers, and evidence-reference admissibility.
+\item Commit accepted results into the AC tree, RLM tree, artifacts, and
+      EventStore trace. Invalid responses are recorded as failures and
+      do not mutate recursive state.
+\item Schedule any follow-up decomposition, atomic execution, summary,
+      synthesis, retry, or termination decision.
+\end{enumerate}
+
+Hermes may \emph{recommend} that a node is atomic, decomposed, retryable,
+or ready for synthesis; only Ouroboros turns that recommendation into
+recursive control flow.
+
+\subsection{Recursive scaffold path}
+\label{sec:scaffold}
+
+The first integration path is a dedicated outer-scaffold loop,
+\texttt{RLMOuterScaffoldLoop}, in approximately 3{,}200 lines of Python.
+It owns RLM node scheduling, AC tree mutations, sub-call dispatch through
+the Hermes adapter, parent synthesis, and termination. It is the path
+exercised by the user-facing CLI command \texttt{ooo rlm}.
+
+\subsection{Decomposition pipeline path}
+\label{sec:decomposition}
+
+The second integration path extends an existing acceptance-criterion
+decomposition function, \texttt{decompose\_ac}, with optional parameters
+including \texttt{hermes\_runtime}. When that parameter is non-\texttt{None},
+the function delegates child-AC generation to a Hermes sub-call. When it is
+\texttt{None} (the default), the function falls through to the original
+LLM-only flow. Concretely, the host system's \texttt{ooo run} and
+\texttt{ooo evolve} commands never pass \texttt{hermes\_runtime}, so they
+continue through the tested default path. The same \texttt{HermesCliRuntime}
+adapter serves both paths.
+
+This second path is, to our knowledge, an unusual choice. It demonstrates
+that an RLM-style boundary can be slotted into an existing
+decomposition pipeline incrementally, without replacing the pipeline.
+We exercise it through an environment-gated integration test that runs
+real Hermes when \texttt{OUROBOROS\_HERMES\_LIVE=1} and is otherwise
+skipped to avoid consuming API credits in CI.
+
+\section{Experiment}
+\label{sec:experiment}
+
+\subsection{Fixture}
+
+We construct a synthetic long-context fixture
+\texttt{rlm-long-context-truncation-v1} containing twelve lines split
+across six two-line chunks. Four retained facts
+\textsc{LC-001}--\textsc{LC-004} fit in the selected chunks and two fact
+IDs, \textsc{LC-005} and \textsc{LC-006}, live beyond the retained
+truncation boundary.
+
+The fixture is deterministic. Both the vanilla single-call run and the
+recursive RLM run receive the same selected-omitted partition and are
+scored by the same RLM quality code. The comparison is therefore controlled
+across all variables except the inference strategy.
+
+\subsection{Setup}
+
+Hermes is invoked through \texttt{HermesCliRuntime} v0.11.0 against a
+custom OpenAI-compatible endpoint. The model and provider are externally
+configurable through the Hermes config file; the persisted artifact was
+produced with one frontier-tier model. The current artifact should be treated
+as a systems smoke test rather than a result that generalises across
+providers.
+
+The recursive RLM is configured with \texttt{max\_depth=5} and
+\texttt{ambiguity\_threshold=0.2}; the truncation fixture only requires
+depth two in practice (one root sub-call plus four chunk-level sub-calls).
+
+\subsection{Results}
+\label{sec:results}
+
+\begin{table}[t]
+\centering
+\caption{Side-by-side comparison on
+\texttt{rlm-long-context-truncation-v1}. Both runs use the same
+\texttt{HermesCliRuntime}, the same fixture, and the same scoring code.}
+\label{tab:results}
+\small
+\begin{tabular}{lll}
+\toprule
+Metric & Vanilla single call & Recursive RLM \\
+\midrule
+Hermes sub-calls & 1 & 5 \\
+Quality score & 1.00 & 1.00 \\
+Omitted-fact safety & 1.00 & 1.00 \\
+Claimed omitted facts & $\emptyset$ & $\emptyset$ \\
+Cited retained facts & \textsc{LC-001..004} & \textsc{LC-001..004} \\
+Recursive trace score & --- & 1.00 \\
+Parent synthesis observed & --- & true \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:results} summarises the corrected result. The recursive RLM
+does not outperform the vanilla single call on this fixture. Both runs cite
+the same retained facts \textsc{LC-001}--\textsc{LC-004} and avoid positive
+claims about omitted facts.
+
+\subsection{Audit result: omitted-fact safety}
+\label{sec:mechanism}
+
+The initial artifact reported that the vanilla single-call claimed
+\textsc{LC-005} and \textsc{LC-006}. That interpretation was wrong. The
+vanilla completion mentioned those IDs inside a residual-gap caveat stating
+that omitted facts, if present there, could not be claimed as observed
+evidence. A string-matching scorer counted the mention as a positive claim.
+
+The corrected scorer distinguishes structured claim surfaces such as
+retained facts, observed facts, evidence references, and unguarded result
+claims from non-claim surfaces such as residual gaps and truncation reports.
+Under that scoring rule, both vanilla and recursive RLM return an empty
+claimed-omitted-facts list.
+
+The recursive design still provides a useful engineering boundary: child
+sub-calls are supplied bounded chunks, parent synthesis consumes accepted
+child results, and evidence handles can be validated before state mutation.
+This reduces the surface for unsupported claims, but it does not make
+hallucination impossible. A model can still fabricate unsupported IDs unless
+the contract rejects them.
+
+\subsection{TraceGuard: enforcing parent synthesis}
+
+TraceGuard is the enforcement layer for that contract. It consumes an
+accepted child evidence manifest and a parent synthesis object. Claims in
+\texttt{retained\_facts}, \texttt{observed\_facts}, and
+\texttt{evidence\_references} are accepted only when their fact ID and
+evidence handle match the manifest. Omitted facts are rejected with an
+\texttt{unsupported\_fact\_id} reason; chunk handles without fact IDs are
+rejected with \texttt{chunk\_handle\_without\_fact}. This makes the
+evidence boundary executable rather than merely descriptive.
+
+The public interface is intentionally small:
+
+\begin{lstlisting}[language=Python]
+validate_parent_synthesis(
+    evidence_manifest=build_manifest_from_fixture(fixture),
+    parent_synthesis=parent_json,
+)
+\end{lstlisting}
+
+The no-API demo accepts safe parent synthesis and rejects an omitted fact.
+This separates score parity on the live fixture from the new capability:
+enforceable claim support at the recursive synthesis boundary.
+
+\subsection{Reproduction}
+
+The benchmark can be reproduced live with one command:
+
+\begin{lstlisting}[language=bash]
+ooo rlm --truncation-benchmark
+\end{lstlisting}
+
+Without an API key, the persisted artifact can be replayed:
+
+\begin{lstlisting}[language=bash]
+python -m rlm_forge.replay \
+    benchmarks/rlm-long-context-truncation-v1.json
+\end{lstlisting}
+
+Both commands print the headline metrics from
+Table~\ref{tab:results}.
+
+The TraceGuard enforcement demo runs without Hermes:
+
+\begin{lstlisting}[language=bash]
+python3 scripts/run-traceguard-demo.py
+\end{lstlisting}
+
+It accepts a safe parent synthesis, rejects an omitted-fact claim, and
+rejects chunk-only evidence that does not identify supported fact IDs.
+
+We additionally include a Hermes-free scorer micro-suite:
+
+\begin{lstlisting}[language=bash]
+python3 scripts/run-claim-aware-suite.py
+\end{lstlisting}
+
+The current suite contains seven controlled completion shapes and all seven
+pass under the corrected scorer. The cases cover guarded omitted-ID mentions,
+positive omitted-fact assertions, omitted evidence references, chunk-only
+citations without fact evidence, missing truncation-boundary reports, and
+missing retained facts.
+
+We also include a generated synthetic scorer benchmark:
+
+\begin{lstlisting}[language=bash]
+python3 scripts/run-synthetic-omitted-fact-benchmark.py
+\end{lstlisting}
+
+It creates 108 truncation fixtures by varying fact count, retained/omitted
+ratio, distractor density, and omitted-claim target. Each fixture is scored
+against seven deterministic completion strategies, producing 756 scorer
+sanity checks; all pass in the committed artifact. This benchmark validates
+the measurement harness, not live-model quality.
+
+Finally, we include an unsupported-claim-rate contract ablation:
+
+\begin{lstlisting}[language=bash]
+python3 scripts/run-unsupported-claim-rate-benchmark.py
+\end{lstlisting}
+
+This benchmark creates 72 generated fixtures and evaluates six execution
+contracts: loose single call, guarded single call, chunk-only map-reduce,
+leaky map-reduce, evidence-gated Hermes-RLM, and Hermes-RLM-shaped
+recursion without evidence gating. The evidence-gated Hermes-RLM contract
+has an unsupported-claim rate of 0.0; the ungated RLM-shaped contract has
+an unsupported-claim rate of 1.0. The result is deterministic and should be
+read as a contract ablation, not as a live-model comparison.
+
+\section{Discussion}
+\label{sec:discussion}
+
+The empirical result is deliberately small. We have shown that Hermes can
+serve as the inner LM for a recursive scaffold, and that the evaluation
+harness must be claim-aware to avoid misclassifying caveated gap mentions.
+Three observations follow.
+
+\paragraph{The bottleneck is measurement before modeling.}
+Both runs use the same inner LLM, but the corrected artifact no longer
+shows an accuracy gap. The immediate lesson is that omitted-fact safety
+requires claim-aware scoring before any architectural advantage can be
+claimed.
+
+\paragraph{The boundary is structural, not sufficient.}
+Sub-call isolation and evidence-handle validation give the scaffold a
+clear place to reject unsupported claims. They do not guarantee that an
+inner model will never produce such claims. The contract ablation makes
+this explicit: an RLM-shaped policy without the evidence gate fails at the
+same unsupported-claim rate as the loose and leaky baselines. The useful
+mechanism is not recursion alone, but recursion plus traceable evidence
+validation.
+
+\paragraph{Engineering cost is small when the runtime cooperates.}
+We added no new sandbox, REPL, or transport. The integration that
+matters lives in approximately 4{,}500 lines of Python (recursive
+scaffold and decomposition extension, excluding tests and concept
+documentation), all calling through one pre-existing
+\texttt{HermesCliRuntime} adapter. Researchers and practitioners with
+similar agent runtimes should be able to reproduce the integration in
+comparable time.
+
+\section{Limitations}
+\label{sec:limits}
+
+We are explicit about what this paper does and does not show.
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{One live fixture.} The corrected Hermes artifact is a tie on
+one truncation regime with a particular ratio of selected to omitted
+chunks. The generated synthetic benchmarks broaden scorer and contract
+coverage, but they do not replace live multi-task model evaluation.
+\item \textbf{One model family.} We did not vary the inner LLM. The
+artifact is not evidence of provider-general behavior.
+\item \textbf{No comparison to RLM-Qwen3-8B.} The natively recursive
+model post-trained by \citet{zhang2025rlm} is not in our comparison set.
+\item \textbf{No theoretical contribution.} This paper is engineering
+plus a measurement correction. The recursive paradigm is the contribution
+of \citet{zhang2025rlm}; we contribute a recipe and a specific scoring
+axis.
+\item \textbf{Synthetic fact identifiers.} Our omitted-fact-safety
+measurement depends on facts that the fixture explicitly labels with
+identifiers. Generalising the metric to natural-language settings
+requires a robust fact extractor.
+\end{enumerate}
+
+\section{Related Work}
+\label{sec:related}
+
+\citet{zhang2025rlm} introduce RLM as an inference strategy and evaluate
+it across deep research, information aggregation, code repository
+understanding, and a synthetic pairwise reasoning task. We treat their
+paradigm as foundational and contribute an implementation note plus a
+focused evaluation axis.
+
+The general space of long-context handling for LLMs is broad. Retrieval
+agents, summary agents, and code-execution agents such as CodeAct
+~\citep{wang2024codeact} all attempt to manage long inputs without
+explicit recursion. RLM differs from these by treating recursive
+sub-calls as first-class operations on the input rather than as
+auxiliary tools.
+
+The Hermes Agent runtime~\citep{nous2025hermes} is part of a recent
+generation of agent runtimes that treat the LLM as a callable function
+with structured I/O, alongside related systems aimed at production
+agent deployment. Our integration takes advantage of this design without
+modifying it.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have presented an open-source implementation of Recursive Language
+Models built on top of the Hermes Agent runtime, with two integration paths
+and one corrected empirical artifact. The recursive scaffold does not beat
+the vanilla single call on the committed truncation fixture after
+claim-aware rescoring; both avoid omitted-fact claims. The useful outcome is
+therefore the integration recipe and the evaluation lesson: omitted-fact
+safety metrics must distinguish unsupported evidence claims from explicit
+gap caveats. We offer the code, fixtures, and persisted artifacts under an
+MIT licence at \url{https://github.com/Q00/rlm-forge}.
+
+\section*{Reproducibility}
+
+All code, fixtures, persisted side-by-side artifacts, replay tooling,
+and configuration files are available at
+\url{https://github.com/Q00/rlm-forge}. The Ouroboros branch
+hosting the upstream RLM modules is at
+\url{https://github.com/Q00/ouroboros/tree/ooo/run/seed_2d9f9ccfa5aa}.
+The hackathon submission package depends on the Ouroboros branch by git
+reference until the upstream release lands on PyPI.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

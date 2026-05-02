@@ -1,0 +1,202 @@
+{
+  "artifact_type": "rlm_vanilla_baseline_result",
+  "baseline": {
+    "baseline_id": "rlm-vanilla-truncation-baseline-v1",
+    "call_id": "rlm_call_vanilla_truncation_baseline",
+    "completion_hash": "sha256:a2b96ec4d15c2f8f6b521b492b09f0f192230374eb270f9363dc934fbfd5f0ba",
+    "elapsed_ms": 20130,
+    "error_message": null,
+    "fixture_id": "rlm-long-context-truncation-v1",
+    "hermes_subcall_count": 1,
+    "omitted_chunk_ids": [
+      "long_context_truncation_target.txt:9-10",
+      "long_context_truncation_target.txt:11-12"
+    ],
+    "omitted_line_count": 4,
+    "output_quality": {
+      "schema_version": "rlm.vanilla_baseline.quality.v1",
+      "scoring_method": "truncation_fixture_requirements_v1",
+      "score": 1.0,
+      "required_field_score": 1.0,
+      "confidence_score": 1.0,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 1.0,
+      "required_fields_present": [
+        "mode",
+        "verdict",
+        "confidence",
+        "result",
+        "evidence_references",
+        "residual_gaps"
+      ],
+      "required_fields_missing": [],
+      "cited_retained_fact_ids": [
+        "LC-001",
+        "LC-002",
+        "LC-003",
+        "LC-004"
+      ],
+      "missing_retained_fact_ids": [],
+      "cited_selected_chunk_ids": [
+        "long_context_truncation_target.txt:1-2",
+        "long_context_truncation_target.txt:3-4",
+        "long_context_truncation_target.txt:5-6",
+        "long_context_truncation_target.txt:7-8"
+      ],
+      "cited_omitted_chunk_ids": [],
+      "claimed_omitted_fact_ids": [],
+      "reports_truncation_boundary": true,
+      "confidence": 0.93,
+      "parse_error": null
+    },
+    "output_quality_score": 1.0,
+    "prompt_hash": "sha256:b1fe1fd0eeb5e2dc80c060ffb40cbc9f98b2f960515b72a33e63cf8a3ac35cd3",
+    "result_path": "/Users/jaegyu.lee/Project/ouroboros/.ouroboros/rlm/baselines/rlm-long-context-truncation-v1.json",
+    "retained_line_count": 8,
+    "selected_chunk_ids": [
+      "long_context_truncation_target.txt:1-2",
+      "long_context_truncation_target.txt:3-4",
+      "long_context_truncation_target.txt:5-6",
+      "long_context_truncation_target.txt:7-8"
+    ],
+    "status": "completed",
+    "success": true,
+    "target_line_count": 12,
+    "target_path": "long_context_truncation_target.txt"
+  },
+  "benchmark_id": "rlm-vanilla-truncation-baseline-v1",
+  "cited_source_file_count": 0,
+  "generated_rlm_tree_depth": 0,
+  "report_markdown": "# RLM Vanilla Hermes Baseline\n\n## Baseline\n- Baseline ID: `rlm-vanilla-truncation-baseline-v1`\n- Fixture ID: `rlm-long-context-truncation-v1`\n- Target: `long_context_truncation_target.txt`\n- Mode: `vanilla_single_pass`\n\n## Runner Output\n- Status: `completed`\n- Success: `True`\n- Hermes sub-calls observed: `1`\n- Output quality score: `1.00`\n- Completion hash: `sha256:a2b96ec4d15c2f8f6b521b492b09f0f192230374eb270f9363dc934fbfd5f0ba`\n\n## Context Boundary\n- Retained lines: `8`\n- Omitted lines: `4`\n- Target lines: `12`\n- Selected chunks: `4`\n- Omitted chunks: `2`",
+  "runner_output": {
+    "call_id": "rlm_call_vanilla_truncation_baseline",
+    "completion": "{\n  \"mode\": \"vanilla_single_pass\",\n  \"verdict\": \"pass\",\n  \"confidence\": 0.93,\n  \"result\": {\n    \"summary\": \"The retained context supports four observed facts and indicates that two later chunks were omitted beyond the truncation boundary. No facts from omitted chunks are claimed as observed evidence.\",\n    \"retained_facts\": [\n      {\n        \"fact_id\": \"LC-001\",\n        \"text\": \"Command isolation is mandatory: ooo rlm is the only allowed entrypoint for this recursive run.\",\n        \"evidence_chunk_id\": \"long_context_truncation_target.txt:1-2\"\n      },\n      {\n        \"fact_id\": \"LC-002\",\n        \"text\": \"Hermes must be invoked through execute_task_to_result with an empty tools list.\",\n        \"evidence_chunk_id\": \"long_context_truncation_target.txt:3-4\"\n      },\n      {\n        \"fact_id\": \"LC-003\",\n        \"text\": \"The AC tree depth cap is 5 and the ambiguity threshold is 0.2.\",\n        \"evidence_chunk_id\": \"long_context_truncation_target.txt:5-6\"\n      },\n      {\n        \"fact_id\": \"LC-004\",\n        \"text\": \"Trace replay must link rlm_node_id, ac_node_id, call_id, and parent_call_id.\",\n        \"evidence_chunk_id\": \"long_context_truncation_target.txt:7-8\"\n      }\n    ],\n    \"truncation_report\": {\n      \"last_retained_line\": 8,\n      \"omitted_line_count\": 4,\n      \"omitted_chunk_ids\": [\n        \"long_context_truncation_target.txt:9-10\",\n        \"long_context_truncation_target.txt:11-12\"\n      ],\n      \"note\": \"The omitted chunks were outside the retained context and their fact text is not available as observed evidence.\"\n    }\n  },\n  \"evidence_references\": [\n    {\n      \"chunk_id\": \"long_context_truncation_target.txt:1-2\",\n      \"supports_fact_ids\": [\n        \"LC-001\"\n      ],\n      \"quoted_evidence\": \"FACT:LC-001 command isolation is mandatory: ooo rlm is the only allowed entrypoint for this recursive run.\"\n    },\n    {\n      \"chunk_id\": \"long_context_truncation_target.txt:3-4\",\n      \"supports_fact_ids\": [\n        \"LC-002\"\n      ],\n      \"quoted_evidence\": \"FACT:LC-002 Hermes must be invoked through execute_task_to_result with an empty tools list.\"\n    },\n    {\n      \"chunk_id\": \"long_context_truncation_target.txt:5-6\",\n      \"supports_fact_ids\": [\n        \"LC-003\"\n      ],\n      \"quoted_evidence\": \"FACT:LC-003 the AC tree depth cap is 5 and the ambiguity threshold is 0.2.\"\n    },\n    {\n      \"chunk_id\": \"long_context_truncation_target.txt:7-8\",\n      \"supports_fact_ids\": [\n        \"LC-004\"\n      ],\n      \"quoted_evidence\": \"FACT:LC-004 trace replay must link rlm_node_id, ac_node_id, call_id, and parent_call_id.\"\n    }\n  ],\n  \"residual_gaps\": [\n    {\n      \"gap\": \"Lines 9-12 were omitted by the truncation boundary.\",\n      \"affected_chunk_ids\": [\n        \"long_context_truncation_target.txt:9-10\",\n        \"long_context_truncation_target.txt:11-12\"\n      ],\n      \"impact\": \"Any facts contained in omitted chunks, including LC-005 and LC-006 if present there, cannot be claimed as observed evidence.\"\n    }\n  ]\n}",
+    "completion_hash": "sha256:a2b96ec4d15c2f8f6b521b492b09f0f192230374eb270f9363dc934fbfd5f0ba",
+    "completion_json": {
+      "confidence": 0.93,
+      "evidence_references": [
+        {
+          "chunk_id": "long_context_truncation_target.txt:1-2",
+          "quoted_evidence": "FACT:LC-001 command isolation is mandatory: ooo rlm is the only allowed entrypoint for this recursive run.",
+          "supports_fact_ids": [
+            "LC-001"
+          ]
+        },
+        {
+          "chunk_id": "long_context_truncation_target.txt:3-4",
+          "quoted_evidence": "FACT:LC-002 Hermes must be invoked through execute_task_to_result with an empty tools list.",
+          "supports_fact_ids": [
+            "LC-002"
+          ]
+        },
+        {
+          "chunk_id": "long_context_truncation_target.txt:5-6",
+          "quoted_evidence": "FACT:LC-003 the AC tree depth cap is 5 and the ambiguity threshold is 0.2.",
+          "supports_fact_ids": [
+            "LC-003"
+          ]
+        },
+        {
+          "chunk_id": "long_context_truncation_target.txt:7-8",
+          "quoted_evidence": "FACT:LC-004 trace replay must link rlm_node_id, ac_node_id, call_id, and parent_call_id.",
+          "supports_fact_ids": [
+            "LC-004"
+          ]
+        }
+      ],
+      "mode": "vanilla_single_pass",
+      "residual_gaps": [
+        {
+          "affected_chunk_ids": [
+            "long_context_truncation_target.txt:9-10",
+            "long_context_truncation_target.txt:11-12"
+          ],
+          "gap": "Lines 9-12 were omitted by the truncation boundary.",
+          "impact": "Any facts contained in omitted chunks, including LC-005 and LC-006 if present there, cannot be claimed as observed evidence."
+        }
+      ],
+      "result": {
+        "retained_facts": [
+          {
+            "evidence_chunk_id": "long_context_truncation_target.txt:1-2",
+            "fact_id": "LC-001",
+            "text": "Command isolation is mandatory: ooo rlm is the only allowed entrypoint for this recursive run."
+          },
+          {
+            "evidence_chunk_id": "long_context_truncation_target.txt:3-4",
+            "fact_id": "LC-002",
+            "text": "Hermes must be invoked through execute_task_to_result with an empty tools list."
+          },
+          {
+            "evidence_chunk_id": "long_context_truncation_target.txt:5-6",
+            "fact_id": "LC-003",
+            "text": "The AC tree depth cap is 5 and the ambiguity threshold is 0.2."
+          },
+          {
+            "evidence_chunk_id": "long_context_truncation_target.txt:7-8",
+            "fact_id": "LC-004",
+            "text": "Trace replay must link rlm_node_id, ac_node_id, call_id, and parent_call_id."
+          }
+        ],
+        "summary": "The retained context supports four observed facts and indicates that two later chunks were omitted beyond the truncation boundary. No facts from omitted chunks are claimed as observed evidence.",
+        "truncation_report": {
+          "last_retained_line": 8,
+          "note": "The omitted chunks were outside the retained context and their fact text is not available as observed evidence.",
+          "omitted_chunk_ids": [
+            "long_context_truncation_target.txt:9-10",
+            "long_context_truncation_target.txt:11-12"
+          ],
+          "omitted_line_count": 4
+        }
+      },
+      "verdict": "pass"
+    },
+    "elapsed_ms": 20130,
+    "error_message": null,
+    "hermes_subcall_count": 1,
+    "mode": "vanilla_single_pass",
+    "output_quality": {
+      "schema_version": "rlm.vanilla_baseline.quality.v1",
+      "scoring_method": "truncation_fixture_requirements_v1",
+      "score": 1.0,
+      "required_field_score": 1.0,
+      "confidence_score": 1.0,
+      "retained_fact_citation_score": 1.0,
+      "truncation_boundary_score": 1.0,
+      "omitted_fact_safety_score": 1.0,
+      "required_fields_present": [
+        "mode",
+        "verdict",
+        "confidence",
+        "result",
+        "evidence_references",
+        "residual_gaps"
+      ],
+      "required_fields_missing": [],
+      "cited_retained_fact_ids": [
+        "LC-001",
+        "LC-002",
+        "LC-003",
+        "LC-004"
+      ],
+      "missing_retained_fact_ids": [],
+      "cited_selected_chunk_ids": [
+        "long_context_truncation_target.txt:1-2",
+        "long_context_truncation_target.txt:3-4",
+        "long_context_truncation_target.txt:5-6",
+        "long_context_truncation_target.txt:7-8"
+      ],
+      "cited_omitted_chunk_ids": [],
+      "claimed_omitted_fact_ids": [],
+      "reports_truncation_boundary": true,
+      "confidence": 0.93,
+      "parse_error": null
+    },
+    "output_quality_score": 1.0,
+    "status": "completed",
+    "success": true
+  },
+  "schema_version": "rlm.evaluation.output.v1",
+  "source_evidence": []
+}
