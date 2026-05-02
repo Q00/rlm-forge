@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Runtime for executing Recursive Language Model sub-calls through Hermes Agent, with Ouroboros trace validation."
 requires-python = ">=3.12"
 license = "MIT"
-authors = [{ name = "Q00", email = "jqyu.lee@gmail.com" }]
+authors = [{ name = "JQ Lee", email = "jqyu.lee@gmail.com" }]
 readme = "README.md"
 keywords = [
   "recursive-language-model",
@@ -36,6 +36,7 @@ Issues = "https://github.com/Q00/rlm-forge/issues"
 Hermes = "https://github.com/NousResearch/hermes-agent"
 Ouroboros = "https://github.com/Q00/ouroboros"
 Paper = "https://arxiv.org/abs/2512.24601"
+X = "https://x.com/JqOnly"
 
 [build-system]
 requires = ["hatchling"]
