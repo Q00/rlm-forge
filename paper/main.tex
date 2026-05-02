@@ -32,10 +32,9 @@
 
 \author[1]{JQ Lee}
 \affil[1]{Independent\\
-\texttt{jqyu.lee@gmail.com}\\
-\url{https://x.com/JqOnly}}
+\texttt{jqyu.lee@gmail.com}}
 
-\date{\today}
+\date{May 3, 2026}
 
 \begin{document}
 \maketitle
@@ -54,11 +53,12 @@ of RLM that matter operationally: bounded context partitioning, explicit
 sub-call graphs, replayable intermediate evidence, and parent synthesis that
 can be rejected before state mutation. We introduce TraceGuard, a
 deterministic evidence gate for parent synthesis, and evaluate it with a
-claim-aware omitted-fact safety scorer. The live Hermes truncation fixture is
-an honest tie between vanilla and recursive execution after scorer correction.
-The aggressive claim is therefore not ``RLM-FORGE wins one benchmark.'' It is:
-RLM-FORGE turns RLM from a research-time inference idea into a runtime surface
-that existing agent infrastructure can execute, inspect, and enforce.
+claim-aware omitted-fact safety scorer. The live Hermes truncation fixture
+shows score parity between vanilla and recursive execution after scorer
+correction.
+The systems claim is therefore not that RLM-FORGE wins a benchmark; it is
+that RLM-FORGE turns RLM from a research-time inference idea into a runtime
+surface that existing agent infrastructure can execute, inspect, and enforce.
 \end{abstract}
 
 \section{Introduction}
@@ -81,13 +81,13 @@ layer; Ouroboros supplies the recursion controller, trace store, and
 acceptance-criteria tree; TraceGuard supplies evidence-gated parent synthesis.
 
 The key distinction is between \emph{quality advantage} and \emph{control
-advantage}. A single vanilla LLM call can be correct on a small fixture. That
-does not erase the value of runtime recursion. RLM's practical advantage is
-that it changes the shape of inference: context becomes partitionable, work
-becomes compositional, intermediate claims become inspectable, and parent
-synthesis can be blocked when it cites evidence the children never produced.
-Those are runtime properties. They are useful even before a live benchmark
-shows a model-quality delta.
+advantage}. A single vanilla LLM call can be correct on a controlled fixture.
+That does not erase the value of runtime recursion. RLM's practical advantage
+is that it changes the shape of inference: context becomes partitionable,
+work becomes compositional, intermediate claims become inspectable, and
+parent synthesis can be blocked when it cites evidence the children never
+produced. Those are runtime properties. They are useful even before a broad
+live benchmark demonstrates a model-quality delta.
 
 We make four concrete claims:
 
@@ -178,6 +178,39 @@ an evidence handle set, and an accepted or rejected result. The parent
 synthesis step is then another runtime-validated operation rather than a
 free-form final answer.
 
+\begin{figure}[t]
+\centering
+\small
+\setlength{\fboxsep}{6pt}
+\begin{tabular}{c}
+\fbox{\begin{minipage}{0.82\linewidth}
+\centering
+\textbf{Ouroboros controller}\\
+select bounded context, schedule RLM nodes, own trace state
+\end{minipage}}\\[0.5em]
+$\downarrow$ \texttt{HermesCliRuntime} envelope\\[0.4em]
+\fbox{\begin{minipage}{0.82\linewidth}
+\centering
+\textbf{Hermes bounded sub-calls}\\
+execute local decomposition, chunk summary, or atomic work
+\end{minipage}}\\[0.5em]
+$\downarrow$ accepted child evidence manifest\\[0.4em]
+\fbox{\begin{minipage}{0.82\linewidth}
+\centering
+\textbf{TraceGuard parent-synthesis gate}\\
+validate every structured claim against accepted child evidence
+\end{minipage}}\\[0.5em]
+\begin{tabular}{cc}
+$\swarrow$ reject unsupported synthesis &
+commit accepted parent synthesis $\searrow$
+\end{tabular}
+\end{tabular}
+\caption{Runtime-lifted RLM execution in RLM-FORGE. Ouroboros owns recursive
+control and trace state, Hermes executes bounded inner calls, and TraceGuard
+decides whether parent synthesis may become committed state.}
+\label{fig:architecture}
+\end{figure}
+
 \begin{table}[t]
 \centering
 \caption{RLM advantages preserved by RLM-FORGE at runtime.}
@@ -206,8 +239,8 @@ Provider portability & Hermes keeps the inner model swappable &
 
 Table~\ref{tab:runtime} is the main thesis of this paper. The live fixture
 does not show a quality delta, but it does show that these RLM control
-surfaces exist in a real agent runtime and can be exercised through a
-normal command-line workflow.
+surfaces exist in a real agent runtime and can be exercised through the
+workflow in Figure~\ref{fig:architecture}.
 
 \subsection{Two layers, one orchestration owner}
 \label{sec:layers}
@@ -300,14 +333,14 @@ skipped to avoid consuming API credits in CI.
 \section{Experiment}
 \label{sec:experiment}
 
-The experiment is designed to test the runtime claim, not to manufacture a
+The experiment is designed to test the runtime claim, not to optimize for a
 quality leaderboard. We ask whether the same Hermes-backed stack can execute
 a vanilla single call and a recursive RLM call graph, persist both artifacts,
 replay the recursive trace, and score omitted-fact safety with a claim-aware
 evaluator. The answer is yes. The quality result on the live fixture is a
-tie, which is exactly why the runtime lens matters: the demonstrated value is
-the control surface that appears around inference, not a lucky score delta on
-one synthetic input.
+tie, which is why the runtime lens matters: the demonstrated value is the
+control surface that appears around inference, not a score delta on one
+synthetic input.
 
 \subsection{Fixture}
 
@@ -327,10 +360,32 @@ across all variables except the inference strategy.
 
 Hermes is invoked through \texttt{HermesCliRuntime} v0.11.0 against a
 custom OpenAI-compatible endpoint. The model and provider are externally
-configurable through the Hermes config file; the persisted artifact was
-produced with one frontier-tier model. The current artifact should be treated
-as a systems smoke test rather than a result that generalises across
-providers.
+configurable through the Hermes config file. The persisted artifact was
+produced with a provider-anonymized frontier-tier chat model routed through
+that custom endpoint; the endpoint is private, while public reproduction can
+use any Hermes-supported provider. The artifact should be treated as a
+systems smoke test rather than a result that generalises across providers.
+
+\begin{table}[t]
+\centering
+\caption{Environment recorded for the live truncation artifact.}
+\label{tab:environment}
+\small
+\begin{tabular}{ll}
+\toprule
+Field & Value \\
+\midrule
+Hermes CLI & v0.11.0 \\
+Hermes endpoint & Custom OpenAI-compatible endpoint \\
+Inner model & Provider-anonymized frontier-tier chat model \\
+Ouroboros dependency & \texttt{5b4bc10e} claim-aware scorer commit \\
+RLM-FORGE command & \texttt{ooo rlm --truncation-benchmark} \\
+Fixture & \texttt{rlm-long-context-truncation-v1} \\
+Sub-calls & vanilla=1, recursive=5 \\
+Telemetry not persisted & latency, token count, monetary cost \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 The recursive RLM is configured with \texttt{max\_depth=5} and
 \texttt{ambiguity\_threshold=0.2}; the truncation fixture only requires
@@ -403,7 +458,22 @@ evidence handle match the manifest. Omitted facts are rejected with an
 rejected with \texttt{chunk\_handle\_without\_fact}. This makes the
 evidence boundary executable rather than merely descriptive.
 
-The public interface is intentionally small:
+\paragraph{Acceptance property.}
+Let $M \subseteq F \times H$ be the accepted child evidence manifest, where
+$F$ is the set of fact identifiers and $H$ is the set of evidence handles.
+Let $\mathrm{Claims}(S)$ be the structured fact claims extracted from a
+parent synthesis $S$. TraceGuard accepts $S$ only if
+\[
+  \forall (f,h) \in \mathrm{Claims}(S),\; (f,h) \in M.
+\]
+Proof sketch: the implementation builds $M$ only from accepted child outputs,
+enumerates every structured claim surface in $S$, and rejects on the first
+unknown fact identifier, omitted fact identifier, chunk handle without a fact,
+or fact-handle pair absent from $M$. Acceptance is returned only after this
+scan completes. This is a provenance property relative to the manifest, not a
+semantic proof that the underlying natural-language fact is true.
+
+The public interface is:
 
 \begin{lstlisting}[language=Python]
 validate_parent_synthesis(
@@ -414,7 +484,7 @@ validate_parent_synthesis(
 
 The no-API demo accepts safe parent synthesis and rejects an omitted fact.
 This separates score parity on the live fixture from the new capability:
-enforceable claim support at the recursive synthesis boundary.
+enforceable provenance support at the recursive synthesis boundary.
 
 \subsection{Reproduction}
 
@@ -484,22 +554,21 @@ read as a contract ablation, not as a live-model comparison.
 \section{Discussion}
 \label{sec:discussion}
 
-RLM-FORGE is best understood as a runtime argument. A model-only reading of
+RLM-FORGE is best understood as a systems argument. A model-only reading of
 RLM asks whether a recursive call beats a vanilla call on a benchmark. That
 question is important, but it is too narrow for systems work. A runtime
 reading asks whether the RLM pattern exposes control surfaces that ordinary
-agent infrastructure can use immediately. On that question, the answer is
-stronger.
+agent infrastructure can use immediately.
 
-\paragraph{The contribution survives a tied quality score.}
-The corrected live fixture reports no quality win. This is not a failure of
-the runtime claim. A vanilla call can answer a small truncation fixture
+\paragraph{Contribution under score parity.}
+The corrected live fixture reports score parity. This does not negate the
+runtime claim. A vanilla call can answer a controlled truncation fixture
 correctly; RLM-FORGE is not claiming otherwise. The contribution is that the
-recursive run produces a different object: a traceable computation with
+recursive run produces a different artifact: a traceable computation with
 bounded child calls, explicit evidence handles, and a parent synthesis gate.
-That object is easier to debug, replay, audit, and constrain than a single
-opaque completion. In deployed agent systems, those properties are often as
-valuable as one more benchmark point.
+That artifact is easier to debug, replay, audit, and constrain than a single
+final completion. In deployed agent systems, those properties are often
+valuable independently of benchmark score.
 
 \paragraph{Runtime RLM changes the failure mode.}
 Without evidence gating, an RLM-shaped policy can hallucinate just as badly
@@ -519,7 +588,7 @@ practical route by which RLM can spread: not by waiting for every provider to
 ship a native recursive model, but by making recursive execution a capability
 of the runtime that sits above providers.
 
-\paragraph{Engineering cost is small when the runtime cooperates.}
+\paragraph{Integration scope.}
 We added no new sandbox, REPL, or transport. The integration that matters
 lives in approximately 4{,}500 lines of Python (recursive scaffold and
 decomposition extension, excluding tests and concept documentation), all
@@ -539,6 +608,9 @@ chunks. The generated synthetic benchmarks broaden scorer and contract
 coverage, but they do not replace live multi-task model evaluation.
 \item \textbf{One model family.} We did not vary the inner LLM. The
 artifact is not evidence of provider-general behavior.
+\item \textbf{No cost or latency telemetry.} The live artifact persists
+sub-call counts and scores, but not latency, token counts, or monetary cost.
+Those fields should be captured in a future multi-provider run.
 \item \textbf{No comparison to RLM-Qwen3-8B.} The natively recursive
 model post-trained by \citet{zhang2025rlm} is not in our comparison set.
 \item \textbf{No new RLM theory.} The recursive paradigm is the
@@ -576,15 +648,15 @@ modifying it.
 \label{sec:conclusion}
 
 We have presented RLM-FORGE, an open-source runtime lifting of Recursive
-Language Models onto the Hermes Agent runtime. The central claim is
-aggressive but precise: RLM's operational advantages do not require a new
-model architecture to become useful. They can be exposed as runtime
+Language Models onto the Hermes Agent runtime. The central systems claim is
+that RLM's operational advantages do not require a new model architecture to
+become useful. They can be exposed as runtime
 properties: bounded sub-calls, recursive trace state, replayable child
 evidence, provider-swappable inner execution, and evidence-gated parent
-synthesis. The committed live fixture remains an honest tie after
-claim-aware rescoring, but the recursive run produces a computation the
-runtime can inspect and enforce. That is the systems contribution. We offer
-the code, fixtures, and persisted artifacts under an MIT licence at
+synthesis. The committed live fixture shows score parity after claim-aware
+rescoring, but the recursive run produces a computation the runtime can
+inspect and enforce. That is the systems contribution. We offer the code,
+fixtures, and persisted artifacts under an MIT licence at
 \url{https://github.com/Q00/rlm-forge}.
 
 \section*{Reproducibility}
@@ -594,7 +666,7 @@ and configuration files are available at
 \url{https://github.com/Q00/rlm-forge}. The Ouroboros branch
 hosting the upstream RLM modules is at
 \url{https://github.com/Q00/ouroboros/tree/ooo/run/seed_2d9f9ccfa5aa}.
-The hackathon submission package depends on the Ouroboros branch by git
+The implementation artifact depends on the Ouroboros branch by git
 reference until the upstream release lands on PyPI.
 
 \bibliographystyle{plainnat}

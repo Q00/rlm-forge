@@ -35,7 +35,7 @@ Homepage = "https://github.com/Q00/rlm-forge"
 Issues = "https://github.com/Q00/rlm-forge/issues"
 Hermes = "https://github.com/NousResearch/hermes-agent"
 Ouroboros = "https://github.com/Q00/ouroboros"
-Paper = "https://arxiv.org/abs/2512.24601"
+RLM-Paper = "https://arxiv.org/abs/2512.24601"
 X = "https://x.com/JqOnly"
 
 [build-system]

@@ -4,7 +4,7 @@ A runtime layer for executing **Recursive Language Model** sub-calls through
 **Hermes Agent** (Nous Research), with Ouroboros owning recursion, trace replay,
 and evidence validation.
 
-> **Submission to the Nous Research Hermes hackathon.**
+> **Implementation artifact for runtime-lifted RLM over Hermes Agent.**
 > Inspired by Zhang/Kraska/Khattab — *Recursive Language Models* (arXiv 2512.24601).
 
 ---
@@ -70,7 +70,7 @@ Judge verification checklist:
 | Evidence-gated recursion is the mechanism, not recursion alone | [`experiments/unsupported-claim-rate-benchmark.md`](experiments/unsupported-claim-rate-benchmark.md) |
 | Claim-aware scorer avoids the earlier false win | [`experiments/claim-aware-omitted-fact-suite.md`](experiments/claim-aware-omitted-fact-suite.md) |
 | Broad deterministic scorer coverage | [`experiments/synthetic-omitted-fact-benchmark.md`](experiments/synthetic-omitted-fact-benchmark.md) |
-| Live Hermes fixture remains an honest tie | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
+| Live Hermes fixture shows score parity | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
 
 These offline artifacts do not require a Hermes API key. TraceGuard improves
 unsupported-claim enforcement; it does not change the live fixture quality

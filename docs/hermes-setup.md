@@ -1,4 +1,4 @@
-# Hermes setup for hackathon judges
+# Hermes setup for reviewers
 
 This page is for judges and reviewers who do not already have Hermes Agent
 configured. It walks through the simplest path to a working Hermes that the

@@ -1,6 +1,6 @@
 # Paper
 
-Source for the arXiv tech note that accompanies this submission.
+Source for the arXiv artifact paper that accompanies this implementation.
 
 ## Build
 
@@ -25,10 +25,11 @@ Output: `main.pdf`.
 
 ## Submission target
 
-arXiv categories: `cs.AI`, `cs.SE`. The paper is positioned as a
-runtime-lifting systems paper: it argues that RLM's operational advantages
-can be exposed as an agent-runtime primitive without claiming a new model
-architecture or new RLM theory.
+Suggested arXiv categories: primary `cs.AI`, with `cs.CL` or `cs.SE` as
+possible cross-lists. The paper is positioned as a runtime-lifting systems
+paper: it argues that RLM's operational advantages can be exposed as an
+agent-runtime primitive without claiming a new model architecture or new
+RLM theory.
 
 ## Honest scope reminder
 
