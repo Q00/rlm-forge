@@ -32,48 +32,51 @@ directory at `~/.hermes/`.
    hermes setup
    ```
    When prompted, choose `OpenRouter` and paste your key.
-3. Pick any model you have credits for. We tested with `openai/gpt-5` and
-   `anthropic/claude-opus-4.7`; both work fine for the truncation fixture.
+3. Pick any capable model you have credits for. The truncation fixture is small;
+   OpenRouter-hosted frontier or strong general-purpose chat models are enough.
 
 ### Option B — Direct provider configuration
 
-If you prefer to skip the wizard, write `~/.hermes/config.yaml` directly:
+If you prefer to skip the wizard, keep secrets in the environment and use
+`hermes model` to select OpenRouter and your model:
+
+```bash
+export OPENROUTER_API_KEY="<your-openrouter-api-key>"
+hermes model
+```
+
+For fully manual configuration, follow the current Hermes configuration docs:
+https://hermes-agent.nousresearch.com/docs/user-guide/configuration
+
+A minimal config shape is:
 
 ```yaml
 model:
-  default: openai/gpt-5
   provider: openrouter
-providers:
-  openrouter:
-    api_key: ${OPENROUTER_API_KEY}
-toolsets:
-  - hermes-cli
+  default: <openrouter-model-id>
+  api_key: ${OPENROUTER_API_KEY}
 agent:
   max_turns: 150
-  gateway_timeout: 1800
 ```
 
-Then export the key once per shell:
-
-```bash
-export OPENROUTER_API_KEY=sk-or-v1-...
-```
+Do not commit API keys or provider credentials into this repository.
 
 ### Option C — Custom OpenAI-compatible endpoint
 
-If your organization runs an internal OpenAI-compatible proxy (the
-authoring environment used `[redacted-endpoint]`), set:
+If your organization runs a private OpenAI-compatible endpoint, configure it
+with a placeholder base URL and keep credentials outside the repository:
 
 ```yaml
 model:
   default: <your-model-name>
   provider: custom
-  base_url: https://your.endpoint/v1
+  base_url: https://your.endpoint.example/v1
+  api_key: ${CUSTOM_LLM_API_KEY}
 ```
 
-Hermes then sends OpenAI Chat Completions traffic to that base URL. No
-additional auth header is required if your proxy injects credentials
-upstream; otherwise add `api_key:` under the `providers.custom` block.
+Hermes then sends OpenAI Chat Completions traffic to that base URL. If your
+proxy injects credentials upstream, omit `api_key`; otherwise provide it via an
+environment variable or Hermes' credential flow, never as a committed literal.
 
 ## Step 3 — Smoke-test Hermes alone
 

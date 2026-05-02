@@ -30,7 +30,7 @@
 
 ---
 
-> **Implementation artifact for runtime-lifted RLM over Hermes Agent.**  
+> **A Hermes-backed field instrument for runtime-lifted Recursive Language Models.**  
 > Inspired by Zhang/Kraska/Khattab — *Recursive Language Models* (arXiv 2512.24601).
 
 ```text
@@ -177,6 +177,8 @@ quality: vanilla=1.00, rlm=1.00, delta=+0.00, rlm_outperforms_vanilla=False
 ooo rlm --truncation-benchmark
 ```
 
+This command performs one vanilla Hermes call plus five recursive Hermes sub-calls. Use the replay command above for no-API evaluation.
+
 Expected live shape:
 
 ```text
@@ -259,7 +261,7 @@ rlm-forge/
 
 ---
 
-## What this submission is and is not
+## What RLM-FORGE is and is not
 
 | It is | It is not |
 | --- | --- |

@@ -49,18 +49,10 @@ z.ai/GLM, Kimi, MiniMax, OpenAI, and custom endpoints. The recursion is
 invariant to the chosen model — `hermes model` swaps it out without code
 changes. For reviewers this means an OpenRouter key is enough.
 
-For our empirical run we routed through a custom endpoint declared in
-`~/.hermes/config.yaml`:
-
-```yaml
-model:
-  default: gpt-5.5
-  provider: custom
-  base_url: https://[redacted-endpoint]/v1
-```
-
-Replacing `base_url` with `https://openrouter.ai/api/v1` and choosing a
-different `default` model yields the same RLM behaviour.
+For our empirical run we routed through a private OpenAI-compatible endpoint
+declared in `~/.hermes/config.yaml`. Public reviewers do not need that endpoint:
+selecting any Hermes-supported provider with `hermes model` yields the same RLM
+runtime behaviour, though absolute model scores and latency may differ.
 
 ### 2. Quiet, structured I/O
 

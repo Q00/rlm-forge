@@ -588,6 +588,14 @@ practical route by which RLM can spread: not by waiting for every provider to
 ship a native recursive model, but by making recursive execution a capability
 of the runtime that sits above providers.
 
+\paragraph{Memory-shaped recursion.}
+RLM-FORGE currently treats each run as an isolated recursive execution.
+Hermes makes a stronger future direction possible: decomposition traces,
+provider-specific failures, schema repairs, and TraceGuard rejections can
+become persistent operational priors for later recursive runs. Memory is not
+evidence; memory is a prior over how to ask for evidence. Fresh parent claims
+must still cite fresh child evidence and pass TraceGuard before state mutation.
+
 \paragraph{Integration scope.}
 We added no new sandbox, REPL, or transport. The integration that matters
 lives in approximately 4{,}500 lines of Python (recursive scaffold and

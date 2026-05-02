@@ -160,6 +160,6 @@ produced them.
 - The fixture is deterministic by design (same selected/omitted partition,
   same scoring procedure). Both runs are scored by the same code so that
   the comparison is controlled, not because the test is rigged.
-- Hermes was provider-agnostic in this run (custom endpoint via
-  `[redacted-endpoint]`). Different inner models will produce different
+- Hermes was provider-agnostic in this run (through a private
+  OpenAI-compatible endpoint). Different inner models will produce different
   absolute scores; model/provider sweeps are still future work.
