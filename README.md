@@ -28,6 +28,25 @@
   <a href="paper/main.pdf">Paper</a>
 </p>
 
+<h2 align="center">
+  <a href="paper/main.pdf">Read the RLM-FORGE paper</a>
+</h2>
+
+<p align="center">
+  <a href="paper/main.pdf">
+    <img alt="Paper PDF" src="https://img.shields.io/badge/Paper-PDF%20artifact-f8fafc?style=for-the-badge&labelColor=111827" />
+  </a>
+  <a href="paper/main.tex">
+    <img alt="LaTeX source" src="https://img.shields.io/badge/Source-LaTeX-38bdf8?style=for-the-badge&labelColor=111827" />
+  </a>
+</p>
+
+<p align="center">
+  <strong>Runtime-Lifted Recursive Language Models for Agent Infrastructure.</strong>
+  <br />
+  The paper states the systems claim, corrected benchmark result, TraceGuard enforcement model, and 24-cell live portability evidence.
+</p>
+
 ---
 
 > **A Hermes-backed field instrument for runtime-lifted Recursive Language Models.**  
