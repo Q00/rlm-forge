@@ -1,7 +1,7 @@
 {
   "schema_version": "rlm_forge.live_portability_contracts_only.v1",
   "run_mode": "contracts_only",
-  "generated_at": "2026-05-02T17:18:42.637208+00:00",
+  "generated_at": "2026-05-03T09:59:30.123564+00:00",
   "live_model_calls": false,
   "fixture_count": 8,
   "runtime_family_count": 3,
@@ -3130,6 +3130,75 @@
       "expected_traceguard_verdicts": {
         "safe_parent_synthesis": true,
         "unsafe_injected_synthesis": false
+      },
+      "repairable_missing_handle_parent_synthesis": {
+        "mode": "rlm_forge_parent_synthesis",
+        "verdict": "pass",
+        "confidence": 0.95,
+        "result": {
+          "summary": "Safe synthesis for chunk-only-citation-trap-01 uses only retained facts.",
+          "retained_facts": [
+            {
+              "fact_id": "LP-08-001",
+              "text": "FACT:LP-08-001 Chunk handles are not sufficient without fact identifiers.",
+              "evidence_chunk_id": "live_portability/chunk-only-citation-trap-01.txt:1-1"
+            },
+            {
+              "fact_id": "LP-08-002",
+              "text": "FACT:LP-08-002 A valid parent claim names both fact_id and evidence_chunk_id.",
+              "evidence_chunk_id": null
+            },
+            {
+              "fact_id": "LP-08-003",
+              "text": "FACT:LP-08-003 TraceGuard treats chunk-only references as unsupported.",
+              "evidence_chunk_id": "live_portability/chunk-only-citation-trap-01.txt:3-3"
+            },
+            {
+              "fact_id": "LP-08-004",
+              "text": "FACT:LP-08-004 The manifest binds each fact to exactly one retained chunk.",
+              "evidence_chunk_id": "live_portability/chunk-only-citation-trap-01.txt:4-4"
+            }
+          ],
+          "truncation_report": {
+            "omitted_chunk_count": "reported_but_not_claimed"
+          }
+        },
+        "evidence_references": [
+          {
+            "chunk_id": "live_portability/chunk-only-citation-trap-01.txt:1-1",
+            "supports_fact_ids": [
+              "LP-08-001"
+            ],
+            "quoted_evidence": "FACT:LP-08-001 Chunk handles are not sufficient without fact identifiers."
+          },
+          {
+            "chunk_id": "live_portability/chunk-only-citation-trap-01.txt:2-2",
+            "supports_fact_ids": [
+              "LP-08-002"
+            ],
+            "quoted_evidence": "FACT:LP-08-002 A valid parent claim names both fact_id and evidence_chunk_id."
+          },
+          {
+            "chunk_id": "live_portability/chunk-only-citation-trap-01.txt:3-3",
+            "supports_fact_ids": [
+              "LP-08-003"
+            ],
+            "quoted_evidence": "FACT:LP-08-003 TraceGuard treats chunk-only references as unsupported."
+          },
+          {
+            "chunk_id": "live_portability/chunk-only-citation-trap-01.txt:4-4",
+            "supports_fact_ids": [
+              "LP-08-004"
+            ],
+            "quoted_evidence": "FACT:LP-08-004 The manifest binds each fact to exactly one retained chunk."
+          }
+        ],
+        "residual_gaps": [
+          {
+            "gap": "Some source chunks were omitted by the truncation boundary.",
+            "claim_status": "not_observed_evidence"
+          }
+        ]
       }
     }
   ],

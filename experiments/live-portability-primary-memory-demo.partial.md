@@ -1,12 +1,12 @@
-# RLM-FORGE Live Portability Contracts-Only Check
+# RLM-FORGE Live Portability Primary Run
 
-- Run mode: `contracts_only`
-- Run status: `completed`
-- Live model calls: `False`
+- Run mode: `live_primary`
+- Run status: `in_progress`
+- Live model calls: `True`
 - Fixtures: `8`
 - Runtime families: `3`
-- Contract variants: `4`
-- Planned cells: `96`
+- Contract variants: `1`
+- Planned cells: `24`
 - Primary cells: `24`
 
 ## Runtime Families
@@ -19,11 +19,21 @@
 
 ## Family Summary
 
-| Family | Checked primary | Passed primary | Failed primary | Infra skipped | Status |
+| Family | Completed primary | Passed primary | Failed primary | Infra skipped | Status |
 | --- | ---: | ---: | ---: | ---: | --- |
-| hermes_glm | 8 | 8 | 0 | 0 | `preflight_pass` |
-| claude_code_opus47 | 8 | 8 | 0 | 0 | `preflight_pass` |
-| codex_gpt55 | 8 | 8 | 0 | 0 | `preflight_pass` |
+| hermes_glm | 2 | 2 | 0 | 0 | `incomplete` |
+| claude_code_opus47 | 2 | 2 | 0 | 0 | `incomplete` |
+| codex_gpt55 | 1 | 1 | 0 | 0 | `incomplete` |
+
+## Live Cells
+
+| Fixture | Family | Status | Latency seconds | Child calls | TraceGuard accepted |
+| --- | --- | --- | ---: | ---: | --- |
+| simple-truncation-01 | hermes_glm | `live_contract_pass` | 102.528 | 4 | `True` |
+| simple-truncation-01 | claude_code_opus47 | `live_contract_pass` | 68.685 | 4 | `True` |
+| simple-truncation-01 | codex_gpt55 | `live_contract_pass` | 43.806 | 4 | `True` |
+| simple-truncation-02 | hermes_glm | `live_contract_pass` | 110.208 | 4 | `True` |
+| simple-truncation-02 | claude_code_opus47 | `live_contract_pass` | 68.805 | 4 | `True` |
 
 ## Fixture Contract Results
 
@@ -40,4 +50,4 @@
 
 ## Interpretation
 
-Contracts-only mode validates fixture completeness and TraceGuard safe/unsafe verdicts for 24/24 primary cells without calling providers. It is a precondition for the live matrix, not the live portability result itself.
+Live primary mode executes the RLM-FORGE+TraceGuard contract for 5/24 planned primary cells. Aggregate status: `inconclusive`. A pass supports the runtime portability claim; it does not evaluate secondary baselines or SOTA model quality.
