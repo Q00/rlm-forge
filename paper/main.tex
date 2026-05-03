@@ -55,10 +55,11 @@ can be rejected before state mutation. We introduce TraceGuard, a
 deterministic evidence gate for parent synthesis, and evaluate it with a
 claim-aware omitted-fact safety scorer. The live Hermes truncation fixture
 shows score parity between vanilla and recursive execution after scorer
-correction.
-The systems claim is therefore not that RLM-FORGE wins a benchmark; it is
-that RLM-FORGE turns RLM from a research-time inference idea into a runtime
-surface that existing agent infrastructure can execute, inspect, and enforce.
+correction. A 24-cell live primary portability run across Hermes+GLM, Claude
+Code, and Codex completes with 24 mandatory contract passes. The systems
+claim is therefore not that RLM-FORGE wins a benchmark; it is that RLM-FORGE
+turns RLM from a research-time inference idea into a runtime surface that
+existing agent infrastructure can execute, inspect, and enforce.
 \end{abstract}
 
 \section{Introduction}
@@ -111,8 +112,12 @@ acceptance-criterion decomposition pipeline (Section~\ref{sec:decomposition}).
 \item \textbf{Executable evidence discipline.} TraceGuard rejects structured
 claims that lack accepted child evidence handles. In deterministic contract
 ablations, evidence-gated Hermes-RLM has a 0.0 unsupported-claim rate while
-an ungated RLM-shaped policy fails at 1.0. On the live fixture
-(Section~\ref{sec:experiment}), corrected scoring reports a tie rather than
+an ungated RLM-shaped policy fails at 1.0. In the 24-cell live primary matrix
+(Section~\ref{sec:experiment}), Hermes+GLM, Claude Code, and Codex all pass
+the same 8-fixture RLM-FORGE+TraceGuard contract. The implementation also
+includes a narrow repair loop for a missing-handle rejection class observed in
+an earlier Hermes+GLM run. On the
+original live truncation fixture, corrected scoring reports a tie rather than
 the earlier false $+0.20$ recursive-RLM win.
 \end{enumerate}
 
@@ -391,6 +396,55 @@ The recursive RLM is configured with \texttt{max\_depth=5} and
 \texttt{ambiguity\_threshold=0.2}; the truncation fixture only requires
 depth two in practice (one root sub-call plus four chunk-level sub-calls).
 
+\subsection{Multi-runtime primary portability}
+
+To separate the runtime-contract claim from the older single-provider
+artifact, we also build a brownfield live portability harness. The harness
+generates an 8-fixture, 3-family, 4-contract matrix plan
+(\(8 \times 3 \times 4 = 96\) cells). In this version we execute the
+primary contract, \texttt{RLM-FORGE+TraceGuard}, across all 8 fixtures and
+all 3 runtime families (\(8 \times 3 = 24\) live cells). Each completed cell
+executes four child calls plus one parent synthesis call through the same
+\texttt{AgentRuntime} surface, using identical fixtures, prompts, schemas,
+scoring, and TraceGuard logic. Only the runtime adapter and model alias vary
+by family.
+
+\begin{table}[t]
+\centering
+\caption{Live primary portability matrix over 8 shared fixtures. This is the
+primary RLM-FORGE+TraceGuard matrix, not the full 96-cell baseline sweep.}
+\label{tab:portability-primary}
+\small
+\begin{tabular}{lllll}
+\toprule
+Family & Runtime & Model alias & Cells & Result \\
+\midrule
+\texttt{hermes\_glm} & \texttt{HermesCliRuntime} & \texttt{glm-4.7} & 8/8 pass & pass \\
+\texttt{claude\_code\_opus47} & \texttt{ClaudeAgentAdapter} & \texttt{opus} & 8/8 pass & pass \\
+\texttt{codex\_gpt55} & \texttt{CodexCliRuntime} & \texttt{gpt-5.5} & 8/8 pass & pass \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The run completes all 24 live cells with 24 mandatory contract passes. The
+aggregate status is pass: Hermes+GLM, Claude Code, and Codex each complete
+and pass all 8 fixtures under the same RLM-FORGE+TraceGuard contract. The
+chunk-only citation trap is still useful as a stress fixture because it
+requires parent claims to carry both \texttt{fact\_id} and
+\texttt{evidence\_chunk\_id}; in this run every family satisfies that
+contract. An earlier Hermes+GLM run exposed the concrete failure mode that
+motivates the repair loop: the parent preserved the fact text but omitted the
+required evidence handle, causing a \texttt{missing\_evidence\_handle}
+rejection. The current implementation now repairs that narrow class by filling
+only missing or null evidence-handle fields from the child evidence manifest
+and retrying parent synthesis once. If that observed class recurs, the runtime
+has a bounded recovery path rather than only a terminal reject-and-log path.
+The latest live matrix does not exercise that path because every initial
+parent synthesis validates before repair; the repair loop is therefore a
+tested runtime-control response, not a claimed benchmark win in the latest
+matrix. This does not establish that the full baseline sweep, token usage, or
+cost profiles generalise across providers.
+
 \subsection{Results}
 \label{sec:results}
 
@@ -513,6 +567,19 @@ python3 scripts/run-traceguard-demo.py
 It accepts a safe parent synthesis, rejects an omitted-fact claim, and
 rejects chunk-only evidence that does not identify supported fact IDs.
 
+The 24-cell live primary portability matrix can be rerun with provider
+credentials configured:
+
+\begin{lstlisting}[language=bash]
+HERMES_INFERENCE_PROVIDER=zai \
+GLM_API_KEY=... \
+uv run --extra dev --extra live \
+  python scripts/run-live-portability-matrix.py \
+  --mode live-primary --fixtures 8 --families all \
+  --timeout-seconds 240 \
+  --output-prefix live-portability-primary
+\end{lstlisting}
+
 We additionally include a Hermes-free scorer micro-suite:
 
 \begin{lstlisting}[language=bash]
@@ -604,21 +671,59 @@ calling through one pre-existing \texttt{HermesCliRuntime} adapter.
 Researchers and practitioners with similar agent runtimes should be able to
 reproduce the integration in comparable time.
 
+\section{Future Work: Memory-Shaped Recursion}
+\label{sec:future-memory}
+
+Hermes does not train the underlying model during RLM execution. The future
+opportunity is different: Hermes memory, skills, and traces can give the
+recursive scaffold a persistent operational memory. Prior decompositions,
+provider-specific failure modes, schema repairs, and TraceGuard rejection
+patterns can be recalled as runtime priors for later recursive runs.
+
+The key separation is:
+
+\begin{quote}
+Memory is not evidence; memory is a prior over how to ask for evidence.
+\end{quote}
+
+In this design, memory should not be allowed to support a factual parent
+claim. Only fresh child evidence from the current run can do that. Memory can
+shape the next run's policy: how to decompose a task family, which provider
+to route extraction or synthesis to, which schema to require, and which retry
+prompt to use after a guardrail rejection. A future memory-shaped run could
+recall missing-handle rejections as schema-repair priors: require child
+outputs to echo both \texttt{fact\_id} and \texttt{evidence\_chunk\_id}, and
+retry a child call when a handle is null. The repaired parent would still
+need to cite fresh evidence from the new trace before TraceGuard accepts it.
+
+This direction is useful only if memory is curated. Raw progress logs,
+provider chatter, and fixture answers should not become durable recall. The
+memory record should be an abstract operational signal such as "this provider
+is slow but usually schema-stable" or "this task family needs fact-level
+handles rather than chunk-only handles." Benchmark use also requires
+contamination controls: no-memory baselines, answer-memory disabled, fixture
+content excluded from durable memory, and separate trace-memory policy runs.
+
 \section{Limitations}
 \label{sec:limits}
 
 We are explicit about what this paper does and does not show.
 
 \begin{enumerate}[leftmargin=*]
-\item \textbf{One live fixture.} The corrected Hermes artifact is a tie on
-one truncation regime with a particular ratio of selected to omitted
-chunks. The generated synthetic benchmarks broaden scorer and contract
-coverage, but they do not replace live multi-task model evaluation.
-\item \textbf{One model family.} We did not vary the inner LLM. The
-artifact is not evidence of provider-general behavior.
-\item \textbf{No cost or latency telemetry.} The live artifact persists
-sub-call counts and scores, but not latency, token counts, or monetary cost.
-Those fields should be captured in a future multi-provider run.
+\item \textbf{One score-bearing live truncation fixture.} The corrected
+Hermes truncation artifact is a tie on one truncation regime with a
+particular ratio of selected to omitted chunks. The live primary matrix
+expands contract coverage across 8 fixtures, but it is not a broad
+model-quality benchmark.
+\item \textbf{Primary-only provider coverage.} We now run the primary
+RLM-FORGE+TraceGuard contract across 8 fixtures, Hermes+GLM, Claude Code,
+and Codex CLI. This is stronger than a smoke test, but it is still not the
+full 96-cell baseline sweep. The primary aggregate is pass; the unanswered
+question is whether the secondary variants show the same pattern when
+executed across all providers.
+\item \textbf{Incomplete cost and token telemetry.} The portability run
+records wall-clock latency, but not token counts or monetary cost. Those
+fields should be captured in a future full multi-provider run.
 \item \textbf{No comparison to RLM-Qwen3-8B.} The natively recursive
 model post-trained by \citet{zhang2025rlm} is not in our comparison set.
 \item \textbf{No new RLM theory.} The recursive paradigm is the
@@ -663,7 +768,12 @@ properties: bounded sub-calls, recursive trace state, replayable child
 evidence, provider-swappable inner execution, and evidence-gated parent
 synthesis. The committed live fixture shows score parity after claim-aware
 rescoring, but the recursive run produces a computation the runtime can
-inspect and enforce. That is the systems contribution. We offer the code,
+inspect and enforce. The 24-cell live primary matrix further shows that the
+same evidence-gated runtime contract can pass across Hermes+GLM, Claude Code,
+and Codex. That is the systems contribution. The natural next step is
+memory-shaped recursion, where prior traces improve decomposition, routing,
+and repair policy while fresh child evidence remains the only basis for parent
+claims. We offer the code,
 fixtures, and persisted artifacts under an MIT licence at
 \url{https://github.com/Q00/rlm-forge}.
 

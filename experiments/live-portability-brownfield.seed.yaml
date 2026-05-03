@@ -1,0 +1,221 @@
+goal: >
+  Implement and run a brownfield live experiment matrix for RLM-FORGE that
+  validates provider/runtime-portable RLM execution contracts and evidence-gated
+  parent synthesis as the primary contribution, with answer quality, unsupported
+  claims, latency, token usage, and cost reported only as secondary metrics.
+
+task_type: code
+
+brownfield_context:
+  project_type: brownfield
+  context_references:
+    - path: /Users/jaegyu.lee/Project/ouroboros-rlm-hermes
+      role: primary_artifact_repo
+      summary: >
+        Public RLM-FORGE artifact repo. Contains README, paper, deterministic
+        TraceGuard suites, benchmark fixtures, replay demo, tests, and the
+        place where new live portability fixtures, harnesses, result JSON/MD,
+        and paper updates must be committed.
+    - path: /Users/jaegyu.lee/Project/ouroboros
+      role: upstream_runtime_repo
+      summary: >
+        Brownfield Ouroboros implementation repo. Contains AgentRuntime
+        adapters, RLM loop, shared truncation benchmark, Hermes runtime,
+        Claude Code adapter, Codex CLI runtime, and execution infrastructure.
+        Prefer consuming existing APIs from the artifact repo before modifying
+        upstream. If upstream changes are required, keep them narrowly scoped
+        to runtime injection, trace artifact emission, or adapter correctness.
+    - path: /Users/jaegyu.lee/Project/ouroboros/src/ouroboros/rlm
+      role: rlm_runtime_reference
+      summary: >
+        Existing RLM runtime path. run_shared_truncation_benchmark accepts an
+        injected AgentRuntime despite historical Hermes naming. run_rlm_loop
+        executes recursive child calls and parent synthesis.
+    - path: /Users/jaegyu.lee/Project/ouroboros/src/ouroboros/orchestrator
+      role: adapter_reference
+      summary: >
+        Existing runtime adapters: HermesCliRuntime, ClaudeAgentAdapter /
+        ClaudeCodeRuntime, and CodexCliRuntime. The experiment must use these
+        adapters through the same AgentRuntime contract.
+    - path: experiments/
+      role: result_destination
+      summary: >
+        Existing deterministic experiment outputs. New live portability matrix
+        specs, result JSON, and markdown summaries should be written here.
+    - path: src/rlm_forge/traceguard.py
+      role: evidence_gate_reference
+      summary: >
+        Existing TraceGuard implementation. Reuse the same evidence manifest
+        and verdict logic across all runtime/provider families.
+    - path: paper/main.tex
+      role: paper_destination
+      summary: >
+        Artifact paper to update after experiments. The new claim should be
+        framed as runtime portability and enforceable trace/evidence contracts,
+        not model-quality SOTA.
+  existing_patterns:
+    - Python package source lives under src/rlm_forge.
+    - Deterministic experiment scripts live under scripts/run-*.py.
+    - Experiment outputs are paired JSON plus markdown files under experiments/.
+    - Tests are pytest-based under tests/.
+    - The paper keeps generated PDF in paper/main.pdf and source in paper/main.tex.
+    - pyproject.toml pins ouroboros-ai to the upstream commit used by the artifact.
+  existing_dependencies:
+    - Python >= 3.12
+    - uv for local development and test execution
+    - pytest for verification
+    - ouroboros-ai from the pinned Q00/ouroboros commit
+    - Hermes Agent CLI for Hermes-family runtime cells
+    - Claude Code CLI subscription auth for Claude-family runtime cells
+    - Codex CLI subscription auth for Codex-family runtime cells
+    - OpenRouter-compatible GLM access supplied only as a transient environment variable
+
+constraints:
+  - Primary claim is portability/runtime-contract preservation, not quality uplift.
+  - Primary runtime/provider families are hermes_glm, claude_code_opus47, and codex_gpt55.
+  - hermes_glm must use HermesCliRuntime with a GLM-family model through transient runtime configuration; the direct Z.AI path uses HERMES_INFERENCE_PROVIDER=zai plus GLM_API_KEY/ZAI_API_KEY and a default glm-4.7 model alias.
+  - claude_code_opus47 must use ClaudeAgentAdapter or ClaudeCodeRuntime with Claude Code subscription auth; the harness default is the Claude Code `opus` alias and exact Opus-version aliases may be supplied through RLM_FORGE_CLAUDE_MODEL when available.
+  - codex_gpt55 must use CodexCliRuntime with Codex CLI subscription auth.
+  - Do not write API keys, bearer tokens, auth cookies, or provider secrets into tracked files, logs, result artifacts, paper text, or final summaries.
+  - The one-time GLM credential may only be provided through a transient process environment or a deleted temporary config outside the repository.
+  - Record configured model aliases, resolved CLI versions, adapter class names, and redacted command/config snapshots.
+  - Historical provider-anonymized Hermes frontier runs remain exploratory only and must not count toward the primary matrix.
+  - Each claimed family must complete at least 8 primary fixtures for a primary portability PASS.
+  - Primary fixtures must be shared across all families and all contract variants.
+  - Same prompts, schemas, scoring, TraceGuard logic, and fixture set must be used across runtime/provider families.
+  - Only runtime adapter and model configuration may differ by family.
+  - Provider-specific prompt/schema/scoring/TraceGuard patches are primary failures or separate exploratory variants.
+  - Implementation target is 8 fixtures x 3 families x 4 contracts = 96 evaluations.
+  - If full 96 is infeasible, run all 4 contract variants on one canonical family and keep the 3-family primary portability matrix as RLM-FORGE + TraceGuard only.
+  - Timeout gets one retry; repeated timeout may be infra-timeout and excluded from completed denominator.
+  - Provider outage, auth failure, or rate limit may be infra-skip with evidence and excluded from completed denominator.
+  - Adapter bugs, schema mismatches, parent-child link corruption, missing trace/artifact fields, wrong TraceGuard verdicts, or provider-specific workarounds are primary contract failures.
+  - Low semantic quality with valid schema, trace, evidence, and TraceGuard verdicts is a secondary quality failure, not a primary portability failure.
+  - Avoid modifying /Users/jaegyu.lee/Project/ouroboros unless artifact-repo integration cannot be completed through existing public APIs.
+  - Do not clean, reset, or revert unrelated dirty files in /Users/jaegyu.lee/Project/ouroboros.
+
+acceptance_criteria:
+  - A fixture generator or static fixture file defines at least 8 primary fixtures and preferably 12.
+  - Fixture mix includes at least 2 simple truncation, 2 distractor-heavy, 2 cross-chunk dependency, 1 omitted-fact temptation, and 1 chunk-only citation trap fixture.
+  - Each fixture contains fixture_id, fixture_category, target lines or chunks, fact_manifest, selected_chunk_ids, omitted_chunk_ids, expected selected chunk coverage, gold retained facts, omitted facts, distractor annotations, safe_parent_synthesis JSON, unsafe_injected_synthesis JSON, semantic adequacy rubric, and expected TraceGuard verdicts.
+  - Runtime family metadata includes family_id, adapter class, configured model alias, resolved CLI version, resolved command path, redacted config snapshot, and resolved_environment.
+  - The matrix harness supports vanilla single call, flat chunk summarization plus reducer, RLM-FORGE recursive execution, and RLM-FORGE plus TraceGuard contract variants.
+  - The harness can run a dry plan without provider calls, showing the exact fixture x family x contract cells to execute.
+  - The harness can run a smoke matrix of 1 fixture x 3 families x RLM-FORGE plus TraceGuard before the full run.
+  - Completed primary run artifacts are schema-valid and include shared artifact metadata, per-call records, runtime metadata, fixture_id, selected/omitted chunk ids, quality fields, and failure_classification.
+  - Completed RLM runs preserve root to chunk child calls to parent synthesis structure with stable parent_call_id and call_id links.
+  - Completed RLM runs preserve expected selected chunk coverage.
+  - Parent synthesis claims validate against child evidence.
+  - TraceGuard accepts safe synthesis for every completed primary fixture/manifest.
+  - TraceGuard rejects paired unsafe injected synthesis for the same fixture/manifest.
+  - Completed RLM-FORGE plus TraceGuard cells achieve 100% mandatory contract pass.
+  - If the same structural failure occurs 2 or more times in a runtime/provider family, that family is marked FAIL or not-supported for the primary portability claim.
+  - Secondary metrics include quality score, omitted_fact_safety_score, unsupported_claim_rate, latency, token usage, and cost when available.
+  - Result outputs include experiments/live-portability-matrix.json and experiments/live-portability-matrix.md, or timestamped equivalents with stable latest aliases.
+  - Paper updates summarize primary portability, secondary baselines, failure classification, and limitations without claiming model-quality SOTA.
+  - "`uv run --extra dev python -m pytest -q` passes in the artifact repo."
+
+ontology_schema:
+  name: RLMForgeLivePortabilityExperiment
+  description: >
+    Brownfield live benchmark model for fixtures, runtime/provider families,
+    contract variants, TraceGuard verdicts, trace artifacts, failure classes,
+    and aggregate portability outcomes.
+  fields:
+    - name: experiment_id
+      type: string
+      required: true
+      description: Stable identifier for this experiment specification and result set.
+    - name: primary_claim
+      type: string
+      required: true
+      description: Provider/runtime portability of the RLM execution contract with evidence-gated parent synthesis.
+    - name: runtime_family
+      type: object
+      required: true
+      description: family_id, adapter class, configured model alias, resolved CLI version, command path, redacted config snapshot, and resolved environment.
+    - name: fixture
+      type: object
+      required: true
+      description: Fixture category, chunks, fact manifest, selected/omitted ids, safe/unsafe syntheses, expected verdicts, and semantic rubric.
+    - name: contract_variant
+      type: string
+      required: true
+      description: vanilla_single_call, flat_chunk_reduce, rlm_forge, or rlm_forge_traceguard.
+    - name: run_artifact
+      type: object
+      required: true
+      description: Trace records, call links, runtime metadata, selected chunks, omitted chunks, outputs, metrics, and failure class.
+    - name: trace_structure
+      type: object
+      required: true
+      description: Root call, chunk child calls, parent synthesis call, parent_call_id links, call_id links, and selected coverage.
+    - name: evidence_gate
+      type: object
+      required: true
+      description: Parent-claim validation against accepted evidence handles and TraceGuard safe/unsafe verdicts.
+    - name: secondary_metrics
+      type: object
+      required: true
+      description: Quality score, omitted_fact_safety_score, unsupported_claim_rate, latency, token usage, and cost.
+    - name: failure_classification
+      type: object
+      required: true
+      description: pass, primary_contract_failure, infra_skip, infra_timeout, secondary_quality_failure, exploratory, or not_supported.
+    - name: aggregate_result
+      type: object
+      required: true
+      description: Family-level and matrix-level PASS, FAIL, not-supported, exploratory, or inconclusive status.
+
+evaluation_principles:
+  - name: ContractPreservation
+    description: Completed RLM-FORGE plus TraceGuard runs preserve schema, recursive structure, evidence gates, and cross-provider invariants.
+    weight: 0.45
+  - name: RuntimePortability
+    description: Each claimed family satisfies the same contract without provider-specific workarounds across at least 8 completed fixtures.
+    weight: 0.25
+  - name: EvidenceSafety
+    description: Safe synthesis is accepted and paired unsafe injected synthesis is rejected for the same fixture and manifest.
+    weight: 0.15
+  - name: ExperimentalCompleteness
+    description: Fixture mix, artifact metadata, baseline rows, and secondary metrics are complete enough for paper reporting.
+    weight: 0.10
+  - name: QualityTransparency
+    description: Quality, unsupported claims, omitted fact safety, latency, tokens, and cost are reported without overstating the primary claim.
+    weight: 0.05
+
+exit_conditions:
+  - name: PrimaryPass
+    description: >
+      Successful completion requires all 3 claimed families to complete at least
+      8 fixtures and all completed RLM-FORGE plus TraceGuard cells to pass
+      mandatory contract checks.
+    criteria: 100% mandatory pass and no repeated structural failure.
+  - name: PrimaryFail
+    description: >
+      Failure occurs when any claimed family has 2 or more repeated structural
+      failures, or any completed primary cell has schema, link, evidence gate,
+      TraceGuard, or provider-specific workaround failure.
+    criteria: Failure recorded with fixture_id, family_id, contract_variant, and failure_classification.
+  - name: ClaimUnavailable
+    description: >
+      Inconclusive completion occurs when infra-skip, auth, outage, rate limit,
+      or timeout exclusions leave any claimed family with fewer than 8 completed
+      fixtures.
+    criteria: Fewer than 8 completed fixtures in any claimed family.
+  - name: SecondaryComplete
+    description: >
+      Secondary reporting completes when baseline sweep and quality, safety,
+      latency, token, and cost metrics are collected for all feasible cells.
+    criteria: Full 96 evaluations preferred, or documented fallback completed.
+
+metadata:
+  seed_id: seed_rlm_forge_live_portability_brownfield_v1
+  generated_seed_id: seed_b3a4ebe68524
+  prior_generated_seed_id: seed_c82416a149fe
+  version: 1.0.0
+  created_at: "2026-05-03T00:00:00+09:00"
+  interview_id: interview_20260502_160526
+  ambiguity_score: 0.08
+  owner: JQ Lee
+  repository: Q00/rlm-forge

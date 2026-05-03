@@ -30,6 +30,7 @@ from rlm_forge.traceguard import (  # noqa: F401
     TraceGuardResult,
     build_manifest_from_fixture,
     extract_parent_claims,
+    normalize_allowed_evidence_manifest,
     validate_parent_synthesis,
 )
 
@@ -54,6 +55,7 @@ __all__ = [
     "TraceGuardResult",
     "build_manifest_from_fixture",
     "extract_parent_claims",
+    "normalize_allowed_evidence_manifest",
     "validate_parent_synthesis",
 ]
 

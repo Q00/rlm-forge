@@ -9,6 +9,8 @@ child evidence handle explicitly supports.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
@@ -16,6 +18,18 @@ from typing import Any
 CLAIM_FACT_KEYS = ("fact_id", "supports_fact_id")
 CLAIM_FACT_LIST_KEYS = ("fact_ids", "supports_fact_ids", "supported_fact_ids")
 CHUNK_KEYS = ("chunk_id", "evidence_chunk_id", "source_chunk_id")
+CANONICAL_EVIDENCE_MANIFEST_FIELDS = (
+    "fact_id",
+    "chunk_id",
+    "text",
+    "child_call_id",
+)
+_EVIDENCE_MANIFEST_FIELD_DEFAULTS = {
+    "fact_id": "",
+    "chunk_id": "",
+    "text": "",
+    "child_call_id": None,
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,6 +48,52 @@ class TraceGuardEvidence:
             "text": self.text,
             "child_call_id": self.child_call_id,
         }
+
+
+def normalize_allowed_evidence_manifest(
+    evidence_manifest: Iterable[TraceGuardEvidence | Mapping[str, Any]],
+) -> tuple[dict[str, Any], ...]:
+    """Return canonical evidence handles for deterministic repair artifacts."""
+    entries = [_normalize_manifest_entry(item) for item in evidence_manifest]
+    return tuple(
+        sorted(
+            entries,
+            key=lambda entry: (
+                entry["fact_id"],
+                entry["chunk_id"],
+                entry["child_call_id"] or "",
+                entry["text"],
+            ),
+        )
+    )
+
+
+def _normalize_manifest_entry(
+    item: TraceGuardEvidence | Mapping[str, Any],
+) -> dict[str, Any]:
+    if isinstance(item, TraceGuardEvidence):
+        raw = item.to_dict()
+    elif isinstance(item, Mapping):
+        raw = item
+    else:
+        msg = "evidence manifest entries must be TraceGuardEvidence or mappings"
+        raise TypeError(msg)
+
+    return {
+        field: _manifest_string(
+            raw.get(field),
+            default=_EVIDENCE_MANIFEST_FIELD_DEFAULTS[field],
+        )
+        for field in CANONICAL_EVIDENCE_MANIFEST_FIELDS
+    }
+
+
+def _manifest_string(value: Any, *, default: str | None) -> str | None:
+    if value is None:
+        return default
+    if isinstance(value, str):
+        return value
+    return str(value)
 
 
 @dataclass(frozen=True, slots=True)

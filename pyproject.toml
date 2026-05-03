@@ -26,9 +26,13 @@ dev = [
   "pytest>=8.0",
   "pytest-asyncio>=0.24",
 ]
+live = [
+  "claude-agent-sdk>=0.1.0,<1.0.0",
+]
 
 [project.scripts]
 rlm-forge-replay = "rlm_forge.replay:main"
+rlm-forge-live-portability = "rlm_forge.live_portability:main"
 
 [project.urls]
 Homepage = "https://github.com/Q00/rlm-forge"

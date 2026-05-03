@@ -81,6 +81,37 @@ Earlier artifacts reported a `+0.20` RLM advantage because the scorer treated gu
 
 Persisted artifact: [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json)
 
+Live primary portability:
+[`experiments/live-portability-primary.md`](experiments/live-portability-primary.md)
+runs 8 shared fixtures through three runtime/provider families using the same
+RLM-FORGE+TraceGuard contract. This is a 24-cell primary matrix, not the full
+96-cell baseline sweep. Latest aggregate status is **pass**: Hermes+GLM,
+Claude Code, and Codex each complete and pass all 8 primary fixtures. The
+runtime has also seen a concrete missing-handle failure class in an earlier
+Hermes+GLM run; that class is now covered by a deterministic TraceGuard
+repair/retry loop. If it recurs, the runtime has a recovery path instead of
+only a reject-and-log path. The latest live run passes before repair is needed,
+so the repair loop is evidence of the runtime control surface rather than a
+claimed benchmark win in the latest matrix.
+
+| Family | Model alias | Primary cells | Live result | Mean latency |
+| --- | --- | ---: | --- | ---: |
+| `hermes_glm` | `glm-4.7` via Z.AI | 8/8 pass | `pass` | 156s |
+| `claude_code_opus47` | `opus` via Claude Code | 8/8 pass | `pass` | 69s |
+| `codex_gpt55` | `gpt-5.5` via Codex CLI | 8/8 pass | `pass` | 53s |
+
+Live portability smoke:
+[`experiments/live-portability-smoke.md`](experiments/live-portability-smoke.md)
+remains the 1-fixture adapter/auth check that preceded the primary run.
+
+TraceGuard enforcement demo:
+[`experiments/traceguard-demo.md`](experiments/traceguard-demo.md)
+shows the new evidence gate in action. Safe parent synthesis is accepted,
+an omitted fact is rejected with `unsupported_fact_id`, and chunk-only
+evidence is rejected with `chunk_handle_without_fact`. This turns the main
+claim from “we measured unsupported claims” into “we can enforce the evidence
+contract at parent synthesis time.”
+
 ---
 
 ## Why Hermes
@@ -210,11 +241,15 @@ The default `ooo run` and `ooo evolve` flows keep their original LLM-only behavi
 | Claim-aware scorer avoids the earlier false win | [`experiments/claim-aware-omitted-fact-suite.md`](experiments/claim-aware-omitted-fact-suite.md) |
 | Broad deterministic scorer coverage | [`experiments/synthetic-omitted-fact-benchmark.md`](experiments/synthetic-omitted-fact-benchmark.md) |
 | Live Hermes fixture remains an honest tie | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
+| 24-cell live primary portability matrix | [`experiments/live-portability-primary.md`](experiments/live-portability-primary.md) |
+| Three-family runtime portability smoke | [`experiments/live-portability-smoke.md`](experiments/live-portability-smoke.md) |
 | Architecture boundary | [`docs/architecture.md`](docs/architecture.md) |
 | Hermes setup notes | [`docs/hermes-setup.md`](docs/hermes-setup.md) |
 | Technical note | [`paper/main.pdf`](paper/main.pdf) |
 
-These offline artifacts do not require a Hermes API key. TraceGuard improves
+Offline replay, scorer, TraceGuard, and deterministic ablation artifacts do
+not require a Hermes API key. The live portability artifacts are persisted for
+inspection; rerunning them requires provider credentials. TraceGuard improves
 unsupported-claim enforcement; it does not change the live fixture quality
 score, which remains a tie.
 
@@ -243,6 +278,42 @@ alone makes hallucination impossible.
 
 ---
 
+## What the live experiment proves
+
+The 24-cell live run is a systems experiment, not a leaderboard. Its purpose
+is to test whether an RLM-style child/parent contract can run across real
+agent runtimes while a deterministic validator controls what may become parent
+state.
+
+The useful result is not "all models got the answer right." The useful result
+is that RLM-FORGE exposes a runtime surface:
+
+1. child calls return structured facts with evidence handles;
+2. parent synthesis must cite those handles;
+3. TraceGuard rejects parent claims that lack accepted evidence;
+4. the same contract can be exercised through Hermes, Claude Code, and Codex.
+
+The chunk-only citation trap is the useful stress case. In an earlier
+Hermes+GLM run, GLM preserved the fact text but emitted one
+`evidence_chunk_id` as `null`; TraceGuard rejected that parent claim before it
+could become accepted state. The latest full rerun passes this cell because
+GLM includes the required handle. The important point is that the runtime now
+has a narrow response if that observed class recurs: when rejection is
+exclusively `missing_evidence_handle`, the repair loop fills only missing/null
+handle fields from the child evidence manifest and retries parent synthesis
+once. This turns the observed failure from a terminal contract failure into a
+bounded, inspectable recovery step.
+
+TraceGuard is not an LLM judge. It does not ask another model whether the
+answer "seems correct." It checks the manifest deterministically:
+
+```text
+fresh child evidence + fact_id + evidence_chunk_id -> accepted parent claim
+missing handle / omitted fact / chunk-only citation -> rejected parent claim
+```
+
+---
+
 ## Repository layout
 
 ```text
@@ -261,6 +332,40 @@ rlm-forge/
 
 ---
 
+## Toward memory-shaped recursion
+
+RLM-FORGE currently treats each run as an isolated recursive execution. Hermes
+makes a stronger future direction possible: decomposition traces,
+provider-specific failures, schema repairs, and TraceGuard rejections can
+become persistent operational priors for later recursive runs.
+
+The important rule is:
+
+```text
+Memory is not evidence; memory is a prior over how to ask for evidence.
+```
+
+In that framing, Hermes memory should not store "this fixture's answer is X."
+It should store operational lessons such as:
+
+- long-context preservation tasks work better when child outputs preserve
+  `fact_id` and `evidence_chunk_id` together;
+- a provider may be slow but schema-stable, or fast but prone to handle
+  omissions;
+- TraceGuard rejection patterns can drive retry prompts or stricter child
+  schemas;
+- routing can specialize over time: decomposition, evidence extraction,
+  synthesis, and repair may prefer different providers.
+
+This creates a feedback loop without training a new model. TraceGuard failure
+records become repair signals for the next recursive run, while every new
+parent claim still has to cite fresh child evidence. To keep benchmarks clean,
+future memory-enhanced runs should separate no-memory baselines from
+trace-memory policy runs, disable answer-memory recall, and exclude fixture
+content from durable memory.
+
+---
+
 ## What RLM-FORGE is and is not
 
 | It is | It is not |
@@ -269,6 +374,14 @@ rlm-forge/
 | A replayable trace and evidence-validation scaffold | A claim that recursion alone prevents hallucination |
 | A practical integration recipe for Hermes + Ouroboros | A production RLM service |
 | A deterministic TraceGuard enforcement demo | A benchmark suite proving model-quality superiority |
+
+This is an MVP designed to demonstrate that Hermes can serve as the inner
+recursive LM in an RLM-style scaffold with replayable traces and deterministic
+evaluation. It is not a production-ready RLM service, does not claim novelty
+over the Zhang et al. paper, and no longer claims a quality advantage from the
+single truncation fixture. Future Hermes memory should improve decomposition,
+routing, and repair policy only; it must not replace fresh trace evidence for
+parent claims.
 
 ---
 
@@ -284,7 +397,48 @@ pytest -q
 Current local verification:
 
 ```text
-9 passed
+55 passed
+```
+
+---
+
+## Examples
+
+| Script | What it does | Hermes calls |
+| --- | --- | --- |
+| `examples/01-dry-run.sh` | Validate the RLM path, no side effects | 0 |
+| `examples/02-vanilla-baseline.sh` | One vanilla Hermes call on the truncation fixture | 1 |
+| `examples/03-truncation-comparison.sh` | Side-by-side vanilla vs recursive RLM | 1 + 5 |
+
+Each script is a one-liner that wraps the Ouroboros CLI.
+
+---
+
+## Architecture
+
+See [`docs/architecture.md`](docs/architecture.md) for the layer model,
+orchestration boundaries, and 6-step sub-call lifecycle. The full concept
+design is `docs/guides/recursive-language-model.md` in the upstream
+Ouroboros repository (1,580 lines).
+
+```
+User
+  |
+  v
+ooo rlm
+  |
+  v
+Ouroboros outer scaffold
+  - validates ambiguity <= 0.2
+  - owns ACTree recursion, max depth 5
+  - owns RLM tree state, scheduling, termination, trace persistence
+  - calls Hermes through HermesCliRuntime
+  |
+  v
+Hermes inner LM layer
+  - receives one bounded recursive sub-call at a time
+  - proposes decomposition, atomic execution, summary, or synthesis
+  - returns structured JSON evidence to Ouroboros
 ```
 
 ---

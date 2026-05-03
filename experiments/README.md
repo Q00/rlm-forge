@@ -1,7 +1,92 @@
 # Experiments
 
-This directory contains small reproducible experiments that do not require a
-live Hermes API call.
+This directory contains the reproducible offline experiments plus the live
+runtime portability artifacts. Offline checks do not require provider
+credentials; live portability runs do.
+
+## Live portability matrix seed and preflight
+
+The brownfield seed for the expanded experiment is
+[`live-portability-brownfield.seed.yaml`](live-portability-brownfield.seed.yaml).
+It fixes the generated seed's project context to the existing RLM-FORGE and
+Ouroboros repositories and records secret-handling constraints for the one-time
+GLM credential.
+
+Run the contracts-only preflight:
+
+```bash
+python3 scripts/run-live-portability-matrix.py --mode contracts-only
+```
+
+Outputs:
+
+- `experiments/live-portability-matrix.json`
+- `experiments/live-portability-matrix.md`
+
+This mode does not call providers. It builds the 8 fixture x 3 runtime family x
+4 contract plan and deterministically validates the 24 primary
+RLM-FORGE+TraceGuard cells. The live primary result is only established after
+`--mode live-primary` completes.
+
+Run a single-family live smoke while debugging adapter auth/config:
+
+```bash
+uv run --extra dev --extra live python scripts/run-live-portability-matrix.py \
+  --mode live-smoke \
+  --families codex_gpt55 \
+  --output-prefix live-portability-smoke-codex
+```
+
+For Hermes with direct Z.AI/GLM credentials, inject credentials only through
+the shell environment and keep them out of artifacts:
+
+```bash
+HERMES_INFERENCE_PROVIDER=zai \
+GLM_API_KEY=... \
+uv run --extra dev --extra live python scripts/run-live-portability-matrix.py \
+  --mode live-smoke \
+  --families hermes_glm \
+  --output-prefix live-portability-smoke-hermes
+```
+
+Current combined smoke output:
+
+- `experiments/live-portability-smoke.json`
+- `experiments/live-portability-smoke.md`
+
+Current result: 3/3 runtime families pass one shared
+RLM-FORGE+TraceGuard fixture. This is adapter portability evidence, not the
+full 8-fixture/96-cell benchmark.
+
+Run the 24-cell live primary matrix:
+
+```bash
+HERMES_INFERENCE_PROVIDER=zai \
+GLM_API_KEY=... \
+uv run --extra dev --extra live python scripts/run-live-portability-matrix.py \
+  --mode live-primary \
+  --fixtures 8 \
+  --families all \
+  --timeout-seconds 240 \
+  --output-prefix live-portability-primary
+```
+
+Current primary output:
+
+- `experiments/live-portability-primary.json`
+- `experiments/live-portability-primary.md`
+
+Current result: 24/24 cells completed, 24/24 mandatory contract passes,
+aggregate `pass`. Hermes+GLM, Claude Code, and Codex each pass all 8 fixtures.
+An earlier Hermes+GLM run exposed a concrete `missing_evidence_handle` parent
+synthesis failure class; the harness now includes a deterministic repair/retry
+loop for that class. If it recurs, the harness can recover with a bounded
+patch-and-retry step instead of only recording a terminal contract failure. The
+latest full run does not exercise the repair path because every initial parent
+synthesis validates, so the repair claim is covered by focused regression tests
+rather than by this latest live matrix.
+This is not a SOTA-quality benchmark and does not run the secondary
+vanilla/chunk-reduce/RLM-no-TraceGuard baselines.
 
 ## TraceGuard evidence gate demo
 

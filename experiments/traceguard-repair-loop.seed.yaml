@@ -1,0 +1,159 @@
+goal: >
+  Implement one live TraceGuard feedback loop in RLM-FORGE that automatically
+  repairs and retries parent synthesis once when TraceGuard rejects exclusively
+  for a repairable missing_evidence_handle evidence-contract violation.
+task_type: code
+
+brownfield_context:
+  project_type: brownfield
+  context_references:
+    - path: /Users/jaegyu.lee/Project/ouroboros-rlm-hermes
+      role: primary_artifact_repo
+      summary: >
+        Public RLM-FORGE artifact repo. Implement the repair loop here, update
+        tests, persisted experiment outputs, README, and paper artifacts here.
+    - path: /Users/jaegyu.lee/Project/ouroboros-rlm-hermes/src/rlm_forge/live_portability.py
+      role: live_harness
+      summary: >
+        Live portability harness. _run_live_rlm_traceguard_cell currently runs
+        child calls, parent synthesis, TraceGuard validation, and returns the
+        cell artifact. Wire the repair loop into this live path.
+    - path: /Users/jaegyu.lee/Project/ouroboros-rlm-hermes/src/rlm_forge/traceguard.py
+      role: evidence_gate
+      summary: >
+        Existing deterministic TraceGuard implementation. Reuse validation
+        outputs and rejected_claims; do not replace with an LLM judge.
+    - path: /Users/jaegyu.lee/Project/ouroboros-rlm-hermes/tests/test_live_portability.py
+      role: test_target
+      summary: >
+        Existing tests for fixtures, live-primary shape, and brownfield seed.
+        Add focused tests for repair eligibility, patch fidelity, and artifact
+        metadata without calling live providers.
+    - path: /Users/jaegyu.lee/Project/ouroboros-rlm-hermes/experiments/live-portability-primary.json
+      role: observed_failure_artifact
+      summary: >
+        Earlier live-primary artifact that motivated the repair loop. The
+        observed failure was hermes_glm x chunk-only-citation-trap-01 where
+        LP-08-002 had evidence_chunk_id null and TraceGuard rejected
+        missing_evidence_handle. The latest persisted primary artifact now
+        passes 24/24 without exercising repair because all initial parent
+        syntheses validate.
+    - path: /Users/jaegyu.lee/Project/ouroboros
+      role: upstream_runtime_repo
+      summary: >
+        Brownfield Ouroboros runtime repo containing Hermes, Claude, and Codex
+        AgentRuntime adapters. Avoid modifying upstream unless artifact-repo
+        integration cannot use existing APIs.
+  existing_patterns:
+    - Python package source lives under src/rlm_forge.
+    - Experiment scripts live under scripts/run-*.py.
+    - Experiment outputs are paired JSON plus Markdown under experiments/.
+    - Tests are pytest-based under tests/.
+    - Live harness artifacts use nested JSON blocks for trace_structure,
+      traceguard_validation, secondary_metrics, and cells.
+  existing_dependencies:
+    - Python >= 3.12
+    - uv for local execution
+    - pytest for verification
+    - ouroboros-ai pinned through pyproject.toml
+    - Live provider credentials only through transient environment variables
+
+constraints:
+  - Live harness path only, not replay-only fixture.
+  - Trigger only for exclusive missing_evidence_handle rejection.
+  - All other TraceGuard checks must pass before repair eligibility.
+  - Exactly one automatic repair/retry step.
+  - Patch-style repair only fills null or missing evidence_chunk_id fields.
+  - Preserve retained facts, answer text, and claim text except missing handle fields.
+  - Use allowed evidence handles from manifest and child records.
+  - Same runtime retries parent synthesis once.
+  - No broad agent memory implementation.
+  - No provider-specific prompt hacks.
+  - No quality-improvement claim.
+  - Do not write API keys, bearer tokens, auth cookies, or provider secrets into tracked files or artifacts.
+
+acceptance_criteria:
+  - Any live RLM-FORGE+TraceGuard cell rejected exclusively for missing_evidence_handle runs exactly one repair/retry step.
+  - If missing_evidence_handle appears with any other validation failure, no repair is attempted and original contract failure is preserved.
+  - Repair prompt is deterministic and built from the rejected claim, allowed evidence manifest, original parent synthesis, and child records.
+  - Repaired parent synthesis fills missing evidence_chunk_id values using allowed evidence handles.
+  - Repair does not add facts, remove retained facts, rewrite answer text, or change claim text.
+  - TraceGuard validates both initial and repaired parent synthesis.
+  - Cell artifact includes traceguard_repair.initial_accept=false.
+  - Cell artifact includes traceguard_repair.repair_eligible.
+  - Cell artifact includes traceguard_repair.repair_attempted=true when eligible.
+  - Cell artifact includes traceguard_repair.failure_reason.
+  - Cell artifact includes traceguard_repair.repair_strategy.
+  - Cell artifact includes traceguard_repair.repair_accept.
+  - Cell artifact includes traceguard_repair.before_validation and traceguard_repair.after_validation.
+  - Cell artifact includes repaired_parent_synthesis or a before/after diff.
+  - Demo/test covers chunk-only-citation-trap-01 with initial evidence_chunk_id null and repaired accepted parent.
+  - "uv run --extra dev --extra live python -m pytest -q passes."
+
+ontology_schema:
+  name: TraceGuardRepairLoop
+  description: >
+    Narrow RLM-FORGE feedback loop that repairs TraceGuard
+    missing_evidence_handle contract failures in live parent synthesis runs.
+  fields:
+    - name: parent_synthesis
+      type: object
+      required: true
+      description: Original parent synthesis JSON produced by the live runtime.
+    - name: rejected_claim
+      type: object
+      required: true
+      description: Claim rejected exclusively for missing_evidence_handle.
+    - name: allowed_evidence_manifest
+      type: array
+      required: true
+      description: Permitted evidence handles available for repair.
+    - name: child_records
+      type: array
+      required: true
+      description: Child evidence records used to determine the correct evidence handle.
+    - name: repair_prompt
+      type: string
+      required: true
+      description: Deterministic prompt constructed from rejected claim, manifest, parent synthesis, and child records.
+    - name: traceguard_repair
+      type: object
+      required: true
+      description: Structured artifact block recording eligibility, attempt, strategy, before/after validations, and repaired output.
+
+evaluation_principles:
+  - name: ContractCorrectness
+    description: Repair is attempted only when all non-handle TraceGuard checks pass and preserves original failures otherwise.
+    weight: 0.30
+  - name: ScopeControl
+    description: Implementation handles only strict missing_evidence_handle repair without broad memory or general repair.
+    weight: 0.25
+  - name: PatchFidelity
+    description: Repair only fills missing evidence_chunk_id fields without changing facts, answer text, or claim text.
+    weight: 0.20
+  - name: ArtifactInspectability
+    description: traceguard_repair block clearly records before/after validation, failure reason, eligibility, strategy, and repaired output or diff.
+    weight: 0.15
+  - name: LiveHarnessIntegration
+    description: Behavior is wired into live RLM-FORGE+TraceGuard runs rather than only a deterministic replay fixture.
+    weight: 0.10
+
+exit_conditions:
+  - name: Success
+    description: Live harness repairs one eligible missing_evidence_handle rejection and records accepted after-validation.
+    criteria: initial_accept=false and repair_attempted=true and repair_accept=true for eligible live run.
+  - name: IneligibleFailurePreserved
+    description: Non-exclusive missing_evidence_handle or any additional validation failure does not trigger repair.
+    criteria: repair_attempted=false and original rejection reason remains intact.
+  - name: ScopeComplete
+    description: No implementation expands beyond the requested narrow repair class.
+    criteria: no memory system, no provider-specific prompt hacks, no quality-improvement claim.
+
+metadata:
+  seed_id: seed_cd3caf26d19e_brownfield
+  generated_seed_id: seed_cd3caf26d19e
+  version: 1.0.1
+  created_at: "2026-05-03T04:09:08+09:00"
+  ambiguity_score: 0.1185
+  interview_id: interview_20260502_185932
+  owner: JQ Lee

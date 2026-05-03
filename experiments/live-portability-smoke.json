@@ -1,0 +1,1171 @@
+{
+  "schema_version": "rlm_forge.live_portability_smoke.v1",
+  "run_mode": "live_smoke",
+  "generated_at": "2026-05-02T17:13:39.328225+00:00",
+  "live_model_calls": true,
+  "fixture_count": 1,
+  "runtime_family_count": 3,
+  "contract_variant_count": 1,
+  "planned_cell_count": 3,
+  "primary_cell_count": 3,
+  "cell_count": 3,
+  "runtime_families": [
+    {
+      "family_id": "hermes_glm",
+      "adapter_class": "ouroboros.orchestrator.hermes_runtime.HermesCliRuntime",
+      "runtime_backend": "hermes_cli",
+      "configured_model_alias": "glm-4.7",
+      "model_alias_source": "default",
+      "command_name": "hermes",
+      "command_path": "/Users/jaegyu.lee/.local/bin/hermes",
+      "cli_version": "Hermes Agent v0.11.0 (2026.4.23)",
+      "auth_mode": "transient_glm_env_or_existing_hermes_zai_config",
+      "redacted_config_snapshot": {
+        "secrets_redacted": true,
+        "api_keys_recorded": false,
+        "env_vars_recorded": [
+          "RLM_FORGE_HERMES_GLM_MODEL"
+        ]
+      },
+      "resolved_environment": {
+        "cwd": "/Users/jaegyu.lee/Project/ouroboros-rlm-hermes",
+        "upstream_ouroboros_root": "/Users/jaegyu.lee/Project/ouroboros"
+      }
+    },
+    {
+      "family_id": "claude_code_opus47",
+      "adapter_class": "ouroboros.orchestrator.adapter.ClaudeAgentAdapter",
+      "runtime_backend": "claude",
+      "configured_model_alias": "opus",
+      "model_alias_source": "default",
+      "command_name": "claude",
+      "command_path": "/Users/jaegyu.lee/.local/bin/claude",
+      "cli_version": "2.1.119 (Claude Code)",
+      "auth_mode": "claude_code_subscription",
+      "redacted_config_snapshot": {
+        "secrets_redacted": true,
+        "api_keys_recorded": false,
+        "env_vars_recorded": [
+          "RLM_FORGE_CLAUDE_MODEL"
+        ]
+      },
+      "resolved_environment": {
+        "cwd": "/Users/jaegyu.lee/Project/ouroboros-rlm-hermes",
+        "upstream_ouroboros_root": "/Users/jaegyu.lee/Project/ouroboros"
+      }
+    },
+    {
+      "family_id": "codex_gpt55",
+      "adapter_class": "ouroboros.orchestrator.codex_cli_runtime.CodexCliRuntime",
+      "runtime_backend": "codex_cli",
+      "configured_model_alias": "gpt-5.5",
+      "model_alias_source": "default",
+      "command_name": "codex",
+      "command_path": "/Users/jaegyu.lee/.nvm/versions/node/v22.22.0/bin/codex",
+      "cli_version": "codex-cli 0.128.0",
+      "auth_mode": "codex_cli_subscription",
+      "redacted_config_snapshot": {
+        "secrets_redacted": true,
+        "api_keys_recorded": false,
+        "env_vars_recorded": [
+          "RLM_FORGE_CODEX_MODEL"
+        ]
+      },
+      "resolved_environment": {
+        "cwd": "/Users/jaegyu.lee/Project/ouroboros-rlm-hermes",
+        "upstream_ouroboros_root": "/Users/jaegyu.lee/Project/ouroboros"
+      }
+    }
+  ],
+  "contract_variants": [
+    "rlm_forge_traceguard"
+  ],
+  "fixtures": [
+    {
+      "schema_version": "rlm_forge.live_portability_fixture.v1",
+      "fixture_id": "simple-truncation-01",
+      "fixture_category": "simple_truncation",
+      "description": "Primary live portability fixture: simple_truncation.",
+      "target": {
+        "path": "live_portability/simple-truncation-01.txt",
+        "encoding": "utf-8",
+        "line_count": 6,
+        "lines": [
+          "FACT:LP-01-001 The release train freezes API schemas every Tuesday.",
+          "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture.",
+          "FACT:LP-01-003 TraceGuard accepts only retained child evidence.",
+          "FACT:LP-01-004 The canonical branch for reporting is main.",
+          "FACT:LP-01-005 A deprecated scorer once reported a false quality win.",
+          "FACT:LP-01-006 The hidden appendix contains no production credentials."
+        ],
+        "chunks": [
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+            "start_line": 1,
+            "end_line": 1,
+            "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday.",
+            "fact_ids": [
+              "LP-01-001"
+            ],
+            "visibility": "retained"
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+            "start_line": 2,
+            "end_line": 2,
+            "text": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture.",
+            "fact_ids": [
+              "LP-01-002"
+            ],
+            "visibility": "retained"
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+            "start_line": 3,
+            "end_line": 3,
+            "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence.",
+            "fact_ids": [
+              "LP-01-003"
+            ],
+            "visibility": "retained"
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+            "start_line": 4,
+            "end_line": 4,
+            "text": "FACT:LP-01-004 The canonical branch for reporting is main.",
+            "fact_ids": [
+              "LP-01-004"
+            ],
+            "visibility": "retained"
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:5-5",
+            "start_line": 5,
+            "end_line": 5,
+            "text": "FACT:LP-01-005 A deprecated scorer once reported a false quality win.",
+            "fact_ids": [
+              "LP-01-005"
+            ],
+            "visibility": "omitted"
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:6-6",
+            "start_line": 6,
+            "end_line": 6,
+            "text": "FACT:LP-01-006 The hidden appendix contains no production credentials.",
+            "fact_ids": [
+              "LP-01-006"
+            ],
+            "visibility": "omitted"
+          }
+        ]
+      },
+      "fact_manifest": {
+        "facts": [
+          {
+            "fact_id": "LP-01-001",
+            "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+            "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday.",
+            "visibility": "retained",
+            "line": 1
+          },
+          {
+            "fact_id": "LP-01-002",
+            "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+            "text": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture.",
+            "visibility": "retained",
+            "line": 2
+          },
+          {
+            "fact_id": "LP-01-003",
+            "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+            "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence.",
+            "visibility": "retained",
+            "line": 3
+          },
+          {
+            "fact_id": "LP-01-004",
+            "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+            "text": "FACT:LP-01-004 The canonical branch for reporting is main.",
+            "visibility": "retained",
+            "line": 4
+          },
+          {
+            "fact_id": "LP-01-005",
+            "chunk_id": "live_portability/simple-truncation-01.txt:5-5",
+            "text": "FACT:LP-01-005 A deprecated scorer once reported a false quality win.",
+            "visibility": "omitted",
+            "line": 5
+          },
+          {
+            "fact_id": "LP-01-006",
+            "chunk_id": "live_portability/simple-truncation-01.txt:6-6",
+            "text": "FACT:LP-01-006 The hidden appendix contains no production credentials.",
+            "visibility": "omitted",
+            "line": 6
+          }
+        ],
+        "selected_fact_ids": [
+          "LP-01-001",
+          "LP-01-002",
+          "LP-01-003",
+          "LP-01-004"
+        ],
+        "omitted_fact_ids": [
+          "LP-01-005",
+          "LP-01-006"
+        ]
+      },
+      "selected_chunk_ids": [
+        "live_portability/simple-truncation-01.txt:1-1",
+        "live_portability/simple-truncation-01.txt:2-2",
+        "live_portability/simple-truncation-01.txt:3-3",
+        "live_portability/simple-truncation-01.txt:4-4"
+      ],
+      "omitted_chunk_ids": [
+        "live_portability/simple-truncation-01.txt:5-5",
+        "live_portability/simple-truncation-01.txt:6-6"
+      ],
+      "truncation_config": {
+        "expected_selected_chunk_ids": [
+          "live_portability/simple-truncation-01.txt:1-1",
+          "live_portability/simple-truncation-01.txt:2-2",
+          "live_portability/simple-truncation-01.txt:3-3",
+          "live_portability/simple-truncation-01.txt:4-4"
+        ],
+        "expected_omitted_chunk_ids": [
+          "live_portability/simple-truncation-01.txt:5-5",
+          "live_portability/simple-truncation-01.txt:6-6"
+        ]
+      },
+      "expected_retained_facts": [
+        {
+          "fact_id": "LP-01-001",
+          "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+          "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday.",
+          "visibility": "retained",
+          "line": 1
+        },
+        {
+          "fact_id": "LP-01-002",
+          "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+          "text": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture.",
+          "visibility": "retained",
+          "line": 2
+        },
+        {
+          "fact_id": "LP-01-003",
+          "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+          "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence.",
+          "visibility": "retained",
+          "line": 3
+        },
+        {
+          "fact_id": "LP-01-004",
+          "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+          "text": "FACT:LP-01-004 The canonical branch for reporting is main.",
+          "visibility": "retained",
+          "line": 4
+        }
+      ],
+      "expected_omitted_facts": [
+        {
+          "fact_id": "LP-01-005",
+          "chunk_id": "live_portability/simple-truncation-01.txt:5-5",
+          "text": "FACT:LP-01-005 A deprecated scorer once reported a false quality win.",
+          "visibility": "omitted",
+          "line": 5
+        },
+        {
+          "fact_id": "LP-01-006",
+          "chunk_id": "live_portability/simple-truncation-01.txt:6-6",
+          "text": "FACT:LP-01-006 The hidden appendix contains no production credentials.",
+          "visibility": "omitted",
+          "line": 6
+        }
+      ],
+      "distractor_annotations": [],
+      "safe_parent_synthesis": {
+        "mode": "rlm_forge_parent_synthesis",
+        "verdict": "pass",
+        "confidence": 0.95,
+        "result": {
+          "summary": "Safe synthesis for simple-truncation-01 uses only retained facts.",
+          "retained_facts": [
+            {
+              "fact_id": "LP-01-001",
+              "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1"
+            },
+            {
+              "fact_id": "LP-01-002",
+              "text": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2"
+            },
+            {
+              "fact_id": "LP-01-003",
+              "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3"
+            },
+            {
+              "fact_id": "LP-01-004",
+              "text": "FACT:LP-01-004 The canonical branch for reporting is main.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4"
+            }
+          ],
+          "truncation_report": {
+            "omitted_chunk_count": "reported_but_not_claimed"
+          }
+        },
+        "evidence_references": [
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+            "supports_fact_ids": [
+              "LP-01-001"
+            ],
+            "quoted_evidence": "FACT:LP-01-001 The release train freezes API schemas every Tuesday."
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+            "supports_fact_ids": [
+              "LP-01-002"
+            ],
+            "quoted_evidence": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture."
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+            "supports_fact_ids": [
+              "LP-01-003"
+            ],
+            "quoted_evidence": "FACT:LP-01-003 TraceGuard accepts only retained child evidence."
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+            "supports_fact_ids": [
+              "LP-01-004"
+            ],
+            "quoted_evidence": "FACT:LP-01-004 The canonical branch for reporting is main."
+          }
+        ],
+        "residual_gaps": [
+          {
+            "gap": "Some source chunks were omitted by the truncation boundary.",
+            "claim_status": "not_observed_evidence"
+          }
+        ]
+      },
+      "unsafe_injected_synthesis": {
+        "mode": "rlm_forge_parent_synthesis",
+        "verdict": "pass",
+        "confidence": 0.95,
+        "result": {
+          "summary": "Safe synthesis for simple-truncation-01 uses only retained facts.",
+          "retained_facts": [
+            {
+              "fact_id": "LP-01-001",
+              "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1"
+            },
+            {
+              "fact_id": "LP-01-002",
+              "text": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2"
+            },
+            {
+              "fact_id": "LP-01-003",
+              "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3"
+            },
+            {
+              "fact_id": "LP-01-004",
+              "text": "FACT:LP-01-004 The canonical branch for reporting is main.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4"
+            }
+          ],
+          "truncation_report": {
+            "omitted_chunk_count": "reported_but_not_claimed"
+          },
+          "observed_facts": [
+            {
+              "fact_id": "LP-01-005",
+              "text": "FACT:LP-01-005 A deprecated scorer once reported a false quality win.",
+              "evidence_chunk_id": "live_portability/simple-truncation-01.txt:5-5"
+            }
+          ]
+        },
+        "evidence_references": [
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+            "supports_fact_ids": [
+              "LP-01-001"
+            ],
+            "quoted_evidence": "FACT:LP-01-001 The release train freezes API schemas every Tuesday."
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+            "supports_fact_ids": [
+              "LP-01-002"
+            ],
+            "quoted_evidence": "FACT:LP-01-002 The evaluator writes one JSON artifact per fixture."
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+            "supports_fact_ids": [
+              "LP-01-003"
+            ],
+            "quoted_evidence": "FACT:LP-01-003 TraceGuard accepts only retained child evidence."
+          },
+          {
+            "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+            "supports_fact_ids": [
+              "LP-01-004"
+            ],
+            "quoted_evidence": "FACT:LP-01-004 The canonical branch for reporting is main."
+          }
+        ],
+        "residual_gaps": [
+          {
+            "gap": "Some source chunks were omitted by the truncation boundary.",
+            "claim_status": "not_observed_evidence"
+          }
+        ]
+      },
+      "semantic_adequacy_rubric": {
+        "must_cite_fact_ids": [
+          "LP-01-001",
+          "LP-01-002",
+          "LP-01-003",
+          "LP-01-004"
+        ],
+        "must_not_claim_fact_ids": [
+          "LP-01-005",
+          "LP-01-006"
+        ],
+        "must_report_truncation": true,
+        "quality_is_secondary": true
+      },
+      "expected_traceguard_verdicts": {
+        "safe_parent_synthesis": true,
+        "unsafe_injected_synthesis": false
+      }
+    }
+  ],
+  "aggregate_result": {
+    "status": "pass",
+    "primary_claim": "provider/runtime-portable RLM execution contract with evidence-gated parent synthesis",
+    "required_completed_primary_cells_per_family": 1
+  },
+  "family_summary": [
+    {
+      "family_id": "hermes_glm",
+      "required_completed_primary_cells": 1,
+      "planned_primary_cells": 1,
+      "completed_primary_cells": 1,
+      "passed_primary_cells": 1,
+      "failed_primary_cells": 0,
+      "infra_skipped_primary_cells": 0,
+      "status": "pass"
+    },
+    {
+      "family_id": "claude_code_opus47",
+      "required_completed_primary_cells": 1,
+      "planned_primary_cells": 1,
+      "completed_primary_cells": 1,
+      "passed_primary_cells": 1,
+      "failed_primary_cells": 0,
+      "infra_skipped_primary_cells": 0,
+      "status": "pass"
+    },
+    {
+      "family_id": "codex_gpt55",
+      "required_completed_primary_cells": 1,
+      "planned_primary_cells": 1,
+      "completed_primary_cells": 1,
+      "passed_primary_cells": 1,
+      "failed_primary_cells": 0,
+      "infra_skipped_primary_cells": 0,
+      "status": "pass"
+    }
+  ],
+  "cells": [
+    {
+      "fixture_id": "simple-truncation-01",
+      "fixture_category": "simple_truncation",
+      "family_id": "hermes_glm",
+      "contract_variant": "rlm_forge_traceguard",
+      "primary_cell": true,
+      "completed": true,
+      "status": "live_contract_pass",
+      "failure_classification": "pass",
+      "mandatory_contract_pass": true,
+      "latency_seconds": 251.715,
+      "artifact": {
+        "completed": true,
+        "status": "live_contract_pass",
+        "failure_classification": "pass",
+        "mandatory_contract_pass": true,
+        "trace_structure": {
+          "root_call_id": "simple-truncation-01::hermes_glm::root",
+          "parent_synthesis_call_id": "simple-truncation-01::hermes_glm::parent",
+          "child_call_count": 4,
+          "child_records": [
+            {
+              "call_id": "simple-truncation-01::hermes_glm::child::1",
+              "parent_call_id": "simple-truncation-01::hermes_glm::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+                    "fact_id": "LP-01-001",
+                    "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::hermes_glm::child::2",
+              "parent_call_id": "simple-truncation-01::hermes_glm::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+                    "fact_id": "LP-01-002",
+                    "text": "The evaluator writes one JSON artifact per fixture."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::hermes_glm::child::3",
+              "parent_call_id": "simple-truncation-01::hermes_glm::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+                    "fact_id": "LP-01-003",
+                    "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::hermes_glm::child::4",
+              "parent_call_id": "simple-truncation-01::hermes_glm::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+                    "fact_id": "LP-01-004",
+                    "text": "FACT:LP-01-004 The canonical branch for reporting is main."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            }
+          ],
+          "selected_chunk_coverage_pass": true
+        },
+        "parent_synthesis": {
+          "confidence": 1.0,
+          "evidence_references": [
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "quoted_evidence": "The release train freezes API schemas every Tuesday.",
+              "supports_fact_ids": [
+                "LP-01-001"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "quoted_evidence": "The evaluator writes one JSON artifact per fixture.",
+              "supports_fact_ids": [
+                "LP-01-002"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "quoted_evidence": "TraceGuard accepts only retained child evidence.",
+              "supports_fact_ids": [
+                "LP-01-003"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "quoted_evidence": "The canonical branch for reporting is main.",
+              "supports_fact_ids": [
+                "LP-01-004"
+              ]
+            }
+          ],
+          "mode": "rlm_forge_parent_synthesis",
+          "residual_gaps": [],
+          "result": {
+            "retained_facts": [
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+                "fact_id": "LP-01-001",
+                "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday."
+              },
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+                "fact_id": "LP-01-002",
+                "text": "The evaluator writes one JSON artifact per fixture."
+              },
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+                "fact_id": "LP-01-003",
+                "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence."
+              },
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+                "fact_id": "LP-01-004",
+                "text": "FACT:LP-01-004 The canonical branch for reporting is main."
+              }
+            ],
+            "summary": "All four child calls successfully extracted facts from the simple-truncation-01 fixture with no residual gaps. The facts cover release train API schema freezing (Tuesdays), evaluator output format (one JSON per fixture), TraceGuard retention constraints (only retained child evidence), and canonical reporting branch (main)."
+          },
+          "verdict": "pass"
+        },
+        "traceguard_validation": {
+          "accepted": true,
+          "unsupported_claim_rate": 0.0,
+          "accepted_claims": [
+            {
+              "fact_id": "LP-01-001",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "surface": "result.retained_facts",
+              "text": "FACT:LP-01-001 The release train freezes API schemas every Tuesday."
+            },
+            {
+              "fact_id": "LP-01-002",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "surface": "result.retained_facts",
+              "text": "The evaluator writes one JSON artifact per fixture."
+            },
+            {
+              "fact_id": "LP-01-003",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "surface": "result.retained_facts",
+              "text": "FACT:LP-01-003 TraceGuard accepts only retained child evidence."
+            },
+            {
+              "fact_id": "LP-01-004",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "surface": "result.retained_facts",
+              "text": "FACT:LP-01-004 The canonical branch for reporting is main."
+            },
+            {
+              "fact_id": "LP-01-001",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "surface": "evidence_references",
+              "text": "The release train freezes API schemas every Tuesday."
+            },
+            {
+              "fact_id": "LP-01-002",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "surface": "evidence_references",
+              "text": "The evaluator writes one JSON artifact per fixture."
+            },
+            {
+              "fact_id": "LP-01-003",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "surface": "evidence_references",
+              "text": "TraceGuard accepts only retained child evidence."
+            },
+            {
+              "fact_id": "LP-01-004",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "surface": "evidence_references",
+              "text": "The canonical branch for reporting is main."
+            }
+          ],
+          "rejected_claims": [],
+          "allowed_fact_ids": [
+            "LP-01-001",
+            "LP-01-002",
+            "LP-01-003",
+            "LP-01-004"
+          ],
+          "allowed_chunk_ids": [
+            "live_portability/simple-truncation-01.txt:1-1",
+            "live_portability/simple-truncation-01.txt:2-2",
+            "live_portability/simple-truncation-01.txt:3-3",
+            "live_portability/simple-truncation-01.txt:4-4"
+          ]
+        },
+        "secondary_metrics": {
+          "quality_score": null,
+          "omitted_fact_safety_score": null,
+          "unsupported_claim_rate": null,
+          "latency_seconds": null,
+          "token_usage": null,
+          "cost_usd": null,
+          "measurement_status": "not_measured_in_contracts_only_mode"
+        },
+        "traceguard_repair": {
+          "repair_accept": null
+        }
+      }
+    },
+    {
+      "fixture_id": "simple-truncation-01",
+      "fixture_category": "simple_truncation",
+      "family_id": "claude_code_opus47",
+      "contract_variant": "rlm_forge_traceguard",
+      "primary_cell": true,
+      "completed": true,
+      "status": "live_contract_pass",
+      "failure_classification": "pass",
+      "mandatory_contract_pass": true,
+      "latency_seconds": 67.246,
+      "artifact": {
+        "completed": true,
+        "status": "live_contract_pass",
+        "failure_classification": "pass",
+        "mandatory_contract_pass": true,
+        "trace_structure": {
+          "root_call_id": "simple-truncation-01::claude_code_opus47::root",
+          "parent_synthesis_call_id": "simple-truncation-01::claude_code_opus47::parent",
+          "child_call_count": 4,
+          "child_records": [
+            {
+              "call_id": "simple-truncation-01::claude_code_opus47::child::1",
+              "parent_call_id": "simple-truncation-01::claude_code_opus47::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+                    "fact_id": "LP-01-001",
+                    "text": "The release train freezes API schemas every Tuesday."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::claude_code_opus47::child::2",
+              "parent_call_id": "simple-truncation-01::claude_code_opus47::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+                    "fact_id": "LP-01-002",
+                    "text": "The evaluator writes one JSON artifact per fixture."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::claude_code_opus47::child::3",
+              "parent_call_id": "simple-truncation-01::claude_code_opus47::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+                    "fact_id": "LP-01-003",
+                    "text": "TraceGuard accepts only retained child evidence."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::claude_code_opus47::child::4",
+              "parent_call_id": "simple-truncation-01::claude_code_opus47::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+                    "fact_id": "LP-01-004",
+                    "text": "The canonical branch for reporting is main."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            }
+          ],
+          "selected_chunk_coverage_pass": true
+        },
+        "parent_synthesis": {
+          "mode": "rlm_forge_parent_synthesis",
+          "verdict": "pass",
+          "confidence": 0.95,
+          "result": {
+            "summary": "The release train freezes API schemas every Tuesday, the evaluator writes one JSON artifact per fixture, TraceGuard accepts only retained child evidence, and the canonical branch for reporting is main.",
+            "retained_facts": [
+              {
+                "fact_id": "LP-01-001",
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+                "text": "The release train freezes API schemas every Tuesday."
+              },
+              {
+                "fact_id": "LP-01-002",
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+                "text": "The evaluator writes one JSON artifact per fixture."
+              },
+              {
+                "fact_id": "LP-01-003",
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+                "text": "TraceGuard accepts only retained child evidence."
+              },
+              {
+                "fact_id": "LP-01-004",
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+                "text": "The canonical branch for reporting is main."
+              }
+            ]
+          },
+          "evidence_references": [
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "quoted_evidence": "The release train freezes API schemas every Tuesday.",
+              "supports_fact_ids": [
+                "LP-01-001"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "quoted_evidence": "The evaluator writes one JSON artifact per fixture.",
+              "supports_fact_ids": [
+                "LP-01-002"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "quoted_evidence": "TraceGuard accepts only retained child evidence.",
+              "supports_fact_ids": [
+                "LP-01-003"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "quoted_evidence": "The canonical branch for reporting is main.",
+              "supports_fact_ids": [
+                "LP-01-004"
+              ]
+            }
+          ],
+          "residual_gaps": []
+        },
+        "traceguard_validation": {
+          "accepted": true,
+          "unsupported_claim_rate": 0.0,
+          "accepted_claims": [
+            {
+              "fact_id": "LP-01-001",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "surface": "result.retained_facts",
+              "text": "The release train freezes API schemas every Tuesday."
+            },
+            {
+              "fact_id": "LP-01-002",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "surface": "result.retained_facts",
+              "text": "The evaluator writes one JSON artifact per fixture."
+            },
+            {
+              "fact_id": "LP-01-003",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "surface": "result.retained_facts",
+              "text": "TraceGuard accepts only retained child evidence."
+            },
+            {
+              "fact_id": "LP-01-004",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "surface": "result.retained_facts",
+              "text": "The canonical branch for reporting is main."
+            },
+            {
+              "fact_id": "LP-01-001",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "surface": "evidence_references",
+              "text": "The release train freezes API schemas every Tuesday."
+            },
+            {
+              "fact_id": "LP-01-002",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "surface": "evidence_references",
+              "text": "The evaluator writes one JSON artifact per fixture."
+            },
+            {
+              "fact_id": "LP-01-003",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "surface": "evidence_references",
+              "text": "TraceGuard accepts only retained child evidence."
+            },
+            {
+              "fact_id": "LP-01-004",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "surface": "evidence_references",
+              "text": "The canonical branch for reporting is main."
+            }
+          ],
+          "rejected_claims": [],
+          "allowed_fact_ids": [
+            "LP-01-001",
+            "LP-01-002",
+            "LP-01-003",
+            "LP-01-004"
+          ],
+          "allowed_chunk_ids": [
+            "live_portability/simple-truncation-01.txt:1-1",
+            "live_portability/simple-truncation-01.txt:2-2",
+            "live_portability/simple-truncation-01.txt:3-3",
+            "live_portability/simple-truncation-01.txt:4-4"
+          ]
+        },
+        "secondary_metrics": {
+          "quality_score": null,
+          "omitted_fact_safety_score": null,
+          "unsupported_claim_rate": null,
+          "latency_seconds": null,
+          "token_usage": null,
+          "cost_usd": null,
+          "measurement_status": "not_measured_in_contracts_only_mode"
+        },
+        "traceguard_repair": {
+          "repair_accept": null
+        }
+      }
+    },
+    {
+      "fixture_id": "simple-truncation-01",
+      "fixture_category": "simple_truncation",
+      "family_id": "codex_gpt55",
+      "contract_variant": "rlm_forge_traceguard",
+      "primary_cell": true,
+      "completed": true,
+      "status": "live_contract_pass",
+      "failure_classification": "pass",
+      "mandatory_contract_pass": true,
+      "latency_seconds": 44.741,
+      "artifact": {
+        "completed": true,
+        "status": "live_contract_pass",
+        "failure_classification": "pass",
+        "mandatory_contract_pass": true,
+        "trace_structure": {
+          "root_call_id": "simple-truncation-01::codex_gpt55::root",
+          "parent_synthesis_call_id": "simple-truncation-01::codex_gpt55::parent",
+          "child_call_count": 4,
+          "child_records": [
+            {
+              "call_id": "simple-truncation-01::codex_gpt55::child::1",
+              "parent_call_id": "simple-truncation-01::codex_gpt55::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+                    "fact_id": "LP-01-001",
+                    "text": "The release train freezes API schemas every Tuesday."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::codex_gpt55::child::2",
+              "parent_call_id": "simple-truncation-01::codex_gpt55::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+                    "fact_id": "LP-01-002",
+                    "text": "The evaluator writes one JSON artifact per fixture."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::codex_gpt55::child::3",
+              "parent_call_id": "simple-truncation-01::codex_gpt55::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+                    "fact_id": "LP-01-003",
+                    "text": "TraceGuard accepts only retained child evidence."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            },
+            {
+              "call_id": "simple-truncation-01::codex_gpt55::child::4",
+              "parent_call_id": "simple-truncation-01::codex_gpt55::root",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "output": {
+                "observed_facts": [
+                  {
+                    "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+                    "fact_id": "LP-01-004",
+                    "text": "The canonical branch for reporting is main."
+                  }
+                ],
+                "residual_gaps": []
+              }
+            }
+          ],
+          "selected_chunk_coverage_pass": true
+        },
+        "parent_synthesis": {
+          "confidence": 1,
+          "evidence_references": [
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "quoted_evidence": "The release train freezes API schemas every Tuesday.",
+              "supports_fact_ids": [
+                "LP-01-001"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "quoted_evidence": "The evaluator writes one JSON artifact per fixture.",
+              "supports_fact_ids": [
+                "LP-01-002"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "quoted_evidence": "TraceGuard accepts only retained child evidence.",
+              "supports_fact_ids": [
+                "LP-01-003"
+              ]
+            },
+            {
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "quoted_evidence": "The canonical branch for reporting is main.",
+              "supports_fact_ids": [
+                "LP-01-004"
+              ]
+            }
+          ],
+          "mode": "rlm_forge_parent_synthesis",
+          "residual_gaps": [],
+          "result": {
+            "retained_facts": [
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+                "fact_id": "LP-01-001",
+                "text": "The release train freezes API schemas every Tuesday."
+              },
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+                "fact_id": "LP-01-002",
+                "text": "The evaluator writes one JSON artifact per fixture."
+              },
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+                "fact_id": "LP-01-003",
+                "text": "TraceGuard accepts only retained child evidence."
+              },
+              {
+                "evidence_chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+                "fact_id": "LP-01-004",
+                "text": "The canonical branch for reporting is main."
+              }
+            ],
+            "summary": "The release train freezes API schemas every Tuesday, the evaluator writes one JSON artifact per fixture, TraceGuard accepts only retained child evidence, and the canonical branch for reporting is main."
+          },
+          "verdict": "pass"
+        },
+        "traceguard_validation": {
+          "accepted": true,
+          "unsupported_claim_rate": 0.0,
+          "accepted_claims": [
+            {
+              "fact_id": "LP-01-001",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "surface": "result.retained_facts",
+              "text": "The release train freezes API schemas every Tuesday."
+            },
+            {
+              "fact_id": "LP-01-002",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "surface": "result.retained_facts",
+              "text": "The evaluator writes one JSON artifact per fixture."
+            },
+            {
+              "fact_id": "LP-01-003",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "surface": "result.retained_facts",
+              "text": "TraceGuard accepts only retained child evidence."
+            },
+            {
+              "fact_id": "LP-01-004",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "surface": "result.retained_facts",
+              "text": "The canonical branch for reporting is main."
+            },
+            {
+              "fact_id": "LP-01-001",
+              "chunk_id": "live_portability/simple-truncation-01.txt:1-1",
+              "surface": "evidence_references",
+              "text": "The release train freezes API schemas every Tuesday."
+            },
+            {
+              "fact_id": "LP-01-002",
+              "chunk_id": "live_portability/simple-truncation-01.txt:2-2",
+              "surface": "evidence_references",
+              "text": "The evaluator writes one JSON artifact per fixture."
+            },
+            {
+              "fact_id": "LP-01-003",
+              "chunk_id": "live_portability/simple-truncation-01.txt:3-3",
+              "surface": "evidence_references",
+              "text": "TraceGuard accepts only retained child evidence."
+            },
+            {
+              "fact_id": "LP-01-004",
+              "chunk_id": "live_portability/simple-truncation-01.txt:4-4",
+              "surface": "evidence_references",
+              "text": "The canonical branch for reporting is main."
+            }
+          ],
+          "rejected_claims": [],
+          "allowed_fact_ids": [
+            "LP-01-001",
+            "LP-01-002",
+            "LP-01-003",
+            "LP-01-004"
+          ],
+          "allowed_chunk_ids": [
+            "live_portability/simple-truncation-01.txt:1-1",
+            "live_portability/simple-truncation-01.txt:2-2",
+            "live_portability/simple-truncation-01.txt:3-3",
+            "live_portability/simple-truncation-01.txt:4-4"
+          ]
+        },
+        "secondary_metrics": {
+          "quality_score": null,
+          "omitted_fact_safety_score": null,
+          "unsupported_claim_rate": null,
+          "latency_seconds": null,
+          "token_usage": null,
+          "cost_usd": null,
+          "measurement_status": "not_measured_in_contracts_only_mode"
+        },
+        "traceguard_repair": {
+          "repair_accept": null
+        }
+      }
+    }
+  ]
+}
