@@ -51,7 +51,7 @@
 ```
 
 <p align="center">
-  <img src="assets/rlm-forge-runtime-structure.png" alt="RLM-FORGE runtime structure diagram showing Ouroboros recursion control, Hermes bounded calls, provider execution, TraceGuard evidence gating, and commit or retry paths" />
+  <img src="assets/architecture.png" alt="RLM-FORGE runtime structure diagram showing Ouroboros recursion control, Hermes bounded calls, provider execution, TraceGuard evidence gating, and commit or retry paths" />
 </p>
 
 RLM-FORGE is not a new model architecture. It is a runtime-hosted realization of a Recursive Language Model style execution loop:
