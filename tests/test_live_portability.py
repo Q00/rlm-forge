@@ -41,6 +41,68 @@ def test_primary_fixtures_have_required_mix_and_traceguard_verdicts() -> None:
         assert result["unsafe_traceguard"]["accepted"] is False
 
 
+def test_fresh_child_evidence_manifest_accepts_current_child_fact_prefix_normalization() -> None:
+    fixture = generate_primary_fixtures(count=8)[0]
+    retained = fixture["expected_retained_facts"][0]
+    text_without_fact_prefix = retained["text"].removeprefix(
+        f"FACT:{retained['fact_id']} "
+    )
+
+    manifest = live_portability.build_fresh_child_evidence_manifest(
+        fixture_manifest=build_manifest_from_fixture(fixture),
+        child_records=[
+            {
+                "call_id": "current-child-1",
+                "output": {
+                    "observed_facts": [
+                        {
+                            "fact_id": retained["fact_id"],
+                            "evidence_chunk_id": retained["chunk_id"],
+                            "text": text_without_fact_prefix,
+                        }
+                    ],
+                    "residual_gaps": [],
+                },
+            }
+        ],
+    )
+
+    assert [item.to_dict() for item in manifest] == [
+        {
+            "fact_id": retained["fact_id"],
+            "chunk_id": retained["chunk_id"],
+            "text": retained["text"],
+            "child_call_id": "current-child-1",
+        }
+    ]
+
+
+def test_fresh_child_evidence_manifest_rejects_wrong_current_child_text() -> None:
+    fixture = generate_primary_fixtures(count=8)[0]
+    retained = fixture["expected_retained_facts"][0]
+
+    manifest = live_portability.build_fresh_child_evidence_manifest(
+        fixture_manifest=build_manifest_from_fixture(fixture),
+        child_records=[
+            {
+                "call_id": "current-child-1",
+                "output": {
+                    "observed_facts": [
+                        {
+                            "fact_id": retained["fact_id"],
+                            "evidence_chunk_id": retained["chunk_id"],
+                            "text": "A different claim with the same handle.",
+                        }
+                    ],
+                    "residual_gaps": [],
+                },
+            }
+        ],
+    )
+
+    assert manifest == ()
+
+
 def test_chunk_only_citation_trap_fixture_has_null_handle_repair_demo() -> None:
     fixture = next(
         item
@@ -1176,20 +1238,13 @@ async def test_live_cell_requires_allowed_set_resolution_for_missing_handle(
     )
 
     tasks = [json.loads(prompt)["task"] for prompt in prompts]
-    references = artifact["traceguard_repair"][
-        "missing_evidence_handle_references"
-    ]
-    by_fact = {reference["fact_id"]: reference for reference in references}
-
     assert tasks.count("repair_missing_evidence_handle") == 0
     assert tasks.count("synthesize_parent_answer_from_child_evidence") == 1
     assert artifact["mandatory_contract_pass"] is False
     assert artifact["traceguard_validation"]["accepted"] is False
     assert artifact["traceguard_repair"]["repair_eligible"] is False
     assert artifact["traceguard_repair"]["repair_attempted"] is False
-    assert artifact["traceguard_repair"]["failure_reason"] == (
-        "missing_evidence_handle_unresolved"
-    )
+    assert artifact["traceguard_repair"]["failure_reason"] == "unsupported_fact_id"
     assert (
         artifact["traceguard_repair"]["missing_evidence_handle_resolution_pass"]
         is False
@@ -1209,11 +1264,7 @@ async def test_live_cell_requires_allowed_set_resolution_for_missing_handle(
     assert child_only_handle not in artifact["traceguard_repair"][
         "allowed_evidence_handle_set"
     ]
-    assert by_fact[first["fact_id"]]["evidence_handle"] is None
-    assert by_fact[first["fact_id"]]["evidence_handles"] == {
-        "allowed_manifest": first["chunk_id"],
-        "child_records": [child_only_handle],
-    }
+    assert artifact["traceguard_repair"]["missing_evidence_handle_references"] == []
 
 
 @pytest.mark.asyncio
@@ -2623,7 +2674,7 @@ async def test_mixed_missing_evidence_handle_does_not_attempt_repair(
     ]
     repair = artifact["traceguard_repair"]
 
-    assert reasons == ["missing_evidence_handle", "unsupported_fact_id"]
+    assert reasons == ["unsupported_fact_id", "unsupported_fact_id"]
     assert len(prompts) == len(fixture["selected_chunk_ids"]) + 1
     assert artifact["status"] == "primary_contract_failure"
     assert artifact["failure_classification"] == "primary_contract_failure"
@@ -2634,8 +2685,8 @@ async def test_mixed_missing_evidence_handle_does_not_attempt_repair(
     assert repair["initial_accept"] is False
     assert repair["repair_eligible"] is False
     assert repair["repair_attempted"] is False
-    assert repair["failure_reason"] == "mixed_traceguard_rejection_reasons"
-    assert repair["repair_strategy"] == "not_attempted_non_exclusive_traceguard_rejection"
+    assert repair["failure_reason"] == "unsupported_fact_id"
+    assert repair["repair_strategy"] == "not_attempted_non_repairable_traceguard_rejection"
     assert repair["repair_accept"] is None
     assert repair["parent_synthesis_retry_attempted"] is False
     assert repair["parent_synthesis_retry_accept"] is None

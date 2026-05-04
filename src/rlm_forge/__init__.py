@@ -23,6 +23,14 @@ from ouroboros.rlm import (  # noqa: F401  re-exported for the hackathon namespa
     run_vanilla_truncation_baseline,
 )
 from ouroboros.orchestrator.hermes_runtime import HermesCliRuntime  # noqa: F401
+from rlm_forge.memory import (  # noqa: F401
+    LocalJsonMemoryBackend,
+    MemoryBackend,
+    MemoryObservation,
+    MemoryPrior,
+    NoopMemoryBackend,
+    validate_memory_record,
+)
 from rlm_forge.traceguard import (  # noqa: F401
     TraceGuardClaim,
     TraceGuardEvidence,
@@ -36,8 +44,13 @@ from rlm_forge.traceguard import (  # noqa: F401
 
 __all__ = [
     "HermesCliRuntime",
+    "LocalJsonMemoryBackend",
     "MAX_RLM_AC_TREE_DEPTH",
     "MAX_RLM_AMBIGUITY_THRESHOLD",
+    "MemoryBackend",
+    "MemoryObservation",
+    "MemoryPrior",
+    "NoopMemoryBackend",
     "RLM_MVP_SRC_DOGFOOD_BENCHMARK_ID",
     "RLMRunConfig",
     "RLMRunResult",
@@ -56,6 +69,7 @@ __all__ = [
     "build_manifest_from_fixture",
     "extract_parent_claims",
     "normalize_allowed_evidence_manifest",
+    "validate_memory_record",
     "validate_parent_synthesis",
 ]
 

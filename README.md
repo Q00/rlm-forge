@@ -343,6 +343,8 @@ missing handle / omitted fact / chunk-only citation -> rejected parent claim
 rlm-forge/
 ├─ src/rlm_forge/
 │  ├─ traceguard.py       # evidence-gated parent synthesis validator
+│  ├─ memory.py           # operational memory priors, guards, and backends
+│  ├─ live_portability.py # live runtime matrix, repair loop, memory mode
 │  ├─ replay.py           # offline artifact replay CLI
 │  └─ __init__.py         # public API surface
 ├─ tests/                 # no-API CI tests
@@ -355,12 +357,12 @@ rlm-forge/
 
 ---
 
-## Toward memory-shaped recursion
+## Experimental memory-shaped recursion
 
-RLM-FORGE currently treats each run as an isolated recursive execution. Hermes
-makes a stronger future direction possible: decomposition traces,
-provider-specific failures, schema repairs, and TraceGuard rejections can
-become persistent operational priors for later recursive runs.
+RLM-FORGE now includes an experimental memory mode for the live portability
+harness. It turns decomposition traces, provider-specific failures, schema
+repairs, and TraceGuard rejections into persistent operational priors for later
+recursive runs.
 
 The important rule is:
 
@@ -368,8 +370,8 @@ The important rule is:
 Memory is not evidence; memory is a prior over how to ask for evidence.
 ```
 
-In that framing, Hermes memory should not store "this fixture's answer is X."
-It should store operational lessons such as:
+In that framing, memory never stores "this fixture's answer is X." The memory
+backend is schema-first and guarded. It can store operational lessons such as:
 
 - long-context preservation tasks work better when child outputs preserve
   `fact_id` and `evidence_chunk_id` together;
@@ -380,12 +382,42 @@ It should store operational lessons such as:
 - routing can specialize over time: decomposition, evidence extraction,
   synthesis, and repair may prefer different providers.
 
-This creates a feedback loop without training a new model. TraceGuard failure
-records become repair signals for the next recursive run, while every new
-parent claim still has to cite fresh child evidence. To keep benchmarks clean,
-future memory-enhanced runs should separate no-memory baselines from
-trace-memory policy runs, disable answer-memory recall, and exclude fixture
-content from durable memory.
+The live path now builds TraceGuard's accepted evidence manifest from the
+current run's child outputs, not from memory. Memory can only enter prompts as
+structured `memory_priors` for schema or retry policy. Every new parent claim
+still has to cite fresh child evidence and pass TraceGuard.
+
+```bash
+python scripts/run-live-portability-matrix.py \
+  --mode live-primary \
+  --memory-mode read-write \
+  --memory-store .rlm-forge-memory.jsonl \
+  --output-prefix live-portability-primary-memory
+```
+
+The default remains `--memory-mode off` for clean baseline runs. Memory runs
+should be reported separately from no-memory baselines and should claim only a
+runtime feedback loop, not a model-quality improvement.
+
+Memory live experiment:
+[`experiments/live-portability-primary-memory-fixed.md`](experiments/live-portability-primary-memory-fixed.md)
+records the May 4, 2026 `read-write` memory run across the same 24-cell
+primary matrix. The run passed all required cells with memory enabled:
+Hermes+GLM, Claude Code, and Codex each completed and passed all 8 primary
+fixtures. TraceGuard accepted every final parent synthesis, the fresh child
+evidence gate had zero failures, and the memory backend stored 24 operational
+observations with zero rejected memory candidates.
+
+| Memory mode | Family | Primary cells | Fresh evidence failures | TraceGuard failures |
+| --- | --- | ---: | ---: | ---: |
+| `read-write` | `hermes_glm` | 8/8 pass | 0 | 0 |
+| `read-write` | `claude_code_opus47` | 8/8 pass | 0 | 0 |
+| `read-write` | `codex_gpt55` | 8/8 pass | 0 | 0 |
+
+The durable memory log for that run is
+[`experiments/live-portability-memory-primary-fixed.jsonl`](experiments/live-portability-memory-primary-fixed.jsonl).
+It contains operational priors such as `preserve_child_fact_identity`, not
+fixture answers or retained factual chunks.
 
 ---
 
@@ -402,9 +434,9 @@ This is an MVP designed to demonstrate that Hermes can serve as the inner
 recursive LM in an RLM-style scaffold with replayable traces and deterministic
 evaluation. It is not a production-ready RLM service, does not claim novelty
 over the Zhang et al. paper, and no longer claims a quality advantage from the
-single truncation fixture. Future Hermes memory should improve decomposition,
-routing, and repair policy only; it must not replace fresh trace evidence for
-parent claims.
+single truncation fixture. The experimental memory mode should improve
+decomposition, routing, and repair policy only; it does not replace fresh trace
+evidence for parent claims.
 
 ---
 

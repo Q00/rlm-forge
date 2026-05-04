@@ -27,6 +27,14 @@ import subprocess
 import time
 from typing import Any
 
+from rlm_forge.memory import build_memory_observations_from_cell
+from rlm_forge.memory import LocalJsonMemoryBackend
+from rlm_forge.memory import MemoryBackend
+from rlm_forge.memory import MemoryMode
+from rlm_forge.memory import MemoryPrior
+from rlm_forge.memory import NoopMemoryBackend
+from rlm_forge.memory import READ_MODES
+from rlm_forge.memory import WRITE_MODES
 from rlm_forge.traceguard import build_manifest_from_fixture
 from rlm_forge.traceguard import CLAIM_FACT_KEYS
 from rlm_forge.traceguard import CLAIM_FACT_LIST_KEYS
@@ -217,6 +225,22 @@ class ParentSynthesisRetryState:
                 )
             },
         }
+
+
+@dataclass(frozen=True, slots=True)
+class MemoryContext:
+    """Runtime memory settings for one live portability run."""
+
+    mode: MemoryMode = "off"
+    backend: MemoryBackend = field(default_factory=NoopMemoryBackend)
+
+    @property
+    def can_read(self) -> bool:
+        return self.mode in READ_MODES
+
+    @property
+    def can_write(self) -> bool:
+        return self.mode in WRITE_MODES
 
 
 @dataclass(frozen=True, slots=True)
@@ -668,18 +692,28 @@ async def run_live_smoke(
     fixture_count: int = 8,
     families: tuple[RuntimeFamily, ...] = RUNTIME_FAMILIES,
     timeout_seconds: float = 240.0,
+    memory_context: MemoryContext | None = None,
 ) -> dict[str, Any]:
     """Run one primary fixture across all families with live runtime calls."""
+    memory_context = memory_context or MemoryContext()
     fixture = generate_primary_fixtures(count=fixture_count)[0]
     cells = []
     for family in families:
         started = time.perf_counter()
         try:
-            artifact = await _run_live_rlm_traceguard_cell(
-                family=family,
-                fixture=fixture,
-                timeout_seconds=timeout_seconds,
-            )
+            if memory_context.mode == "off":
+                artifact = await _run_live_rlm_traceguard_cell(
+                    family=family,
+                    fixture=fixture,
+                    timeout_seconds=timeout_seconds,
+                )
+            else:
+                artifact = await _run_live_rlm_traceguard_cell(
+                    family=family,
+                    fixture=fixture,
+                    timeout_seconds=timeout_seconds,
+                    memory_context=memory_context,
+                )
             elapsed = round(time.perf_counter() - started, 3)
             cells.append(
                 {
@@ -733,8 +767,10 @@ async def run_live_primary(
     timeout_seconds: float = 240.0,
     checkpoint_dir: Path | None = None,
     checkpoint_prefix: str | None = None,
+    memory_context: MemoryContext | None = None,
 ) -> dict[str, Any]:
     """Run the primary RLM-FORGE+TraceGuard matrix with live runtime calls."""
+    memory_context = memory_context or MemoryContext()
     fixtures = generate_primary_fixtures(count=fixture_count)
     fixture_contract_results = [validate_fixture_contracts(fixture) for fixture in fixtures]
     cells: list[dict[str, Any]] = []
@@ -749,11 +785,19 @@ async def run_live_primary(
                 flush=True,
             )
             try:
-                artifact = await _run_live_rlm_traceguard_cell(
-                    family=family,
-                    fixture=fixture,
-                    timeout_seconds=timeout_seconds,
-                )
+                if memory_context.mode == "off":
+                    artifact = await _run_live_rlm_traceguard_cell(
+                        family=family,
+                        fixture=fixture,
+                        timeout_seconds=timeout_seconds,
+                    )
+                else:
+                    artifact = await _run_live_rlm_traceguard_cell(
+                        family=family,
+                        fixture=fixture,
+                        timeout_seconds=timeout_seconds,
+                        memory_context=memory_context,
+                    )
                 elapsed = round(time.perf_counter() - started, 3)
                 cells.append(_live_success_cell(family, fixture, artifact, elapsed))
             except TimeoutError as exc:
@@ -1398,7 +1442,9 @@ async def _run_live_rlm_traceguard_cell(
     family: RuntimeFamily,
     fixture: dict[str, Any],
     timeout_seconds: float,
+    memory_context: MemoryContext | None = None,
 ) -> dict[str, Any]:
+    memory_context = memory_context or MemoryContext()
     runtime = _build_runtime(family)
     _extend_runtime_timeouts(runtime, timeout_seconds=timeout_seconds)
     root_call_id = _root_call_id(family=family, fixture=fixture)
@@ -1411,11 +1457,24 @@ async def _run_live_rlm_traceguard_cell(
         parent_synthesis_run_id=parent_synthesis_call_id,
     )
     retry_state.ensure_cell(cell_identity)
+    memory_recall = (
+        memory_context.backend.recall(
+            family_id=family.family_id,
+            fixture_category=fixture["fixture_category"],
+            tasks=(
+                "extract_child_evidence",
+                "synthesize_parent_answer_from_child_evidence",
+            ),
+        )
+        if memory_context.can_read
+        else None
+    )
+    memory_priors = memory_recall.priors if memory_recall is not None else ()
     child_records: list[dict[str, Any]] = []
     for chunk in _selected_chunks(fixture):
         child_output = await _execute_json_task(
             runtime,
-            prompt=_child_prompt(fixture, chunk),
+            prompt=_child_prompt(fixture, chunk, memory_priors=memory_priors),
             timeout_seconds=timeout_seconds,
         )
         child_records.append(
@@ -1432,10 +1491,15 @@ async def _run_live_rlm_traceguard_cell(
 
     parent_output = await _execute_json_task(
         runtime,
-        prompt=_parent_prompt(fixture, child_records),
+        prompt=_parent_prompt(fixture, child_records, memory_priors=memory_priors),
         timeout_seconds=timeout_seconds,
     )
-    manifest = build_manifest_from_fixture(fixture)
+    fixture_manifest = build_manifest_from_fixture(fixture)
+    manifest = build_fresh_child_evidence_manifest(
+        fixture_manifest=fixture_manifest,
+        child_records=child_records,
+    )
+    fresh_child_evidence_pass = bool(manifest) and len(manifest) == len(fixture_manifest)
     validation = validate_parent_synthesis(
         evidence_manifest=manifest,
         parent_synthesis=parent_output,
@@ -1561,6 +1625,7 @@ async def _run_live_rlm_traceguard_cell(
     mandatory_pass = (
         effective_validation.accepted
         and coverage_pass
+        and fresh_child_evidence_pass
         and traceguard_repair["repair_accept"] is not False
         and retry_pass
     )
@@ -1568,6 +1633,18 @@ async def _run_live_rlm_traceguard_cell(
         traceguard_repair=traceguard_repair,
         retry_state=retry_state,
         synthesis_cell_identity=cell_identity,
+    )
+    memory_write = (
+        memory_context.backend.store(
+            build_memory_observations_from_cell(
+                family_id=family.family_id,
+                fixture_category=fixture["fixture_category"],
+                traceguard_accepted=effective_validation.accepted,
+                traceguard_repair=traceguard_repair,
+            )
+        )
+        if memory_context.can_write
+        else None
     )
     artifact = {
         "completed": True,
@@ -1581,6 +1658,10 @@ async def _run_live_rlm_traceguard_cell(
             "child_call_count": len(child_records),
             "child_records": child_records,
             "selected_chunk_coverage_pass": coverage_pass,
+            "fresh_child_evidence_pass": fresh_child_evidence_pass,
+            "fresh_child_evidence_manifest": [
+                evidence.to_dict() for evidence in manifest
+            ],
         },
         "parent_synthesis": parent_output,
         "initial_traceguard_validation": validation.to_dict(),
@@ -1590,11 +1671,140 @@ async def _run_live_rlm_traceguard_cell(
         "traceguard_repair": traceguard_repair,
         "secondary_metrics": _empty_secondary_metrics(),
     }
+    if memory_context.mode != "off":
+        artifact["memory_trace"] = _memory_trace_block(
+            memory_context=memory_context,
+            memory_recall=memory_recall,
+            memory_write=memory_write,
+            prompt_injections=[
+                prior.to_prompt_dict()
+                for prior in _memory_priors_for_task(
+                    memory_priors,
+                    "extract_child_evidence",
+                )
+            ]
+            + [
+                prior.to_prompt_dict()
+                for prior in _memory_priors_for_task(
+                    memory_priors,
+                    "synthesize_parent_answer_from_child_evidence",
+                )
+            ],
+        )
     if repaired_parent_output is not None:
         artifact["repaired_parent_synthesis"] = repaired_parent_output
     if retried_parent_output is not None:
         artifact["retried_parent_synthesis"] = retried_parent_output
     return artifact
+
+
+def build_fresh_child_evidence_manifest(
+    *,
+    fixture_manifest: tuple[TraceGuardEvidence, ...],
+    child_records: list[dict[str, Any]],
+) -> tuple[TraceGuardEvidence, ...]:
+    """Build TraceGuard evidence from the current run's child outputs only."""
+    fixture_allowed = {(item.fact_id, item.chunk_id): item for item in fixture_manifest}
+    evidence: list[TraceGuardEvidence] = []
+    seen: set[tuple[str, str]] = set()
+    for record in child_records:
+        output = record.get("output")
+        if not isinstance(output, Mapping):
+            continue
+        observed_facts = output.get("observed_facts")
+        if not isinstance(observed_facts, list):
+            continue
+        for fact in observed_facts:
+            if not isinstance(fact, Mapping):
+                continue
+            fact_id = fact.get("fact_id")
+            chunk_id = fact.get("evidence_chunk_id")
+            text = fact.get("text")
+            if not (
+                isinstance(fact_id, str)
+                and isinstance(chunk_id, str)
+                and isinstance(text, str)
+            ):
+                continue
+            key = (fact_id, chunk_id)
+            allowed = fixture_allowed.get(key)
+            if (
+                key in seen
+                or allowed is None
+                or not _child_evidence_text_matches_fixture(
+                    fact_id=fact_id,
+                    child_text=text,
+                    fixture_text=allowed.text,
+                )
+            ):
+                continue
+            seen.add(key)
+            child_call_id = record.get("call_id")
+            evidence.append(
+                TraceGuardEvidence(
+                    fact_id=fact_id,
+                    chunk_id=chunk_id,
+                    text=allowed.text,
+                    child_call_id=(
+                        child_call_id if isinstance(child_call_id, str) else None
+                    ),
+                )
+            )
+    return tuple(
+        sorted(evidence, key=lambda item: (item.fact_id, item.chunk_id, item.text))
+    )
+
+
+def _child_evidence_text_matches_fixture(
+    *,
+    fact_id: str,
+    child_text: str,
+    fixture_text: str,
+) -> bool:
+    normalized_child = " ".join(child_text.split())
+    normalized_fixture = " ".join(fixture_text.split())
+    if not normalized_child:
+        return False
+    if normalized_child == normalized_fixture:
+        return True
+    prefix = f"FACT:{fact_id} "
+    if normalized_fixture.startswith(prefix):
+        return normalized_child == normalized_fixture[len(prefix) :]
+    return False
+
+
+def _memory_trace_block(
+    *,
+    memory_context: MemoryContext,
+    memory_recall: Any,
+    memory_write: Any,
+    prompt_injections: list[dict[str, Any]],
+) -> dict[str, Any]:
+    recall_trace = (
+        memory_recall.to_trace()
+        if memory_recall is not None
+        else {"recalled_priors": [], "rejected_memory_candidates": []}
+    )
+    write_trace = (
+        memory_write.to_trace()
+        if memory_write is not None
+        else {
+            "stored_observations": [],
+            "rejected_memory_candidates": [],
+            "contamination_guard": {"passed": True, "rejected_count": 0},
+        }
+    )
+    return {
+        "mode": memory_context.mode,
+        "recalled_priors": recall_trace["recalled_priors"],
+        "rejected_memory_candidates": [
+            *recall_trace["rejected_memory_candidates"],
+            *write_trace["rejected_memory_candidates"],
+        ],
+        "prompt_injections": prompt_injections,
+        "stored_observations": write_trace["stored_observations"],
+        "contamination_guard": write_trace["contamination_guard"],
+    }
 
 
 def _initial_traceguard_repair_block(
@@ -2917,71 +3127,110 @@ def _selected_chunks(fixture: dict[str, Any]) -> list[dict[str, Any]]:
     return [chunk for chunk in fixture["target"]["chunks"] if chunk["chunk_id"] in selected]
 
 
-def _child_prompt(fixture: dict[str, Any], chunk: dict[str, Any]) -> str:
-    return json.dumps(
-        {
-            "task": "extract_child_evidence",
-            "fixture_id": fixture["fixture_id"],
-            "rules": [
-                "Use only FACT lines present in this chunk.",
-                "Return every visible fact_id with its exact evidence_chunk_id.",
-                "Do not mention omitted chunks.",
+def _child_prompt(
+    fixture: dict[str, Any],
+    chunk: dict[str, Any],
+    *,
+    memory_priors: Iterable[MemoryPrior] = (),
+) -> str:
+    payload = {
+        "task": "extract_child_evidence",
+        "fixture_id": fixture["fixture_id"],
+        "rules": [
+            "Use only FACT lines present in this chunk.",
+            "Return every visible fact_id with its exact evidence_chunk_id.",
+            "Do not mention omitted chunks.",
+        ],
+        "required_schema": {
+            "observed_facts": [
+                {
+                    "fact_id": "string",
+                    "text": "string",
+                    "evidence_chunk_id": "string",
+                }
             ],
-            "required_schema": {
-                "observed_facts": [
+            "residual_gaps": ["string"],
+        },
+        "chunk": chunk,
+    }
+    _attach_memory_priors(payload, memory_priors, task="extract_child_evidence")
+    return json.dumps(payload, indent=2, sort_keys=True)
+
+
+def _parent_prompt(
+    fixture: dict[str, Any],
+    child_records: list[dict[str, Any]],
+    *,
+    memory_priors: Iterable[MemoryPrior] = (),
+) -> str:
+    payload = {
+        "task": "synthesize_parent_answer_from_child_evidence",
+        "fixture_id": fixture["fixture_id"],
+        "rules": [
+            "Use only observed_facts returned by child calls.",
+            "Every retained_facts entry must include fact_id and evidence_chunk_id.",
+            "Do not invent or cite omitted fact ids.",
+        ],
+        "required_schema": {
+            "mode": "rlm_forge_parent_synthesis",
+            "verdict": "pass|partial|fail",
+            "confidence": "number",
+            "result": {
+                "summary": "string",
+                "retained_facts": [
                     {
                         "fact_id": "string",
                         "text": "string",
                         "evidence_chunk_id": "string",
                     }
                 ],
-                "residual_gaps": ["string"],
             },
-            "chunk": chunk,
-        },
-        indent=2,
-        sort_keys=True,
-    )
-
-
-def _parent_prompt(fixture: dict[str, Any], child_records: list[dict[str, Any]]) -> str:
-    return json.dumps(
-        {
-            "task": "synthesize_parent_answer_from_child_evidence",
-            "fixture_id": fixture["fixture_id"],
-            "rules": [
-                "Use only observed_facts returned by child calls.",
-                "Every retained_facts entry must include fact_id and evidence_chunk_id.",
-                "Do not invent or cite omitted fact ids.",
+            "evidence_references": [
+                {
+                    "chunk_id": "string",
+                    "supports_fact_ids": ["string"],
+                    "quoted_evidence": "string",
+                }
             ],
-            "required_schema": {
-                "mode": "rlm_forge_parent_synthesis",
-                "verdict": "pass|partial|fail",
-                "confidence": "number",
-                "result": {
-                    "summary": "string",
-                    "retained_facts": [
-                        {
-                            "fact_id": "string",
-                            "text": "string",
-                            "evidence_chunk_id": "string",
-                        }
-                    ],
-                },
-                "evidence_references": [
-                    {
-                        "chunk_id": "string",
-                        "supports_fact_ids": ["string"],
-                        "quoted_evidence": "string",
-                    }
-                ],
-                "residual_gaps": ["string"],
-            },
-            "child_records": child_records,
+            "residual_gaps": ["string"],
         },
-        indent=2,
-        sort_keys=True,
+        "child_records": child_records,
+    }
+    _attach_memory_priors(
+        payload,
+        memory_priors,
+        task="synthesize_parent_answer_from_child_evidence",
     )
+    return json.dumps(payload, indent=2, sort_keys=True)
+
+
+def _attach_memory_priors(
+    payload: dict[str, Any],
+    memory_priors: Iterable[MemoryPrior],
+    *,
+    task: str,
+) -> None:
+    priors = [
+        prior.to_prompt_dict()
+        for prior in _memory_priors_for_task(memory_priors, task)
+    ]
+    if priors:
+        payload["memory_priors"] = {
+            "scope": "operational_policy_only",
+            "rules": [
+                "Memory is not evidence.",
+                "Do not use memory to support factual claims.",
+                "Use memory only for schema, routing, or retry policy.",
+            ],
+            "priors": priors,
+        }
+
+
+def _memory_priors_for_task(
+    memory_priors: Iterable[MemoryPrior],
+    task: str,
+) -> tuple[MemoryPrior, ...]:
+    return tuple(prior for prior in memory_priors if prior.task == task)
 
 
 def build_parent_synthesis_retry_prompt(
@@ -3323,8 +3572,18 @@ def _select_families(family_csv: str) -> tuple[RuntimeFamily, ...]:
     return selected
 
 
+def _build_memory_context(*, mode: MemoryMode, store_path: Path) -> MemoryContext:
+    if mode == "off":
+        return MemoryContext()
+    return MemoryContext(mode=mode, backend=LocalJsonMemoryBackend(store_path))
+
+
 async def _async_main(args: argparse.Namespace) -> int:
     families = _select_families(args.families)
+    memory_context = _build_memory_context(
+        mode=args.memory_mode,
+        store_path=args.memory_store,
+    )
     if args.mode == "dry-plan":
         result = build_dry_plan(fixture_count=args.fixtures, families=families)
     elif args.mode == "contracts-only":
@@ -3334,6 +3593,7 @@ async def _async_main(args: argparse.Namespace) -> int:
             fixture_count=args.fixtures,
             families=families,
             timeout_seconds=args.timeout_seconds,
+            memory_context=memory_context,
         )
     elif args.mode == "live-primary":
         result = await run_live_primary(
@@ -3342,6 +3602,7 @@ async def _async_main(args: argparse.Namespace) -> int:
             timeout_seconds=args.timeout_seconds,
             checkpoint_dir=args.output_dir,
             checkpoint_prefix=args.output_prefix,
+            memory_context=memory_context,
         )
     else:
         msg = f"unsupported mode: {args.mode}"
@@ -3397,6 +3658,18 @@ def main(argv: list[str] | None = None) -> int:
         "--families",
         default="all",
         help="Comma-separated family ids to run, or 'all'.",
+    )
+    parser.add_argument(
+        "--memory-mode",
+        choices=("off", "read", "write", "read-write"),
+        default="off",
+        help="Operational memory mode for live provider runs.",
+    )
+    parser.add_argument(
+        "--memory-store",
+        type=Path,
+        default=Path(".rlm-forge-memory.jsonl"),
+        help="Local JSONL operational memory store.",
     )
     args = parser.parse_args(argv)
     return asyncio.run(_async_main(args))
