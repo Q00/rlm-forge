@@ -34,7 +34,7 @@
 \affil[1]{Independent\\
 \texttt{jqyu.lee@gmail.com}}
 
-\date{May 3, 2026}
+\date{May 4, 2026}
 
 \begin{document}
 \maketitle
@@ -57,6 +57,9 @@ it with a claim-aware omitted-fact safety scorer. The live Hermes truncation
 fixture shows score parity between vanilla and recursive execution after
 scorer correction. A 24-cell live primary portability run across Hermes+GLM,
 Claude Code, and Codex completes with 24 mandatory contract passes. The
+same primary matrix also passes with experimental read-write operational
+memory enabled. Memory is admitted only as a schema and retry prior, while
+TraceGuard evidence is rebuilt from fresh child outputs in the current run.
 systems claim is not that RLM-FORGE wins a benchmark. It is that RLM-FORGE
 turns RLM from a research-time inference idea into a runtime surface that
 existing agent infrastructure can execute, inspect, and enforce.
@@ -120,6 +123,13 @@ includes a narrow repair loop for a missing-handle rejection class observed in
 an earlier Hermes+GLM run. On the
 original live truncation fixture, corrected scoring reports a tie rather than
 the earlier false $+0.20$ recursive-RLM win.
+
+\item \textbf{Memory without evidence leakage.} The live harness includes an
+experimental read-write memory mode. It stores only allowlisted operational
+observations, such as schema-stability and repair-policy priors. A second
+24-cell live primary matrix with memory enabled passes across the same three
+runtime families. The accepted evidence manifest is still rebuilt from fresh
+child outputs, not from durable memory.
 \end{enumerate}
 
 We do not claim novelty over the RLM paradigm itself, and we do not compare
@@ -446,6 +456,52 @@ tested runtime-control response, not a claimed benchmark win in the latest
 matrix. This does not establish that the full baseline sweep, token usage, or
 cost profiles generalise across providers.
 
+\subsection{Operational memory experiment}
+\label{sec:memory-experiment}
+
+RLM-FORGE also evaluates an experimental memory-shaped recursion path. The
+memory backend is a local JSONL store with an allowlisted schema. It accepts
+only operational records such as provider schema stability, missing-handle
+repair hints, task family, provider family, outcome, and confidence. It
+rejects fixture answers, fact IDs, chunk IDs, raw fixture paths, prompt
+injection text, unknown fields, and other evidence-bearing content.
+
+Memory recall can enter child extraction and parent synthesis prompts only as
+structured \texttt{memory\_priors}. These priors can recommend policies such
+as preserving \texttt{fact\_id} with \texttt{evidence\_chunk\_id}. They are
+not part of the accepted evidence manifest. For every cell, the manifest
+given to TraceGuard is rebuilt from the current run's child outputs and then
+intersected with the fixture contract. Provider-normalized child text is
+accepted only when it matches the canonical fixture text or the same text
+with the \texttt{FACT:<id>} prefix removed. This preserves a fresh-evidence
+boundary while tolerating harmless provider formatting differences.
+
+\begin{table}[t]
+\centering
+\caption{Live primary portability matrix with experimental read-write memory
+enabled. Memory stores operational priors only; accepted evidence is rebuilt
+from current child outputs.}
+\label{tab:memory-primary}
+\small
+\begin{tabular}{lllll}
+\toprule
+Family & Memory mode & Cells & Fresh evidence failures & Result \\
+\midrule
+\texttt{hermes\_glm} & \texttt{read-write} & 8/8 pass & 0 & pass \\
+\texttt{claude\_code\_opus47} & \texttt{read-write} & 8/8 pass & 0 & pass \\
+\texttt{codex\_gpt55} & \texttt{read-write} & 8/8 pass & 0 & pass \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The memory-enabled run completes all 24 live cells with 24 mandatory contract
+passes. TraceGuard accepts every final parent synthesis. The fresh child
+evidence gate reports zero failures. The memory backend stores 24 operational
+observations and rejects zero candidates. This result should be read narrowly.
+It shows that memory-shaped recursion can operate as a runtime feedback loop
+without becoming factual evidence. It does not show that memory improves model
+quality on downstream tasks.
+
 \subsection{Results}
 \label{sec:results}
 
@@ -581,6 +637,19 @@ uv run --extra dev --extra live \
   --output-prefix live-portability-primary
 \end{lstlisting}
 
+The memory-enabled primary run uses the same matrix with the memory store
+turned on.
+
+\begin{lstlisting}[language=bash]
+uv run --extra dev --extra live \
+  python scripts/run-live-portability-matrix.py \
+  --mode live-primary --fixtures 8 --families all \
+  --timeout-seconds 240 \
+  --memory-mode read-write \
+  --memory-store experiments/live-portability-memory-primary-fixed.jsonl \
+  --output-prefix live-portability-primary-memory-fixed
+\end{lstlisting}
+
 We additionally include a Hermes-free scorer micro-suite.
 
 \begin{lstlisting}[language=bash]
@@ -658,12 +727,14 @@ ship a native recursive model. It makes recursive execution a capability of
 the runtime that sits above providers.
 
 \paragraph{Memory-shaped recursion.}
-RLM-FORGE currently treats each run as an isolated recursive execution.
-Hermes makes a stronger future direction possible. Decomposition traces,
-provider-specific failures, schema repairs, and TraceGuard rejections can
-become persistent operational priors for later recursive runs. Memory is not
-evidence. Memory is a prior over how to ask for evidence. Fresh parent claims
-must still cite fresh child evidence and pass TraceGuard before state mutation.
+RLM-FORGE no longer has to treat every run as fully isolated. The live
+harness now includes a guarded memory mode that stores provider-specific
+schema and repair observations as operational priors. The key boundary is
+unchanged. Memory is not evidence. Memory is a prior over how to ask for
+evidence. Fresh parent claims must still cite fresh child evidence and pass
+TraceGuard before state mutation. The memory-enabled primary matrix shows
+that this feedback loop can run live across three provider families without
+collapsing the evidence boundary.
 
 \paragraph{Integration scope.}
 We added no new sandbox, REPL, or transport. The integration that matters
@@ -676,11 +747,13 @@ reproduce the integration in comparable time.
 \section{Future Work}
 \label{sec:future-memory}
 
-Hermes does not train the underlying model during RLM execution. The future
-opportunity is different. Hermes memory, skills, and traces can give the
-recursive scaffold a persistent operational memory. Prior decompositions,
-provider-specific failure modes, schema repairs, and TraceGuard rejection
-patterns can be recalled as runtime priors for later recursive runs.
+Hermes does not train the underlying model during RLM execution. The
+implemented memory path targets a different opportunity. Hermes memory,
+skills, and traces can give the recursive scaffold a persistent operational
+memory. The current implementation stores a narrow subset of provider-specific
+schema and repair observations. Future work should broaden that policy to
+prior decompositions, routing decisions, retry strategies, and task-family
+specialization.
 
 The key separation is this.
 
@@ -688,16 +761,16 @@ The key separation is this.
 Memory is not evidence. Memory is a prior over how to ask for evidence.
 \end{quote}
 
-In this design, memory should not be allowed to support a factual parent
-claim. Only fresh child evidence from the current run can do that. Memory can
-shape the policy for the next run. It can influence how to decompose a task
-family, which provider to route extraction or synthesis to, which schema to
-require, and which retry prompt to use after a guardrail rejection. A future
-memory-shaped run could recall missing-handle rejections as schema-repair
-priors. It could require child outputs to echo both \texttt{fact\_id} and
-\texttt{evidence\_chunk\_id}, and retry a child call when a handle is null.
-The repaired parent would still need to cite fresh evidence from the new trace
-before TraceGuard accepts it.
+In this design, memory is not allowed to support a factual parent claim. Only
+fresh child evidence from the current run can do that. Memory can shape the
+policy for the next run. It can influence how to decompose a task family,
+which provider to route extraction or synthesis to, which schema to require,
+and which retry prompt to use after a guardrail rejection. The implemented
+run already recalls provider schema stability as a policy prior. A future
+version should recall missing-handle rejections as schema-repair priors,
+retry child calls when handles are null, and learn provider-routing policies
+from repeated TraceGuard outcomes. The repaired parent would still need to
+cite fresh evidence from the new trace before TraceGuard accepts it.
 
 This direction is useful only if memory is curated. Raw progress logs,
 provider chatter, and fixture answers should not become durable recall. The
@@ -706,7 +779,8 @@ is slow but usually schema-stable" or "this task family needs fact-level
 handles rather than chunk-only handles." Benchmark use also requires
 contamination controls. These include no-memory baselines, answer-memory
 disabled, fixture content excluded from durable memory, and separate
-trace-memory policy runs.
+trace-memory policy runs. The current implementation enforces that separation
+with an allowlisted memory schema and a fresh child evidence manifest.
 
 \section{Limitations}
 \label{sec:limits}
@@ -725,6 +799,10 @@ and Codex CLI. This is stronger than a smoke test, but it is still not the
 full 96-cell baseline sweep. The primary aggregate is pass. The unanswered
 question is whether the secondary variants show the same pattern when executed
 across all providers.
+\item \textbf{Memory result is operational, not quality-bearing.} The
+memory-enabled primary matrix demonstrates that guarded operational memory can
+run live without becoming accepted evidence. It does not show that memory
+improves answer quality, latency, cost, or provider routing.
 \item \textbf{Incomplete cost and token telemetry.} The portability run
 records wall-clock latency, but not token counts or monetary cost. Those
 fields should be captured in a future full multi-provider run.
@@ -774,10 +852,12 @@ committed live fixture shows score parity after claim-aware
 rescoring, but the recursive run produces a computation the runtime can
 inspect and enforce. The 24-cell live primary matrix further shows that the
 same evidence-gated runtime contract can pass across Hermes+GLM, Claude Code,
-and Codex. That is the systems contribution. The natural next step is
-memory-shaped recursion, where prior traces improve decomposition, routing,
-and repair policy while fresh child evidence remains the only basis for parent
-claims. We offer the code,
+and Codex. A second 24-cell primary matrix shows that experimental read-write
+memory can store operational priors while TraceGuard continues to require
+fresh child evidence. That is the systems contribution. The natural next step
+is broader memory-shaped recursion, where prior traces improve decomposition,
+routing, and repair policy while fresh child evidence remains the only basis
+for parent claims. We offer the code,
 fixtures, and persisted artifacts under an MIT licence at
 \url{https://github.com/Q00/rlm-forge}.
 
