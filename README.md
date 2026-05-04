@@ -89,6 +89,10 @@ RLM-FORGE makes one careful claim:
 
 > Recursive execution is useful when it creates structured evidence handles that an outer scaffold can validate. Recursion alone is not trusted.
 
+The current committed result supports the following bounded public claim:
+
+> RLM-FORGE completed a 24-cell live primary matrix across Hermes GLM, Claude Code Opus, and Codex GPT-5.5 in read-write memory mode. All cells passed the RLM-FORGE+TraceGuard contract, with fresh child evidence validation passing in every cell and zero unsupported parent claims accepted. Memory was used only as an operational prior for schema stability, not as admissible factual evidence.
+
 On the current live Hermes long-context truncation fixture, recursive RLM and vanilla single-call Hermes are an honest **tie**:
 
 | Metric | Vanilla single call | Recursive RLM |

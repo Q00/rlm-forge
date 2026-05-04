@@ -60,9 +60,13 @@ Claude Code, and Codex completes with 24 mandatory contract passes. The
 same primary matrix also passes with experimental read-write operational
 memory enabled. Memory is admitted only as a schema and retry prior, while
 TraceGuard evidence is rebuilt from fresh child outputs in the current run.
-systems claim is not that RLM-FORGE wins a benchmark. It is that RLM-FORGE
-turns RLM from a research-time inference idea into a runtime surface that
-existing agent infrastructure can execute, inspect, and enforce.
+The strongest supported statement is deliberately bounded: RLM-FORGE completed
+that memory-enabled 24-cell matrix with fresh child evidence validation passing
+in every cell and zero unsupported parent claims accepted, while memory remained
+an operational prior rather than admissible factual evidence. The systems claim
+is not that RLM-FORGE wins a benchmark. It is that RLM-FORGE turns RLM from a
+research-time inference idea into a runtime surface that existing agent
+infrastructure can execute, inspect, and enforce.
 \end{abstract}
 
 \section{Introduction}
@@ -497,10 +501,11 @@ Family & Memory mode & Cells & Fresh evidence failures & Result \\
 The memory-enabled run completes all 24 live cells with 24 mandatory contract
 passes. TraceGuard accepts every final parent synthesis. The fresh child
 evidence gate reports zero failures. The memory backend stores 24 operational
-observations and rejects zero candidates. This result should be read narrowly.
-It shows that memory-shaped recursion can operate as a runtime feedback loop
-without becoming factual evidence. It does not show that memory improves model
-quality on downstream tasks.
+observations and rejects zero candidates. This supports a narrow but important
+claim: memory-shaped recursion can run as a live runtime feedback loop across
+three agent/runtime families without letting durable memory become admissible
+factual evidence. It does not show that memory improves model quality on
+downstream tasks.
 
 \subsection{Results}
 \label{sec:results}
