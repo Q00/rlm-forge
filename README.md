@@ -114,6 +114,21 @@ latency, token, or cost improvement.
 
 Artifact: [`experiments/memory-runtime-benefit-benchmark.md`](experiments/memory-runtime-benefit-benchmark.md)
 
+We also ran the paper itself through the dependency `ooo rlm` path. The run
+decomposed the paper target into bounded chunks, executed child Hermes calls,
+and synthesized a parent answer from the child results. A separate post-run
+TraceGuard gate over that exact parent output accepted the evidence-backed
+parent and rejected an injected memory-answer claim:
+
+| Case | TraceGuard accepted | Unsupported rate | Rejection |
+| --- | ---: | ---: | --- |
+| exact `ooo rlm` parent | true | 0.0000 | none |
+| parent + unsafe memory answer | false | 0.0667 | `unsupported_fact_id` |
+
+Artifacts:
+[`experiments/paper-key-sections-ooo-rlm-demo.md`](experiments/paper-key-sections-ooo-rlm-demo.md),
+[`experiments/paper-ooo-rlm-traceguard-gate.md`](experiments/paper-ooo-rlm-traceguard-gate.md)
+
 On the current live Hermes long-context truncation fixture, recursive RLM and vanilla single-call Hermes are an honest **tie**:
 
 | Metric | Vanilla single call | Recursive RLM |
@@ -291,6 +306,8 @@ The default `ooo run` and `ooo evolve` flows keep their original LLM-only behavi
 | Hermes memory and RLM-FORGE memory have separable runtime roles | [`experiments/layered-memory-ablation-benchmark.md`](experiments/layered-memory-ablation-benchmark.md) |
 | Adaptive repair memory reduces repeated repair calls | [`experiments/adaptive-repair-memory-benchmark.md`](experiments/adaptive-repair-memory-benchmark.md) |
 | Hermes built-in memory creates an observed layered-memory prompt effect | [`docs/hermes-layered-memory-flow.md`](docs/hermes-layered-memory-flow.md) |
+| Paper runs through actual `ooo rlm` child/parent path | [`experiments/paper-key-sections-ooo-rlm-demo.md`](experiments/paper-key-sections-ooo-rlm-demo.md) |
+| Post-run TraceGuard gate rejects injected memory-answer claim | [`experiments/paper-ooo-rlm-traceguard-gate.md`](experiments/paper-ooo-rlm-traceguard-gate.md) |
 | Claim-aware scorer avoids the earlier false win | [`experiments/claim-aware-omitted-fact-suite.md`](experiments/claim-aware-omitted-fact-suite.md) |
 | Broad deterministic scorer coverage | [`experiments/synthetic-omitted-fact-benchmark.md`](experiments/synthetic-omitted-fact-benchmark.md) |
 | Live Hermes fixture remains an honest tie | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
@@ -348,6 +365,24 @@ and RLM-FORGE guarded memory fix different deterministic failure classes in a
 2x2 ablation. Adaptive operational memory learns from the first missing-handle
 repair and reduces mean repair calls from 1.0000 to 0.1250 on later related
 tasks.
+
+Paper `ooo rlm` demo:
+[`experiments/paper-key-sections-ooo-rlm-demo.md`](experiments/paper-key-sections-ooo-rlm-demo.md)
+records an actual dependency `ouroboros rlm` run, the terminal counterpart to
+`ooo rlm`, over a mechanically extracted paper contribution target. The run
+uses four child Hermes calls plus one parent synthesis call. The parent
+consumes all child results and recovers the contribution boundary: runtime
+lifting, Ouroboros/Hermes/TraceGuard role separation, memory as policy, and no
+live quality/cost/token/latency overclaim.
+
+Post-run TraceGuard gate:
+[`experiments/paper-ooo-rlm-traceguard-gate.md`](experiments/paper-ooo-rlm-traceguard-gate.md)
+normalizes that exact `ooo rlm` parent output into TraceGuard
+fact/evidence-handle form. The evidence-backed parent is accepted with
+unsupported rate 0.0000. The same parent contaminated with an unsupported
+`MEMORY-ANSWER` fact is rejected with `unsupported_fact_id`. This is a post-run
+gate over the persisted `ooo rlm` output; the stock `ouroboros rlm` CLI does
+not call `rlm_forge.traceguard.validate_parent_synthesis` internally.
 
 ---
 
