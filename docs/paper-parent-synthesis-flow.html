@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RLM-FORGE Paper Parent Synthesis Flow</title>
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --ink: #181818;
+      --muted: #64615b;
+      --line: #c9c3b7;
+      --panel: #ffffff;
+      --panel-2: #ece9e2;
+      --green: #16875d;
+      --red: #b33b3b;
+      --blue: #2f5f9c;
+      --amber: #9a6a13;
+      --violet: #6b4aa0;
+      --shadow: 0 10px 28px rgba(28, 25, 20, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+      gap: 20px;
+      align-items: end;
+      padding: 22px 0 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1.02;
+      letter-spacing: 0;
+      max-width: 840px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 680px;
+      margin-top: 14px;
+    }
+
+    .run-meta {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #ebe7df;
+      padding-bottom: 8px;
+    }
+
+    .meta-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .label {
+      color: var(--muted);
+    }
+
+    code {
+      font-family:
+        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.93em;
+      background: #efebe3;
+      border: 1px solid #ded7ca;
+      border-radius: 4px;
+      padding: 1px 4px;
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(156px, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .node {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 172px;
+      box-shadow: var(--shadow);
+    }
+
+    .node:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 2px;
+      background: var(--line);
+      right: -15px;
+      top: 50%;
+    }
+
+    .node-id {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .blue {
+      background: var(--blue);
+    }
+
+    .green {
+      background: var(--green);
+    }
+
+    .amber {
+      background: var(--amber);
+    }
+
+    .violet {
+      background: var(--violet);
+    }
+
+    .red {
+      background: var(--red);
+    }
+
+    .node h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .node p,
+    .node li {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    ul {
+      padding-left: 18px;
+      margin: 8px 0 0;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .chunk-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .chunk {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px;
+      min-height: 164px;
+    }
+
+    .chunk strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .chunk p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .fact-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+
+    .fact-table th,
+    .fact-table td {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 12px;
+      border-bottom: 1px solid #ebe7df;
+      font-size: 13px;
+    }
+
+    .fact-table th {
+      background: var(--panel-2);
+      color: #312d27;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .fact-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .claim-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .claim {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--green);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 13px;
+      min-height: 104px;
+    }
+
+    .claim h3 {
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .claim p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .gap {
+      border-left-color: var(--red);
+    }
+
+    .ascii {
+      background: #171612;
+      color: #f4f1e8;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family:
+        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.35;
+      box-shadow: var(--shadow);
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .topbar,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .flow,
+      .chunk-grid,
+      .claim-list {
+        grid-template-columns: 1fr;
+      }
+
+      .node:not(:last-child)::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="topbar">
+      <div>
+        <h1>Paper as Parent Synthesis: Evidence-Gated Contribution Flow</h1>
+        <p class="subtitle">
+          This page visualizes the actual Hermes run where selected sections of
+          <code>paper/main.tex</code> were supplied as child evidence and the
+          parent was asked to synthesize the paper's thesis, contributions, and
+          residual gaps.
+        </p>
+      </div>
+      <aside class="run-meta" aria-label="Run metadata">
+        <div class="meta-row">
+          <span class="label">Hermes session</span>
+          <code>20260507_174326_e60272</code>
+        </div>
+        <div class="meta-row">
+          <span class="label">Runtime command</span>
+          <code>hermes chat -Q --source tool -q</code>
+        </div>
+        <div class="meta-row">
+          <span class="label">Evidence rule</span>
+          <span>Only supplied chunks count</span>
+        </div>
+        <div class="meta-row">
+          <span class="label">Memory rule</span>
+          <span>Prior only, not evidence</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">End-to-End Runtime Flow</h2>
+      <div class="flow">
+        <article class="node">
+          <span class="node-id blue">1</span>
+          <h3>Select Paper Evidence</h3>
+          <p>
+            Four paper ranges were selected instead of sending the whole TeX
+            file as unstructured context.
+          </p>
+          <ul>
+            <li>Abstract</li>
+            <li>Contribution list</li>
+            <li>Operational memory</li>
+            <li>Conclusion</li>
+          </ul>
+        </article>
+        <article class="node">
+          <span class="node-id amber">2</span>
+          <h3>Build Parent Prompt</h3>
+          <p>
+            The prompt required JSON output, fact IDs, chunk citations, residual
+            gaps, and a strict no-overclaim rule.
+          </p>
+        </article>
+        <article class="node">
+          <span class="node-id violet">3</span>
+          <h3>Hermes Executes</h3>
+          <p>
+            Hermes receives its usual runtime context plus the explicit
+            RLM-FORGE-style parent synthesis task.
+          </p>
+        </article>
+        <article class="node">
+          <span class="node-id green">4</span>
+          <h3>Parent Synthesizes</h3>
+          <p>
+            The model returns a thesis, ten contribution claims, thirty retained
+            facts, residual gaps, and presentation framing.
+          </p>
+        </article>
+        <article class="node">
+          <span class="node-id red">5</span>
+          <h3>Claim Boundary Holds</h3>
+          <p>
+            The parent refuses unsupported quality, cost, latency, and semantic
+            truth claims.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Input Chunks</h2>
+      <div class="chunk-grid">
+        <article class="chunk">
+          <strong><code>paper/main.tex:42-75</code></strong>
+          <p>
+            Abstract: runtime lifting, Hermes RPC, Ouroboros control,
+            TraceGuard, parity, memory boundaries, deterministic memory
+            benchmarks.
+          </p>
+        </article>
+        <article class="chunk">
+          <strong><code>paper/main.tex:108-151</code></strong>
+          <p>
+            Contribution list: runtime-lifted RLM, control surfaces,
+            executable evidence discipline, portability, evidence-admissible
+            memory.
+          </p>
+        </article>
+        <article class="chunk">
+          <strong><code>paper/main.tex:477-591</code></strong>
+          <p>
+            Operational memory: JSONL memory guard, memory priors, Hermes
+            built-in memory, deterministic contribution benchmark table.
+          </p>
+        </article>
+        <article class="chunk">
+          <strong><code>paper/main.tex:967-985</code></strong>
+          <p>
+            Conclusion: runtime properties, score parity, 24-cell matrices,
+            memory priors, fresh child evidence, future memory-shaped recursion.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section split">
+      <article class="panel">
+        <h3>Prompt Contract</h3>
+        <pre class="ascii">{
+  "task": "synthesize_parent_answer_from_paper_child_records",
+  "rules": [
+    "Use only provided paper chunks as evidence.",
+    "Treat persistent memory as a behavioral prior, not evidence.",
+    "Every retained_fact must include fact_id and evidence_chunk_id.",
+    "Separate supported contribution claims from residual gaps.",
+    "Do not claim live model-quality improvement unless supported."
+  ]
+}</pre>
+      </article>
+      <article class="panel">
+        <h3>Evidence Boundary</h3>
+        <pre class="ascii">Hermes MEMORY.md
+  -> may bias behavior
+  -> cannot support a paper claim
+
+Provided paper chunks
+  -> can support retained facts
+  -> must be cited by evidence_chunk_id
+
+Parent synthesis
+  -> claims only from retained facts
+  -> unsupported claims become residual gaps</pre>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Parent Output: Thesis</h2>
+      <article class="panel">
+        <p>
+          RLM-FORGE's supported claim is that Recursive Language Model behavior
+          can be lifted into an existing agent runtime as an enforceable
+          execution contract, preserving bounded sub-calls, trace state,
+          replayable child evidence, provider-swappable execution, and
+          evidence-gated parent synthesis, without claiming a new model
+          architecture or live downstream model-quality improvement.
+        </p>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Supported Contribution Claims</h2>
+      <div class="claim-list">
+        <article class="claim">
+          <h3>Runtime-Lifted RLM</h3>
+          <p>
+            RLM is presented as a runtime primitive existing agent
+            infrastructure can execute, inspect, and enforce.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>Hermes as Inner Execution</h3>
+          <p>
+            Hermes RPC hosts recursive sub-calls and keeps the inner provider
+            swappable.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>Ouroboros Control Plane</h3>
+          <p>
+            The scaffold owns bounded context, recursive sub-call graphs, child
+            evidence, and parent synthesis control.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>TraceGuard Evidence Gate</h3>
+          <p>
+            Parent claims need accepted child evidence handles before becoming
+            accepted state.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>Portability Evidence</h3>
+          <p>
+            The same RLM-FORGE+TraceGuard contract passes a 24-cell matrix
+            across Hermes+GLM, Claude Code, and Codex.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>Bounded Benchmark Claim</h3>
+          <p>
+            The live truncation fixture is score parity after claim-aware
+            rescoring, not a recursive quality win.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>Memory as Policy</h3>
+          <p>
+            Memory is admitted as schema/retry/routing prior, not as accepted
+            evidence.
+          </p>
+        </article>
+        <article class="claim">
+          <h3>Contribution Benchmarks</h3>
+          <p>
+            Deterministic tests support contamination rejection, layered role
+            separation, and adaptive repair efficiency.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Representative Retained Facts</h2>
+      <table class="fact-table">
+        <thead>
+          <tr>
+            <th>Fact ID</th>
+            <th>Evidence Chunk</th>
+            <th>What It Supports</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge blue">PAPER-003</span></td>
+            <td><code>paper/main.tex:42-75</code></td>
+            <td>
+              RLM-FORGE turns RLM into a runtime surface that infrastructure can
+              execute, inspect, and enforce.
+            </td>
+          </tr>
+          <tr>
+            <td><span class="badge green">PAPER-010</span></td>
+            <td><code>paper/main.tex:108-151</code></td>
+            <td>
+              Evidence-gated Hermes-RLM has unsupported-claim rate 0.0 while
+              ungated RLM-shaped policy fails at 1.0.
+            </td>
+          </tr>
+          <tr>
+            <td><span class="badge amber">PAPER-021</span></td>
+            <td><code>paper/main.tex:477-591</code></td>
+            <td>
+              Memory-shaped recursion can run as runtime feedback without
+              letting durable memory become admissible factual evidence.
+            </td>
+          </tr>
+          <tr>
+            <td><span class="badge violet">PAPER-025</span></td>
+            <td><code>paper/main.tex:477-591</code></td>
+            <td>
+              TraceGuard turns adversarial answer memory from accepted state
+              into a rejected unsupported claim.
+            </td>
+          </tr>
+          <tr>
+            <td><span class="badge red">PAPER-028</span></td>
+            <td><code>paper/main.tex:967-985</code></td>
+            <td>
+              The live fixture shows score parity, while the recursive run
+              remains inspectable and enforceable.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">
+        The actual parent output contained thirty retained facts. This table
+        shows the facts most useful for explaining the contribution.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Unsupported Claims Become Residual Gaps</h2>
+      <div class="claim-list">
+        <article class="claim gap">
+          <h3>No Live Quality Win</h3>
+          <p>
+            The provided chunks explicitly support score parity, not downstream
+            quality improvement.
+          </p>
+        </article>
+        <article class="claim gap">
+          <h3>No Cost, Token, or Latency Win</h3>
+          <p>
+            The paper chunks do not support live cost, token, or latency
+            improvement claims.
+          </p>
+        </article>
+        <article class="claim gap">
+          <h3>No Semantic Truth Oracle</h3>
+          <p>
+            TraceGuard validates evidence handles and admissibility, not
+            universal semantic truth.
+          </p>
+        </article>
+        <article class="claim gap">
+          <h3>Hermes Memory Is Observational</h3>
+          <p>
+            The built-in memory layer is framed as an integration observation
+            and behavioral prior, not as document evidence.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">ASCII Flow for Slides</h2>
+      <pre class="ascii">paper/main.tex chunks
+  |
+  |  abstract + contributions + memory experiment + conclusion
+  v
+parent synthesis prompt
+  |
+  |  use only supplied chunks
+  |  memory is prior, not evidence
+  |  cite every retained fact
+  v
+Hermes parent call
+  |
+  |  thesis
+  |  contribution claims
+  |  retained facts PAPER-001..PAPER-030
+  |  residual gaps
+  v
+claim boundary
+  |
+  +-- accepted:
+  |     runtime-lifted RLM
+  |     TraceGuard evidence gate
+  |     memory as runtime policy
+  |     deterministic repair/contamination benchmarks
+  |
+  +-- rejected / residual:
+        live quality improvement
+        live latency/token/cost improvement
+        memory as factual evidence
+        TraceGuard as semantic truth oracle</pre>
+    </section>
+  </main>
+</body>
+</html>

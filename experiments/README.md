@@ -188,3 +188,54 @@ and six execution contracts. The evidence-gated Hermes-RLM contract has a
 gating has a 1.0000 unsupported-claim rate. This is the clearest ablation for
 the paper claim that traceable evidence validation, not recursion alone, is
 the useful systems contribution.
+
+## Memory runtime benefit benchmark
+
+Run:
+
+```bash
+python3 scripts/run-memory-runtime-benefit-benchmark.py
+```
+
+Outputs:
+
+- `experiments/memory-runtime-benefit-benchmark.json`
+- `experiments/memory-runtime-benefit-benchmark.md`
+
+Current result: 240 deterministic evaluations across 20 generated fixtures,
+four provider-failure profiles, and three memory policies. The guarded
+operational-memory prior raises initial TraceGuard acceptance from 0.2500 to
+1.0000 relative to no memory and reduces mean repair calls from 0.2500 to
+0.0000. This is a runtime-control benchmark only. It does not call Hermes and
+does not prove live model-quality, latency, token, or cost improvement.
+
+## Memory contribution benchmarks
+
+Run:
+
+```bash
+python3 scripts/run-memory-contribution-benchmarks.py
+```
+
+Outputs:
+
+- `experiments/memory-contamination-robustness-benchmark.json`
+- `experiments/memory-contamination-robustness-benchmark.md`
+- `experiments/layered-memory-ablation-benchmark.json`
+- `experiments/layered-memory-ablation-benchmark.md`
+- `experiments/adaptive-repair-memory-benchmark.json`
+- `experiments/adaptive-repair-memory-benchmark.md`
+
+Current results:
+
+- Memory contamination robustness: unguarded adversarial memory accepts the
+  unsupported memory answer at 1.0000; TraceGuard accepts it at 0.0000.
+- Layered memory ablation: Hermes-style prompt memory and RLM-FORGE guarded
+  memory fix different deterministic failure classes; both together reach
+  1.0000 initial accept with 0.0000 mean repair calls.
+- Adaptive repair memory: a missing-handle prior learned after the first repair
+  raises initial accept from 0.0000 to 0.8750 and reduces mean repair calls
+  from 1.0000 to 0.1250 across repeated related tasks.
+
+These are runtime-control benchmarks. They do not call Hermes and do not prove
+live model-quality, latency, token, or cost improvement.

@@ -44,7 +44,7 @@
 <p align="center">
   <strong>Runtime-Lifted Recursive Language Models for Agent Infrastructure.</strong>
   <br />
-  The paper states the systems claim, corrected benchmark result, TraceGuard enforcement model, and 24-cell live portability evidence.
+  The paper states the systems claim, corrected benchmark result, TraceGuard enforcement model, layered memory finding, and 24-cell live portability evidence.
 </p>
 
 ---
@@ -67,6 +67,12 @@
 │      ▼                                                             │
 │  TraceGuard                    parent claims must cite evidence    │
 ╰────────────────────────────────────────────────────────────────────╯
+```
+
+```text
+Hermes MEMORY.md + RLM-FORGE memory_priors  -> behavioral priors
+fresh child evidence manifest               -> admissible parent evidence
+TraceGuard                                  -> deterministic acceptance gate
 ```
 
 <p align="center">
@@ -92,6 +98,21 @@ RLM-FORGE makes one careful claim:
 The current committed result supports the following bounded public claim:
 
 > RLM-FORGE completed a 24-cell live primary matrix across Hermes GLM, Claude Code Opus, and Codex GPT-5.5 in read-write memory mode. All cells passed the RLM-FORGE+TraceGuard contract, with fresh child evidence validation passing in every cell and zero unsupported parent claims accepted. Memory was used only as an operational prior for schema stability, not as admissible factual evidence.
+
+A set of deterministic memory-runtime benchmarks isolates the performance claim
+we can safely make today: guarded operational memory can reject answer-memory
+contamination, separate layered memory roles, and reduce validation/repair work
+for known schema failure modes. It does **not** prove live model-quality,
+latency, token, or cost improvement.
+
+| Benchmark | Strongest deterministic result |
+| --- | --- |
+| Memory contamination robustness | Unguarded adversarial memory accepts answer contamination at 1.0000; TraceGuard accepts it at 0.0000 |
+| Layered memory ablation | Hermes memory + RLM-FORGE memory reaches 1.0000 initial accept with 0.0000 repairs |
+| Adaptive repair memory | Mean repair calls fall from 1.0000 to 0.1250 across repeated related tasks |
+| Guarded memory runtime benefit | Initial TraceGuard accept rises from 0.2500 to 1.0000 versus no memory |
+
+Artifact: [`experiments/memory-runtime-benefit-benchmark.md`](experiments/memory-runtime-benefit-benchmark.md)
 
 On the current live Hermes long-context truncation fixture, recursive RLM and vanilla single-call Hermes are an honest **tie**:
 
@@ -265,6 +286,11 @@ The default `ooo run` and `ooo evolve` flows keep their original LLM-only behavi
 | --- | --- |
 | TraceGuard enforces parent synthesis evidence handles | [`experiments/traceguard-demo.md`](experiments/traceguard-demo.md) |
 | Evidence-gated recursion is the mechanism, not recursion alone | [`experiments/unsupported-claim-rate-benchmark.md`](experiments/unsupported-claim-rate-benchmark.md) |
+| Guarded memory reduces repair work in a controlled runtime benchmark | [`experiments/memory-runtime-benefit-benchmark.md`](experiments/memory-runtime-benefit-benchmark.md) |
+| TraceGuard prevents answer-memory contamination from becoming accepted state | [`experiments/memory-contamination-robustness-benchmark.md`](experiments/memory-contamination-robustness-benchmark.md) |
+| Hermes memory and RLM-FORGE memory have separable runtime roles | [`experiments/layered-memory-ablation-benchmark.md`](experiments/layered-memory-ablation-benchmark.md) |
+| Adaptive repair memory reduces repeated repair calls | [`experiments/adaptive-repair-memory-benchmark.md`](experiments/adaptive-repair-memory-benchmark.md) |
+| Hermes built-in memory creates an observed layered-memory prompt effect | [`docs/hermes-layered-memory-flow.md`](docs/hermes-layered-memory-flow.md) |
 | Claim-aware scorer avoids the earlier false win | [`experiments/claim-aware-omitted-fact-suite.md`](experiments/claim-aware-omitted-fact-suite.md) |
 | Broad deterministic scorer coverage | [`experiments/synthetic-omitted-fact-benchmark.md`](experiments/synthetic-omitted-fact-benchmark.md) |
 | Live Hermes fixture remains an honest tie | [`benchmarks/rlm-long-context-truncation-v1.json`](benchmarks/rlm-long-context-truncation-v1.json) |
@@ -302,6 +328,26 @@ the same recursive shape without evidence gating has a 1.0000 unsupported-claim
 rate. This supports the precise systems claim: recursion is useful because it
 creates evidence handles that Ouroboros can validate, not because recursion
 alone makes hallucination impossible.
+
+Memory runtime benefit:
+[`experiments/memory-runtime-benefit-benchmark.md`](experiments/memory-runtime-benefit-benchmark.md)
+compares three memory policies over 20 fixtures and four provider-failure
+profiles. The guarded operational memory prior improves initial TraceGuard
+acceptance from 0.2500 to 1.0000 versus the no-memory policy and reduces mean
+repair calls from 0.2500 to 0.0000. This is a controlled runtime-performance
+result: memory helps the scaffold avoid known schema/handle repair work, while
+TraceGuard still rejects answer-memory contamination.
+
+Memory contribution benchmarks:
+[`experiments/memory-contamination-robustness-benchmark.md`](experiments/memory-contamination-robustness-benchmark.md),
+[`experiments/layered-memory-ablation-benchmark.md`](experiments/layered-memory-ablation-benchmark.md),
+and [`experiments/adaptive-repair-memory-benchmark.md`](experiments/adaptive-repair-memory-benchmark.md)
+separate three stronger claims. TraceGuard turns adversarial answer memory from
+accepted state into a rejected unsupported claim. Hermes-style prompt memory
+and RLM-FORGE guarded memory fix different deterministic failure classes in a
+2x2 ablation. Adaptive operational memory learns from the first missing-handle
+repair and reduces mean repair calls from 1.0000 to 0.1250 on later related
+tasks.
 
 ---
 
@@ -390,6 +436,24 @@ The live path now builds TraceGuard's accepted evidence manifest from the
 current run's child outputs, not from memory. Memory can only enter prompts as
 structured `memory_priors` for schema or retry policy. Every new parent claim
 still has to cite fresh child evidence and pass TraceGuard.
+
+There is also an observed layered-memory effect when Hermes is the inner
+runtime. `HermesCliRuntime` calls `hermes chat -Q --source tool -q <prompt>`
+without `--ignore-rules`, so Hermes' own built-in `MEMORY.md` can be injected
+before the explicit RLM-FORGE prompt. In this environment, Hermes sessions
+created after an RLM-FORGE run contained RLM-FORGE operational prior entries in
+their system prompts. That layer is useful as a behavior prior, but it is not
+part of the TraceGuard evidence manifest. Details and session evidence are in
+[`docs/hermes-layered-memory-flow.md`](docs/hermes-layered-memory-flow.md).
+
+The stronger contribution is evidence-admissible memory for agent runtimes:
+memory may shape decomposition, schema discipline, and repair policy, but only
+fresh child evidence can support parent claims. The deterministic contribution
+benchmarks can be regenerated with:
+
+```bash
+python scripts/run-memory-contribution-benchmarks.py
+```
 
 ```bash
 python scripts/run-live-portability-matrix.py \
