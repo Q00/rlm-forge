@@ -72,6 +72,12 @@ without becoming admissible factual evidence. The systems claim is not that
 RLM-FORGE wins a benchmark. It is that RLM-FORGE turns RLM from a research-time
 inference idea into a runtime surface that existing agent infrastructure can
 execute, inspect, and enforce.
+Finally, a repository-local \texttt{ooo rlm} wrapper now installs the
+TraceGuard gate in-process after parent synthesis. A deterministic replay of
+the persisted paper run shows why this matters: the gate rejects a raw parent
+output that cites a nonexistent child result, accepts the same parent after the
+handle is repaired to fresh child evidence, and still rejects an injected
+memory-answer fact.
 \end{abstract}
 
 \section{Introduction}
@@ -101,6 +107,9 @@ partitionable, work becomes compositional, intermediate claims become
 inspectable, and parent synthesis can be blocked when it cites evidence the
 children never produced. Those are runtime properties. They are useful even
 before a broad live benchmark demonstrates a model-quality delta.
+The same distinction applies to memory. A remembered prior may guide
+decomposition or repair, but the committed parent answer needs a separate
+correspondence check against fresh child evidence.
 
 We make four concrete claims.
 
@@ -148,6 +157,13 @@ TraceGuard rejects adversarial answer-memory contamination, the two memory
 layers have separable runtime roles, and adaptive repair memory reduces
 repeated missing-handle repairs. These results do not show live model-quality,
 latency, token, or cost improvement.
+
+\item \textbf{In-process parent-synthesis gate.} The project-local
+\texttt{ooo} and \texttt{ouroboros} entrypoints now install the same
+TraceGuard validator directly around the dependency \texttt{ouroboros rlm}
+command. The gate adapts child-result handles from the upstream parent schema
+into TraceGuard's fact/evidence-handle contract before the CLI reports
+success.
 \end{enumerate}
 
 We do not claim novelty over the RLM paradigm itself, and we do not compare
@@ -188,6 +204,23 @@ agents. It contributes two pieces relevant to our integration. They are a
 typed acceptance-criteria tree (\texttt{ACTree}) with a depth cap of five
 and a runtime adapter (\texttt{HermesCliRuntime}) that wraps the Hermes CLI
 as a callable \texttt{AgentRuntime}. We use both unchanged.
+
+\paragraph{Memory as guidance, not proof.}
+The evidence boundary in RLM-FORGE is also motivated by a useful analogy from
+autobiographical memory theory. Conway and Pleydell-Pearce's self-memory
+system separates experience-near episodic records from the \emph{working
+self}, a goal-directed control structure that shapes what is retrieved and
+how it is organized~\citep{conway2000sms}. Later work frames autobiographical
+remembering as balancing \emph{correspondence} with past experience and
+\emph{coherence} with the current self and its goals~\citep{conway2004correspondence}.
+We do not claim that an agent runtime has a human self-memory system. The
+engineering lesson is narrower: remembered priors can guide retrieval and
+repair policy, but they should not by themselves prove a current factual
+claim. If a runtime lets retrieved memory both guide the search and certify
+the answer, it collapses the control layer and the evidence layer into one
+buffer. TraceGuard enforces the split. Memory may bias how children are
+prompted or how missing handles are repaired, but parent claims must still
+cite fresh child evidence from the current run.
 
 \section{System Design}
 \label{sec:system}
@@ -595,6 +628,63 @@ Adaptive repair memory & 0.8750 & 0.1250 & 0.0000 \\
 \end{tabular}
 \end{table}
 
+\subsection{In-process \texttt{ooo rlm} TraceGuard gate}
+\label{sec:inprocess-gate}
+
+The first paper replay used the dependency \texttt{ouroboros rlm} path to
+decompose a mechanically extracted paper target into four child Hermes calls
+and one parent synthesis call. A separate post-run script then normalized the
+persisted parent into TraceGuard's fact/evidence-handle form. That proved
+compatibility, but it did not prove that the CLI itself enforced the gate.
+
+RLM-FORGE now adds a project-local \texttt{ooo}/\texttt{ouroboros} console
+script wrapper. The wrapper installs a process-local patch around the upstream
+\texttt{ouroboros rlm} helper and then delegates to the upstream Typer app.
+The patch does not mutate the dependency package. After parent synthesis, it
+builds a fresh evidence manifest from the current run's child results:
+\texttt{child\_result\_id} plus child chunk handle becomes a
+TraceGuard evidence item. Parent \texttt{supported\_by\_child\_result\_ids}
+entries become TraceGuard claim references. Any parent fact that cites a
+missing child result, wrong chunk handle, or memory-only answer remains outside
+the fresh manifest and is rejected.
+
+\begin{table}[t]
+\centering
+\caption{Deterministic replay of the in-process \texttt{ooo rlm} TraceGuard
+gate over the persisted paper run. The raw parent rejection is a real handle
+defect caught by the stricter in-process gate.}
+\label{tab:ooo-rlm-inprocess-gate}
+\small
+\begin{tabular}{p{0.46\linewidth}rp{0.26\linewidth}}
+\toprule
+Case & Unsupported rate & Result \\
+\midrule
+Raw persisted parent & 0.0435 & reject, unsupported child handle \\
+Handle-repaired parent & 0.0000 & accept \\
+Repaired parent plus memory answer & 0.0500 & reject, unsupported memory fact \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:ooo-rlm-inprocess-gate} shows the resulting experiment. The
+raw persisted parent cites child result 004, while the run produced only child
+results 000 through 003. The in-process gate therefore rejects the raw parent
+with \texttt{unsupported\_fact\_id}. After
+repairing that handle to the actual fresh child manifest, the parent accepts
+with unsupported rate 0.0000. Injecting a \texttt{MEMORY-ANSWER} fact into the
+repaired parent is rejected. This is the desired boundary: automatic parent
+gating can catch real parent-handle defects and memory contamination, while a
+parent that cites only fresh child results passes.
+
+We also executed the live wrapper path after installing the gate, using
+\texttt{uv run} with the project-local \texttt{ooo rlm} entrypoint over the
+paper key-section target. The run completed five Hermes atomic execution
+sub-calls, generated an RLM tree of depth one, and printed a TraceGuard accept
+with unsupported rate 0.0000 and four accepted claims before reporting command
+success. This establishes that the gate is no longer merely a post-run
+verifier for this repository path; it is applied in-process before the local
+\texttt{ooo rlm} wrapper reports success.
+
 \subsection{Results}
 \label{sec:results}
 
@@ -983,7 +1073,11 @@ fresh child evidence, and a deterministic memory-runtime benchmark shows that
 guarded schema/retry priors can reduce repair work for known failure modes.
 Additional deterministic benchmarks show that TraceGuard rejects adversarial
 answer-memory contamination, the two memory layers have separable runtime
-roles, and adaptive repair memory reduces repeated repair calls.
+roles, and adaptive repair memory reduces repeated repair calls. The
+project-local \texttt{ooo rlm} wrapper now also applies TraceGuard in-process:
+deterministic replay shows it rejects a raw parent with a nonexistent child
+handle, accepts the handle-repaired parent, and rejects memory-answer
+contamination.
 That is the systems contribution. The natural next step is broader
 memory-shaped recursion, where prior traces improve decomposition, routing,
 and repair policy while fresh child evidence remains the only basis for parent

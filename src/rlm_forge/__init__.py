@@ -31,6 +31,11 @@ from rlm_forge.memory import (  # noqa: F401
     NoopMemoryBackend,
     validate_memory_record,
 )
+from rlm_forge.ooo_rlm_traceguard import (  # noqa: F401
+    OOORLMTraceGuardGate,
+    install_ouroboros_rlm_cli_gate,
+    validate_ooo_rlm_result,
+)
 from rlm_forge.traceguard import (  # noqa: F401
     TraceGuardClaim,
     TraceGuardEvidence,
@@ -51,6 +56,7 @@ __all__ = [
     "MemoryObservation",
     "MemoryPrior",
     "NoopMemoryBackend",
+    "OOORLMTraceGuardGate",
     "RLM_MVP_SRC_DOGFOOD_BENCHMARK_ID",
     "RLMRunConfig",
     "RLMRunResult",
@@ -68,7 +74,9 @@ __all__ = [
     "TraceGuardResult",
     "build_manifest_from_fixture",
     "extract_parent_claims",
+    "install_ouroboros_rlm_cli_gate",
     "normalize_allowed_evidence_manifest",
+    "validate_ooo_rlm_result",
     "validate_memory_record",
     "validate_parent_synthesis",
 ]

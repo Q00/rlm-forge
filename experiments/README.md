@@ -113,6 +113,41 @@ unsafe_omitted_fact: REJECT (unsupported_claim_rate=0.2000)
 chunk_only_no_fact: REJECT (unsupported_claim_rate=1.0000)
 ```
 
+## ooo rlm in-process TraceGuard gate
+
+Run:
+
+```bash
+uv run --extra dev python scripts/run-ooo-rlm-inprocess-traceguard-experiment.py
+```
+
+Outputs:
+
+- `experiments/ooo-rlm-inprocess-traceguard-gate.json`
+- `experiments/ooo-rlm-inprocess-traceguard-gate.md`
+- `experiments/ooo-rlm-live-inprocess-traceguard-run.json`
+- `experiments/ooo-rlm-live-inprocess-traceguard-run.md`
+
+Current result: the project-local `uv run ooo rlm` / `uv run ouroboros rlm`
+wrapper installs the in-process TraceGuard adapter without mutating the
+dependency package in `.venv`. Against the persisted paper run, the raw parent
+is rejected because it cites `rlm_node_root:child_result:004` even though the
+run produced only child results `000..003`. After repairing that handle to the
+fresh child manifest, the parent accepts at unsupported rate 0.0000. Injecting
+a memory-answer fact into the repaired parent is rejected as
+`unsupported_fact_id`.
+
+The live wrapper run was also executed:
+
+```bash
+uv run --extra dev ooo rlm experiments/paper-ooo-rlm-key-sections-target.txt \
+  --cwd /Users/jaegyu.lee/Project/ouroboros-rlm-hermes --debug
+```
+
+It completed 5 Hermes atomic execution sub-calls and printed
+`TraceGuard accepted parent synthesis (unsupported_rate=0.0000, claims=4)`
+before reporting command success.
+
 ## Claim-aware omitted-fact suite
 
 Run:

@@ -116,9 +116,12 @@ Artifact: [`experiments/memory-runtime-benefit-benchmark.md`](experiments/memory
 
 We also ran the paper itself through the dependency `ooo rlm` path. The run
 decomposed the paper target into bounded chunks, executed child Hermes calls,
-and synthesized a parent answer from the child results. A separate post-run
-TraceGuard gate over that exact parent output accepted the evidence-backed
-parent and rejected an injected memory-answer claim:
+and synthesized a parent answer from the child results. RLM-FORGE now provides
+project-local `ouroboros`/`ooo` console-script wrappers for `uv run ouroboros
+rlm` or `uv run ooo rlm` that install TraceGuard immediately after parent
+synthesis, then delegate to the upstream Ouroboros Typer app. The earlier
+persisted post-run gate over that exact parent output accepted the
+evidence-backed parent and rejected an injected memory-answer claim:
 
 | Case | TraceGuard accepted | Unsupported rate | Rejection |
 | --- | ---: | ---: | --- |
@@ -307,6 +310,9 @@ The default `ooo run` and `ooo evolve` flows keep their original LLM-only behavi
 | Adaptive repair memory reduces repeated repair calls | [`experiments/adaptive-repair-memory-benchmark.md`](experiments/adaptive-repair-memory-benchmark.md) |
 | Hermes built-in memory creates an observed layered-memory prompt effect | [`docs/hermes-layered-memory-flow.md`](docs/hermes-layered-memory-flow.md) |
 | Paper runs through actual `ooo rlm` child/parent path | [`experiments/paper-key-sections-ooo-rlm-demo.md`](experiments/paper-key-sections-ooo-rlm-demo.md) |
+| `uv run ouroboros rlm` / `uv run ooo rlm` get a repo-local in-process TraceGuard gate | [`src/rlm_forge/ooo_rlm_traceguard.py`](src/rlm_forge/ooo_rlm_traceguard.py) |
+| In-process gate catches a raw parent child-handle bug and rejects memory answers | [`experiments/ooo-rlm-inprocess-traceguard-gate.md`](experiments/ooo-rlm-inprocess-traceguard-gate.md) |
+| Live `ooo rlm` run accepts parent synthesis through the in-process gate | [`experiments/ooo-rlm-live-inprocess-traceguard-run.md`](experiments/ooo-rlm-live-inprocess-traceguard-run.md) |
 | Post-run TraceGuard gate rejects injected memory-answer claim | [`experiments/paper-ooo-rlm-traceguard-gate.md`](experiments/paper-ooo-rlm-traceguard-gate.md) |
 | Claim-aware scorer avoids the earlier false win | [`experiments/claim-aware-omitted-fact-suite.md`](experiments/claim-aware-omitted-fact-suite.md) |
 | Broad deterministic scorer coverage | [`experiments/synthetic-omitted-fact-benchmark.md`](experiments/synthetic-omitted-fact-benchmark.md) |
@@ -381,8 +387,28 @@ normalizes that exact `ooo rlm` parent output into TraceGuard
 fact/evidence-handle form. The evidence-backed parent is accepted with
 unsupported rate 0.0000. The same parent contaminated with an unsupported
 `MEMORY-ANSWER` fact is rejected with `unsupported_fact_id`. This is a post-run
-gate over the persisted `ooo rlm` output; the stock `ouroboros rlm` CLI does
-not call `rlm_forge.traceguard.validate_parent_synthesis` internally.
+gate over the persisted `ooo rlm` output.
+
+In-process `ooo rlm` gate:
+[`src/rlm_forge/ooo_rlm_traceguard.py`](src/rlm_forge/ooo_rlm_traceguard.py)
+adapts the dependency Ouroboros parent schema into TraceGuard's existing
+fact/evidence-handle validator. It turns fresh `child_result_id` plus child
+chunk handles into the accepted evidence manifest, normalizes parent
+`supported_by_child_result_ids` into claim references, and rejects parent facts
+that do not cite the current run's child evidence. [`src/rlm_forge/ouroboros_cli.py`](src/rlm_forge/ouroboros_cli.py)
+installs this process-local gate for the project-local `uv run ouroboros` and
+`uv run ooo` entrypoints, so the dependency package in `.venv` is not mutated.
+[`experiments/ooo-rlm-inprocess-traceguard-gate.md`](experiments/ooo-rlm-inprocess-traceguard-gate.md)
+shows the gate catching a real raw-parent handle defect in the persisted paper
+run: the parent cited `rlm_node_root:child_result:004`, but the run produced
+only child results `000..003`. After repairing that handle to fresh child
+evidence, the parent accepts with unsupported rate 0.0000; adding a
+`MEMORY-ANSWER` fact is rejected.
+[`experiments/ooo-rlm-live-inprocess-traceguard-run.md`](experiments/ooo-rlm-live-inprocess-traceguard-run.md)
+records the live wrapper path after the integration: `uv run --extra dev ooo
+rlm ...` completes four child Hermes calls plus one parent synthesis call and
+prints `TraceGuard accepted parent synthesis (unsupported_rate=0.0000,
+claims=4)` before reporting command success.
 
 ---
 

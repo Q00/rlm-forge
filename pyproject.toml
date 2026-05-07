@@ -31,6 +31,8 @@ live = [
 ]
 
 [project.scripts]
+ouroboros = "rlm_forge.ouroboros_cli:main"
+ooo = "rlm_forge.ouroboros_cli:main"
 rlm-forge-replay = "rlm_forge.replay:main"
 rlm-forge-live-portability = "rlm_forge.live_portability:main"
 

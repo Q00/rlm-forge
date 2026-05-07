@@ -35,6 +35,12 @@ ADAPTIVE_REPAIR_MEMORY_BENCHMARK = (
 PAPER_OOO_RLM_TRACEGUARD_GATE = (
     REPO_ROOT / "experiments" / "paper-ooo-rlm-traceguard-gate.json"
 )
+OOO_RLM_INPROCESS_TRACEGUARD_GATE = (
+    REPO_ROOT / "experiments" / "ooo-rlm-inprocess-traceguard-gate.json"
+)
+OOO_RLM_LIVE_INPROCESS_TRACEGUARD_RUN = (
+    REPO_ROOT / "experiments" / "ooo-rlm-live-inprocess-traceguard-run.json"
+)
 TRACEGUARD_DEMO = REPO_ROOT / "experiments" / "traceguard-demo.json"
 
 
@@ -272,9 +278,52 @@ def test_paper_ooo_rlm_traceguard_gate_accepts_safe_and_rejects_memory() -> None
     assert unsafe["rejected_claims"][0]["reason"] == "unsupported_fact_id"
     assert conclusion["exact_ooo_rlm_run_traceguard_safe_accepts"] is True
     assert conclusion["exact_ooo_rlm_run_traceguard_rejects_memory_answer"] is True
-    assert "does not call this validator internally" in conclusion[
+    assert "upstream dependency" in conclusion[
         "automatic_gate_scope"
     ]
+    assert "wrappers now install an in-process gate" in conclusion[
+        "automatic_gate_scope"
+    ]
+
+
+def test_ooo_rlm_inprocess_traceguard_gate_catches_raw_parent_handle_bug() -> None:
+    """The project-local ooo rlm gate validates raw parent handles in-process."""
+    assert OOO_RLM_INPROCESS_TRACEGUARD_GATE.exists(), (
+        f"missing artifact at {OOO_RLM_INPROCESS_TRACEGUARD_GATE}"
+    )
+    data = json.loads(OOO_RLM_INPROCESS_TRACEGUARD_GATE.read_text())
+    cases = {case["case_id"]: case for case in data["cases"]}
+
+    assert data["patch_installed"] is True
+    assert cases["raw_persisted_parent"]["accepted"] is False
+    assert cases["raw_persisted_parent"]["validation"]["rejected_claims"][0][
+        "reason"
+    ] == "unsupported_fact_id"
+    assert cases["handle_repaired_parent"]["accepted"] is True
+    assert cases["handle_repaired_parent"]["validation"]["unsupported_claim_rate"] == 0.0
+    assert cases["handle_repaired_parent_plus_memory_answer"]["accepted"] is False
+    assert data["conclusion"]["wrapper_installs_inprocess_gate"] is True
+    assert data["conclusion"]["raw_parent_gate_rejects_bad_child_handle"] is True
+    assert data["conclusion"]["handle_repaired_parent_accepts"] is True
+    assert data["conclusion"]["memory_answer_rejected"] is True
+
+
+def test_ooo_rlm_live_inprocess_traceguard_run_accepts_parent() -> None:
+    """The live ooo rlm wrapper run records an in-process TraceGuard accept."""
+    assert OOO_RLM_LIVE_INPROCESS_TRACEGUARD_RUN.exists(), (
+        f"missing artifact at {OOO_RLM_LIVE_INPROCESS_TRACEGUARD_RUN}"
+    )
+    data = json.loads(OOO_RLM_LIVE_INPROCESS_TRACEGUARD_RUN.read_text())
+
+    assert data["wrapper_entrypoint"] == "ooo"
+    assert data["traceguard_gate"]["scope"] == "in_process_after_parent_synthesis"
+    assert data["traceguard_gate"]["accepted"] is True
+    assert data["traceguard_gate"]["unsupported_rate"] == 0.0
+    assert data["traceguard_gate"]["accepted_claim_count"] == 4
+    assert data["rlm_result"]["hermes_atomic_execution_subcalls"] == 5
+    assert data["rlm_result"]["generated_rlm_tree_depth"] == 1
+    assert data["conclusion"]["project_local_ooo_rlm_invokes_inprocess_traceguard"]
+    assert data["conclusion"]["live_parent_synthesis_accepted"]
 
 
 def test_traceguard_demo_artifact_records_enforcement_results() -> None:

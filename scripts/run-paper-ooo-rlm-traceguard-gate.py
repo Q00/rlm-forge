@@ -158,8 +158,10 @@ def _run(input_path: Path) -> dict[str, Any]:
             ),
             "automatic_gate_scope": (
                 "This script is the automatic post-run TraceGuard gate for the "
-                "persisted ooo rlm paper run. The stock `ouroboros rlm` CLI "
-                "does not call this validator internally."
+                "persisted ooo rlm paper run. The upstream dependency "
+                "`ouroboros rlm` command did not call this validator internally "
+                "when this run was recorded; the project-local `ooo`/`ouroboros` "
+                "wrappers now install an in-process gate."
             ),
         },
     }
@@ -228,7 +230,9 @@ def _markdown(result: dict[str, Any]) -> str:
         "",
         "Scope note: this is an automatic post-run gate over the persisted `ooo rlm`",
         "run. It proves the end-to-end compatibility of this run with TraceGuard,",
-        "but the stock `ouroboros rlm` CLI did not invoke TraceGuard internally.",
+        "but the upstream dependency `ouroboros rlm` command did not invoke",
+        "TraceGuard internally when this run was recorded. The project-local",
+        "`ooo`/`ouroboros` wrappers now install an in-process gate.",
     ]
     return "\n".join(lines) + "\n"
 

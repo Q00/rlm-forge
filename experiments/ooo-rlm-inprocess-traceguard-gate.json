@@ -1,0 +1,472 @@
+{
+  "schema_version": "rlm_forge.ooo_rlm_inprocess_traceguard_gate.v1",
+  "source_demo": "experiments/paper-key-sections-ooo-rlm-demo.json",
+  "source_command": "uv run --extra dev ouroboros rlm experiments/paper-ooo-rlm-key-sections-target.txt --cwd /Users/jaegyu.lee/Project/ouroboros-rlm-hermes --debug",
+  "patch_installed": true,
+  "case_count": 3,
+  "cases": [
+    {
+      "case_id": "raw_persisted_parent",
+      "status": "rejected",
+      "accepted": false,
+      "reason": "traceguard_rejected_parent_synthesis",
+      "validation": {
+        "accepted": false,
+        "unsupported_claim_rate": 0.0435,
+        "accepted_claims": [
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture.\nChunk 001 cites abstract lines 42-54 and contribution lines 108-117; chunk 004 cites conclusion lines 970-975."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture.\nChunk 001 cites abstract lines 42-54 and contribution lines 108-117; chunk 004 cites conclusion lines 970-975."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "The architecture separates recursive orchestration from bounded inner inference: Ouroboros owns recursion and trace/control state, Hermes performs bounded local calls, and TraceGuard decides whether parent synthesis can be committed.\nChunk 002 cites lines 241-242, 280-291, and 311-313."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis.\nChunk 001 cites lines 42-54 and 114-117; chunk 002 cites lines 246-270 and 272-275; chunk 004 cites lines 970-975."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis.\nChunk 001 cites lines 42-54 and 114-117; chunk 002 cites lines 246-270 and 272-275; chunk 004 cites lines 970-975."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis.\nChunk 001 cites lines 42-54 and 114-117; chunk 002 cites lines 246-270 and 272-275; chunk 004 cites lines 970-975."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims.\nChunk 001 cites lines 125-135; chunk 002 cites lines 288-291; chunk 004 cites lines 566-571."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims.\nChunk 001 cites lines 125-135; chunk 002 cites lines 288-291; chunk 004 cites lines 566-571."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim.\nChunk 001 cites lines 69-74 and 146-150; chunk 002 cites lines 272-275; chunk 003 cites lines 518-522 and 537-541; chunk 004 cites lines 555-564 and 580-583."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim.\nChunk 001 cites lines 69-74 and 146-150; chunk 002 cites lines 272-275; chunk 003 cites lines 518-522 and 537-541; chunk 004 cites lines 555-564 and 580-583."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim.\nChunk 001 cites lines 69-74 and 146-150; chunk 002 cites lines 272-275; chunk 003 cites lines 518-522 and 537-541; chunk 004 cites lines 555-564 and 580-583."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim.\nChunk 001 cites lines 69-74 and 146-150; chunk 002 cites lines 272-275; chunk 003 cites lines 518-522 and 537-541; chunk 004 cites lines 555-564 and 580-583."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs.\nChunk 001 cites lines 136-150; chunk 003 cites lines 480-495 and 515-522; chunk 004 cites lines 555-564 and 976-983."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs.\nChunk 001 cites lines 136-150; chunk 003 cites lines 480-495 and 515-522; chunk 004 cites lines 555-564 and 976-983."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs.\nChunk 001 cites lines 136-150; chunk 003 cites lines 480-495 and 515-522; chunk 004 cites lines 555-564 and 976-983."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles.\nChunk 001 cites lines 63-68 and 143-150; chunk 003 cites lines 524-535; chunk 004 cites lines 571-575 and 984-985."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles.\nChunk 001 cites lines 63-68 and 143-150; chunk 003 cites lines 524-535; chunk 004 cites lines 571-575 and 984-985."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles.\nChunk 001 cites lines 63-68 and 143-150; chunk 003 cites lines 524-535; chunk 004 cites lines 571-575 and 984-985."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Abstract and contribution framing for runtime-lifted RLM, preserved control surfaces, TraceGuard evidence discipline, portability contract-pass claims, and bounded operational memory."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "Architecture and response-contract claims: Ouroboros owns control and trace state, Hermes executes bounded inner calls, TraceGuard controls parent commit, and the handoff/response envelope is validated before state mutation."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Operational-memory experiment: allowlisted JSONL operational records, memory_priors excluded from accepted evidence, fresh evidence manifests rebuilt from current child outputs, 24-cell memory-enabled matrix claim, Hermes built-in memory observation, and deterministic runtime-control benchmark framing."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Memory-runtime benchmark details, contamination robustness, layered-memory ablation, adaptive repair memory, and conclusion claims about runtime-lifted RLM, provider portability, live contract passing, and fresh-evidence enforcement under memory."
+          }
+        ],
+        "rejected_claims": [
+          {
+            "reason": "unsupported_fact_id",
+            "claim": {
+              "fact_id": "rlm_node_root:child_result:004",
+              "chunk_id": "missing://rlm_node_root:child_result:004",
+              "surface": "evidence_references",
+              "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims.\nChunk 001 cites lines 125-135; chunk 002 cites lines 288-291; chunk 004 cites lines 566-571."
+            },
+            "detail": "rlm_node_root:child_result:004 is not present in the accepted child evidence manifest."
+          }
+        ],
+        "allowed_fact_ids": [
+          "rlm_node_root:child_result:000",
+          "rlm_node_root:child_result:001",
+          "rlm_node_root:child_result:002",
+          "rlm_node_root:child_result:003"
+        ],
+        "allowed_chunk_ids": [
+          "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:241-302"
+        ]
+      }
+    },
+    {
+      "case_id": "handle_repaired_parent",
+      "status": "accepted",
+      "accepted": true,
+      "reason": null,
+      "validation": {
+        "accepted": true,
+        "unsupported_claim_rate": 0.0,
+        "accepted_claims": [
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "The architecture separates recursive orchestration from bounded inner inference: Ouroboros owns recursion and trace/control state, Hermes performs bounded local calls, and TraceGuard decides whether parent synthesis can be committed."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles."
+          }
+        ],
+        "rejected_claims": [],
+        "allowed_fact_ids": [
+          "rlm_node_root:child_result:000",
+          "rlm_node_root:child_result:001",
+          "rlm_node_root:child_result:002",
+          "rlm_node_root:child_result:003"
+        ],
+        "allowed_chunk_ids": [
+          "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:241-302"
+        ]
+      }
+    },
+    {
+      "case_id": "handle_repaired_parent_plus_memory_answer",
+      "status": "rejected",
+      "accepted": false,
+      "reason": "traceguard_rejected_parent_synthesis",
+      "validation": {
+        "accepted": false,
+        "unsupported_claim_rate": 0.05,
+        "accepted_claims": [
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "The architecture separates recursive orchestration from bounded inner inference: Ouroboros owns recursion and trace/control state, Hermes performs bounded local calls, and TraceGuard decides whether parent synthesis can be committed."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:001",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:000",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:002",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles."
+          },
+          {
+            "fact_id": "rlm_node_root:child_result:003",
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "surface": "evidence_references",
+            "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles."
+          }
+        ],
+        "rejected_claims": [
+          {
+            "reason": "unsupported_fact_id",
+            "claim": {
+              "fact_id": "MEMORY-ANSWER-INPROCESS-001",
+              "chunk_id": "memory://hermes/MEMORY.md",
+              "surface": "result.retained_facts",
+              "text": "Memory says the paper proves a live quality win."
+            },
+            "detail": "MEMORY-ANSWER-INPROCESS-001 is not present in the accepted child evidence manifest."
+          }
+        ],
+        "allowed_fact_ids": [
+          "rlm_node_root:child_result:000",
+          "rlm_node_root:child_result:001",
+          "rlm_node_root:child_result:002",
+          "rlm_node_root:child_result:003"
+        ],
+        "allowed_chunk_ids": [
+          "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+          "experiments/paper-ooo-rlm-key-sections-target.txt:241-302"
+        ]
+      }
+    }
+  ],
+  "conclusion": {
+    "wrapper_installs_inprocess_gate": true,
+    "raw_parent_gate_rejects_bad_child_handle": true,
+    "handle_repaired_parent_accepts": true,
+    "memory_answer_rejected": true
+  }
+}

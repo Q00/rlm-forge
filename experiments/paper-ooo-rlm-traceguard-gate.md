@@ -43,4 +43,6 @@ present in the fresh child evidence manifest.
 
 Scope note: this is an automatic post-run gate over the persisted `ooo rlm`
 run. It proves the end-to-end compatibility of this run with TraceGuard,
-but the stock `ouroboros rlm` CLI did not invoke TraceGuard internally.
+but the upstream dependency `ouroboros rlm` command did not invoke
+TraceGuard internally when this run was recorded. The project-local
+`ooo`/`ouroboros` wrappers now install an in-process gate.

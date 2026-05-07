@@ -1,0 +1,32 @@
+{
+  "schema_version": "rlm_forge.ooo_rlm_live_inprocess_traceguard_run.v1",
+  "created_at": "2026-05-07T18:59:41Z",
+  "command": "uv run --extra dev ooo rlm experiments/paper-ooo-rlm-key-sections-target.txt --cwd /Users/jaegyu.lee/Project/ouroboros-rlm-hermes --debug",
+  "target": "experiments/paper-ooo-rlm-key-sections-target.txt",
+  "runtime": "HermesCliRuntime",
+  "wrapper_entrypoint": "ooo",
+  "traceguard_gate": {
+    "scope": "in_process_after_parent_synthesis",
+    "accepted": true,
+    "unsupported_rate": 0.0,
+    "accepted_claim_count": 4
+  },
+  "rlm_result": {
+    "status": "completed",
+    "hermes_atomic_execution_subcalls": 5,
+    "run_evolve_paths_invoked": false,
+    "target_kind": "path",
+    "generated_rlm_tree_depth": 1,
+    "cited_source_files": 1
+  },
+  "observed_stdout_key_lines": [
+    "TraceGuard accepted parent synthesis (unsupported_rate=0.0000, claims=4).",
+    "RLM command path completed with 5 Hermes atomic execution sub-call(s); run/evolve command paths were not invoked.",
+    "benchmark: rlm-mvp-src-dogfood-v1; cited_source_files=1; rlm_tree_depth=1"
+  ],
+  "conclusion": {
+    "project_local_ooo_rlm_invokes_inprocess_traceguard": true,
+    "live_parent_synthesis_accepted": true,
+    "live_run_completed": true
+  }
+}

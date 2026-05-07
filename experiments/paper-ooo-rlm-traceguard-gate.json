@@ -479,6 +479,6 @@
   "conclusion": {
     "exact_ooo_rlm_run_traceguard_safe_accepts": true,
     "exact_ooo_rlm_run_traceguard_rejects_memory_answer": true,
-    "automatic_gate_scope": "This script is the automatic post-run TraceGuard gate for the persisted ooo rlm paper run. The stock `ouroboros rlm` CLI does not call this validator internally."
+    "automatic_gate_scope": "This script is the automatic post-run TraceGuard gate for the persisted ooo rlm paper run. The upstream dependency `ouroboros rlm` command did not call this validator internally when this run was recorded; the project-local `ooo`/`ouroboros` wrappers now install an in-process gate."
   }
 }

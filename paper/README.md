@@ -37,6 +37,8 @@ The empirical core of the paper is **one controlled truncation fixture**
 that now ties after claim-aware rescoring, plus TraceGuard enforcement,
 Hermes-free synthetic scorer, and contract-ablation experiments. The strongest
 current result is the runtime-control story: TraceGuard rejects unsafe parent
-synthesis, evidence-gated Hermes-RLM stays safe, and the same RLM-shaped
-policy without evidence gating fails. Generalisation across live tasks, model
-families, and chunking regimes is explicitly named as future work.
+synthesis, evidence-gated Hermes-RLM stays safe, the same RLM-shaped policy
+without evidence gating fails, and the project-local `ooo rlm` wrapper now
+applies TraceGuard in-process after parent synthesis. Generalisation across
+live tasks, model families, and chunking regimes is explicitly named as future
+work.
