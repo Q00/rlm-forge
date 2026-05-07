@@ -1,0 +1,295 @@
+{
+  "schema_version": "rlm.adaptive_repair_memory_benchmark.v1",
+  "description": "Deterministic sequence benchmark showing that an operational memory prior learned from an initial missing-handle repair can reduce later repair calls.",
+  "task_count_per_policy": 8,
+  "policy_count": 2,
+  "evaluation_count": 16,
+  "dimensions": {
+    "policies": [
+      "no_adaptive_memory",
+      "adaptive_repair_memory"
+    ]
+  },
+  "policy_summary": [
+    {
+      "policy_id": "no_adaptive_memory",
+      "evaluation_count": 8,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 1.0,
+      "accepted_memory_answer_rate": 0.0,
+      "mean_repair_calls": 1.0,
+      "mean_total_parent_repair_calls": 2.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "policy_id": "adaptive_repair_memory",
+      "evaluation_count": 8,
+      "initial_traceguard_accept_rate": 0.875,
+      "final_traceguard_accept_rate": 1.0,
+      "accepted_memory_answer_rate": 0.0,
+      "mean_repair_calls": 0.125,
+      "mean_total_parent_repair_calls": 1.125,
+      "mean_final_unsupported_claim_rate": 0.0
+    }
+  ],
+  "evaluations": [
+    {
+      "task_index": 1,
+      "fixture_id": "memory-contribution-policy_summary-01",
+      "fixture_category": "policy_summary",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 2,
+      "fixture_id": "memory-contribution-policy_summary-02",
+      "fixture_category": "policy_summary",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 3,
+      "fixture_id": "memory-contribution-incident_report-01",
+      "fixture_category": "incident_report",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 4,
+      "fixture_id": "memory-contribution-incident_report-02",
+      "fixture_category": "incident_report",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 5,
+      "fixture_id": "memory-contribution-repo_architecture-01",
+      "fixture_category": "repo_architecture",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 6,
+      "fixture_id": "memory-contribution-repo_architecture-02",
+      "fixture_category": "repo_architecture",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 7,
+      "fixture_id": "memory-contribution-experiment_notes-01",
+      "fixture_category": "experiment_notes",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 8,
+      "fixture_id": "memory-contribution-experiment_notes-02",
+      "fixture_category": "experiment_notes",
+      "policy_id": "no_adaptive_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 1,
+      "fixture_id": "memory-contribution-policy_summary-01",
+      "fixture_category": "policy_summary",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": false,
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "task_index": 2,
+      "fixture_id": "memory-contribution-policy_summary-02",
+      "fixture_category": "policy_summary",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "task_index": 3,
+      "fixture_id": "memory-contribution-incident_report-01",
+      "fixture_category": "incident_report",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "task_index": 4,
+      "fixture_id": "memory-contribution-incident_report-02",
+      "fixture_category": "incident_report",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "task_index": 5,
+      "fixture_id": "memory-contribution-repo_architecture-01",
+      "fixture_category": "repo_architecture",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "task_index": 6,
+      "fixture_id": "memory-contribution-repo_architecture-02",
+      "fixture_category": "repo_architecture",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "task_index": 7,
+      "fixture_id": "memory-contribution-experiment_notes-01",
+      "fixture_category": "experiment_notes",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "task_index": 8,
+      "fixture_id": "memory-contribution-experiment_notes-02",
+      "fixture_category": "experiment_notes",
+      "policy_id": "adaptive_repair_memory",
+      "memory_prior_active_before_call": true,
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "accepted_memory_answer": false,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    }
+  ]
+}

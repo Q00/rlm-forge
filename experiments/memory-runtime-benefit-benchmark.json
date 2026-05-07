@@ -1,0 +1,3821 @@
+{
+  "schema_version": "rlm.memory_runtime_benefit_benchmark.v1",
+  "description": "Deterministic runtime-control benchmark showing that guarded operational memory priors can reduce repair work for known schema failure modes without making memory admissible evidence.",
+  "fixture_count": 20,
+  "provider_profile_count": 4,
+  "policy_count": 3,
+  "evaluation_count": 240,
+  "dimensions": {
+    "fixture_categories": [
+      "simple_truncation",
+      "distractor_heavy",
+      "cross_chunk_dependency",
+      "omitted_fact_temptation",
+      "chunk_only_citation_trap"
+    ],
+    "provider_profiles": [
+      "schema_stable",
+      "missing_handle_prone",
+      "chunk_only_prone",
+      "answer_memory_contaminated"
+    ],
+    "policies": [
+      "no_memory",
+      "guarded_operational_memory_prior",
+      "unsafe_answer_memory_prior"
+    ]
+  },
+  "policy_summary": [
+    {
+      "policy_id": "no_memory",
+      "evaluation_count": 80,
+      "initial_traceguard_accept_rate": 0.25,
+      "final_traceguard_accept_rate": 0.5,
+      "mean_repair_calls": 0.25,
+      "mean_total_parent_repair_calls": 1.25,
+      "mean_final_unsupported_claim_rate": 0.2778
+    },
+    {
+      "policy_id": "guarded_operational_memory_prior",
+      "evaluation_count": 80,
+      "initial_traceguard_accept_rate": 1.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "policy_id": "unsafe_answer_memory_prior",
+      "evaluation_count": 80,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.1111
+    }
+  ],
+  "provider_policy_summary": [
+    {
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 1.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 1.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.1111
+    },
+    {
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 1.0,
+      "mean_total_parent_repair_calls": 2.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 1.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.1111
+    },
+    {
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 1.0
+    },
+    {
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 1.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.1111
+    },
+    {
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.1111
+    },
+    {
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 1.0,
+      "final_traceguard_accept_rate": 1.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.0
+    },
+    {
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "evaluation_count": 20,
+      "initial_traceguard_accept_rate": 0.0,
+      "final_traceguard_accept_rate": 0.0,
+      "mean_repair_calls": 0.0,
+      "mean_total_parent_repair_calls": 1.0,
+      "mean_final_unsupported_claim_rate": 0.1111
+    }
+  ],
+  "evaluations": [
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-01",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-02",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-03",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-simple_truncation-04",
+      "fixture_category": "simple_truncation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-01",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-02",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-03",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-distractor_heavy-04",
+      "fixture_category": "distractor_heavy",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-01",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-02",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-03",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-cross_chunk_dependency-04",
+      "fixture_category": "cross_chunk_dependency",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-01",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-02",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-03",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-omitted_fact_temptation-04",
+      "fixture_category": "omitted_fact_temptation",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-01",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-02",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-03",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "schema_stable",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "missing_evidence_handle"
+      ],
+      "repair_attempted": true,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 1,
+      "total_parent_repair_calls": 2
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "missing_handle_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "chunk_handle_without_fact"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 1.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "chunk_only_prone",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "no_memory",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "guarded_operational_memory_prior",
+      "initial_traceguard_accepted": true,
+      "initial_rejection_reasons": [],
+      "repair_attempted": false,
+      "final_traceguard_accepted": true,
+      "final_unsupported_claim_rate": 0.0,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    },
+    {
+      "fixture_id": "memory-runtime-chunk_only_citation_trap-04",
+      "fixture_category": "chunk_only_citation_trap",
+      "provider_profile": "answer_memory_contaminated",
+      "policy_id": "unsafe_answer_memory_prior",
+      "initial_traceguard_accepted": false,
+      "initial_rejection_reasons": [
+        "unsupported_fact_id"
+      ],
+      "repair_attempted": false,
+      "final_traceguard_accepted": false,
+      "final_unsupported_claim_rate": 0.1111,
+      "parent_synthesis_calls": 1,
+      "repair_calls": 0,
+      "total_parent_repair_calls": 1
+    }
+  ]
+}

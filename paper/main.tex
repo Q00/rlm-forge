@@ -60,13 +60,18 @@ Claude Code, and Codex completes with 24 mandatory contract passes. The
 same primary matrix also passes with experimental read-write operational
 memory enabled. Memory is admitted only as a schema and retry prior, while
 TraceGuard evidence is rebuilt from fresh child outputs in the current run.
-The strongest supported statement is deliberately bounded: RLM-FORGE completed
-that memory-enabled 24-cell matrix with fresh child evidence validation passing
-in every cell and zero unsupported parent claims accepted, while memory remained
-an operational prior rather than admissible factual evidence. The systems claim
-is not that RLM-FORGE wins a benchmark. It is that RLM-FORGE turns RLM from a
-research-time inference idea into a runtime surface that existing agent
-infrastructure can execute, inspect, and enforce.
+We also report an observed layered-memory effect: because the Hermes adapter
+does not pass \texttt{--ignore-rules}, Hermes' built-in \texttt{MEMORY.md}
+can be injected before the explicit RLM-FORGE envelope. Deterministic
+memory-runtime benchmarks then isolate a narrow performance benefit:
+guarded memory rejects answer-memory contamination, separates Hermes-style
+prompt memory from RLM-FORGE guarded memory, and reduces repeated repair calls
+under generated schema-failure profiles. The strongest supported statement is
+deliberately bounded: memory can improve runtime control and repair efficiency
+without becoming admissible factual evidence. The systems claim is not that
+RLM-FORGE wins a benchmark. It is that RLM-FORGE turns RLM from a research-time
+inference idea into a runtime surface that existing agent infrastructure can
+execute, inspect, and enforce.
 \end{abstract}
 
 \section{Introduction}
@@ -134,6 +139,15 @@ observations, such as schema-stability and repair-policy priors. A second
 24-cell live primary matrix with memory enabled passes across the same three
 runtime families. The accepted evidence manifest is still rebuilt from fresh
 child outputs, not from durable memory.
+
+\item \textbf{Evidence-admissible memory as runtime policy.} In the observed
+Hermes integration, built-in Hermes memory is injected into the inner-call
+system prompt, while RLM-FORGE's guarded memory enters only as structured
+\texttt{memory\_priors}. Deterministic benchmarks show three safe claims:
+TraceGuard rejects adversarial answer-memory contamination, the two memory
+layers have separable runtime roles, and adaptive repair memory reduces
+repeated missing-handle repairs. These results do not show live model-quality,
+latency, token, or cost improvement.
 \end{enumerate}
 
 We do not claim novelty over the RLM paradigm itself, and we do not compare
@@ -507,6 +521,80 @@ three agent/runtime families without letting durable memory become admissible
 factual evidence. It does not show that memory improves model quality on
 downstream tasks.
 
+The integration also revealed a second, emergent memory layer. Hermes built-in
+memory is normally injected into chat turns unless \texttt{--ignore-rules} is
+passed. The current \texttt{HermesCliRuntime} path uses
+\texttt{hermes chat -Q --source tool -q <prompt>} and does not pass that flag.
+Local Hermes sessions created after an RLM-FORGE run therefore contain
+RLM-FORGE operational prior entries in the Hermes system prompt before the
+explicit child or parent JSON envelope. We treat this as a behavioral prior,
+not as part of the evidence contract. In a real-document replay over the README
+and this paper's memory section, parent synthesis correctly reported that the
+document evidence supports RLM-FORGE guarded memory, while the locally observed
+Hermes built-in memory layer remains a separate observation rather than a
+document-supported claim.
+
+\begin{table}[t]
+\centering
+\caption{Deterministic memory-runtime benefit benchmark. The benefit is
+runtime-control performance: fewer initial rejections and repair calls, not
+live model quality.}
+\label{tab:memory-runtime-benefit}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Policy & Initial accept & Final accept & Mean repairs & Mean calls \\
+\midrule
+\texttt{no\_memory} & 0.2500 & 0.5000 & 0.2500 & 1.2500 \\
+\texttt{guarded\_operational\_memory\_prior} & 1.0000 & 1.0000 & 0.0000 & 1.0000 \\
+\texttt{unsafe\_answer\_memory\_prior} & 0.0000 & 0.0000 & 0.0000 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:memory-runtime-benefit} is generated without Hermes calls. It
+compares three memory policies across generated fixtures and provider-failure
+profiles. The guarded operational-memory policy models a schema/retry prior
+that tells the parent to preserve \texttt{fact\_id} and
+\texttt{evidence\_chunk\_id} together. It eliminates the repair call required
+by the missing-handle-prone no-memory policy. The unsafe answer-memory policy
+models contaminated memory that adds a factual claim; TraceGuard rejects it.
+This supports a runtime-performance claim only: guarded memory can reduce
+validation and repair work for known schema failures while preserving the
+fresh-evidence boundary.
+
+We further run three deterministic contribution benchmarks. First, the memory
+contamination robustness benchmark adds an unsupported answer fact from
+persistent memory. Without TraceGuard, the adversarial-memory policy accepts
+that memory answer in every case. With TraceGuard, the accepted memory-answer
+rate is 0.0000 because the fact is absent from the fresh child evidence
+manifest. Second, the layered-memory ablation evaluates a 2x2 design: Hermes
+memory on/off and RLM-FORGE memory on/off. Hermes-style prompt memory models a
+formatting prior that prevents chunk-only parent synthesis; RLM-FORGE guarded
+memory models an evidence-handle prior that prevents missing handles. Both
+together reach 1.0000 initial acceptance with zero repair calls. Third, the
+adaptive repair memory benchmark records a missing-handle prior after the first
+repair and reuses it on later related tasks, reducing mean repair calls from
+1.0000 to 0.1250 while preserving 1.0000 final TraceGuard acceptance.
+
+\begin{table}[t]
+\centering
+\caption{Deterministic memory contribution benchmarks. All results are
+Hermes-free runtime-control tests, not live quality benchmarks.}
+\label{tab:memory-contribution}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Benchmark & Initial accept & Mean repairs & Memory answer accepted \\
+\midrule
+Contamination, unguarded adversarial & 1.0000 & 0.0000 & 1.0000 \\
+Contamination, TraceGuard adversarial & 0.0000 & 0.0000 & 0.0000 \\
+Layered memory, both layers on & 1.0000 & 0.0000 & 0.0000 \\
+Adaptive repair memory & 0.8750 & 0.1250 & 0.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Results}
 \label{sec:results}
 
@@ -694,6 +782,33 @@ RLM-shaped contract has an unsupported-claim rate of 1.0. The result is
 deterministic and should be read as a contract ablation, not as a live-model
 comparison.
 
+The memory-runtime benefit benchmark is also deterministic and Hermes-free.
+
+\begin{lstlisting}[language=bash]
+python3 scripts/run-memory-runtime-benefit-benchmark.py
+\end{lstlisting}
+
+The three memory contribution benchmarks are generated separately.
+
+\begin{lstlisting}[language=bash]
+python3 scripts/run-memory-contribution-benchmarks.py
+\end{lstlisting}
+
+It creates 20 generated fixtures, four provider-failure profiles, and three
+memory policies for 240 evaluations. The guarded operational-memory policy
+improves initial TraceGuard acceptance from 0.2500 to 1.0000 relative to the
+no-memory policy, reduces mean repair calls from 0.2500 to 0.0000, and keeps
+the final unsupported-claim rate at 0.0000. This is a runtime-control result:
+it proves that a schema/retry memory prior can remove known repair work in the
+contract, not that live models become more accurate.
+
+The contribution benchmark script writes three additional artifacts:
+\texttt{memory-contamination-robustness-benchmark},
+\texttt{layered-memory-ablation-benchmark}, and
+\texttt{adaptive-repair-memory-benchmark}. Together they support a stronger
+framing: RLM-FORGE can use runtime memory as policy while preventing memory
+from becoming evidence unless a current child trace establishes it.
+
 \section{Discussion}
 \label{sec:discussion}
 
@@ -806,8 +921,13 @@ question is whether the secondary variants show the same pattern when executed
 across all providers.
 \item \textbf{Memory result is operational, not quality-bearing.} The
 memory-enabled primary matrix demonstrates that guarded operational memory can
-run live without becoming accepted evidence. It does not show that memory
-improves answer quality, latency, cost, or provider routing.
+run live without becoming accepted evidence. The deterministic memory-runtime
+benchmark shows that a guarded schema/retry prior can remove known repair work
+inside the contract. The additional contamination, 2x2 layered-memory, and
+adaptive-repair benchmarks are also deterministic runtime-control tests.
+Neither the live matrix nor the deterministic memory benchmarks show that
+memory improves answer quality, latency, token use, cost, or provider routing
+in live model calls.
 \item \textbf{Incomplete cost and token telemetry.} The portability run
 records wall-clock latency, but not token counts or monetary cost. Those
 fields should be captured in a future full multi-provider run.
@@ -859,10 +979,15 @@ inspect and enforce. The 24-cell live primary matrix further shows that the
 same evidence-gated runtime contract can pass across Hermes+GLM, Claude Code,
 and Codex. A second 24-cell primary matrix shows that experimental read-write
 memory can store operational priors while TraceGuard continues to require
-fresh child evidence. That is the systems contribution. The natural next step
-is broader memory-shaped recursion, where prior traces improve decomposition,
-routing, and repair policy while fresh child evidence remains the only basis
-for parent claims. We offer the code,
+fresh child evidence, and a deterministic memory-runtime benchmark shows that
+guarded schema/retry priors can reduce repair work for known failure modes.
+Additional deterministic benchmarks show that TraceGuard rejects adversarial
+answer-memory contamination, the two memory layers have separable runtime
+roles, and adaptive repair memory reduces repeated repair calls.
+That is the systems contribution. The natural next step is broader
+memory-shaped recursion, where prior traces improve decomposition, routing,
+and repair policy while fresh child evidence remains the only basis for parent
+claims. We offer the code,
 fixtures, and persisted artifacts under an MIT licence at
 \url{https://github.com/Q00/rlm-forge}.
 

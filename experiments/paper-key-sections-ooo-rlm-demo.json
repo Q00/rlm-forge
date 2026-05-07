@@ -1,0 +1,587 @@
+{
+  "schema_version": "rlm_forge.paper_key_sections_ooo_rlm_demo.v1",
+  "created_at": "2026-05-07T09:43:34.264535+00:00",
+  "command": "uv run --extra dev ouroboros rlm experiments/paper-ooo-rlm-key-sections-target.txt --cwd /Users/jaegyu.lee/Project/ouroboros-rlm-hermes --debug",
+  "target": "experiments/paper-ooo-rlm-key-sections-target.txt",
+  "source": "generated mechanically from paper/main.tex ranges 42-75, 108-151, 241-320, 477-591, 967-985",
+  "reported_subcall_count": 5,
+  "reported_rlm_tree_depth": 1,
+  "selected_chunk_ids": [
+    "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+    "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+    "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+    "experiments/paper-ooo-rlm-key-sections-target.txt:241-302"
+  ],
+  "child_records": [
+    {
+      "order": 0,
+      "session_path": "/Users/jaegyu.lee/.hermes/sessions/session_20260507_184010_f5fe9a.json",
+      "session_id": "20260507_184010_f5fe9a",
+      "mode": "execute_atomic",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+      "verdict": "success",
+      "confidence": 0.91,
+      "parse_warning": "completion_json_malformed_trailing_or_missing_delimiter; key fields recovered from raw completion",
+      "completion": {
+        "raw_completion": "{\"mode\":\"execute_atomic\",\"verdict\":\"success\",\"confidence\":0.91,\"result\":{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"atomic_summary\":\"This chunk establishes the paper's bounded thesis and contribution framing. The abstract argues that RLM-FORGE runtime-lifts Recursive Language Models into an existing Hermes Agent execution contract rather than introducing a new model architecture. Hermes RPC sub-calls are mapped to RLM sub-calls, while Ouroboros owns recursive state, scheduling, trace replay, and evidence validation. The preserved operational controls are bounded context partitioning, explicit sub-call graphs, replayable intermediate evidence, and parent synthesis that can be rejected before state mutation. TraceGuard is introduced as a deterministic evidence gate for parent synthesis, evaluated with a claim-aware omitted-fact safety scorer. The supplied evidence reports live truncation-fixture score parity after scorer correction, a 24-cell live primary portability run across Hermes+GLM, Claude Code, and Codex with 24 mandatory contract passes, and a second 24-cell matrix passing with experimental read-write operational memory enabled. The memory claim is explicitly bounded: memory is allowed only as schema and retry prior, not factual evidence, and TraceGuard evidence is rebuilt from fresh child outputs. The contribution list restates these claims as six contribution areas: runtime-lifted RLM, preserved control surfaces, incremental integration paths, executable evidence discipline, memory without evidence leakage, and evidence-admissible memory as runtime policy.\",\"key_claims\":[{\"claim\":\"RLM-FORGE treats RLM as a deployable runtime primitive in existing agent infrastructure rather than as a new model architecture.\",\"support\":\"The abstract states that RLM is runtime-lifted into an execution contract inside an existing agent runtime, with RLM sub-calls mapped onto Hermes RPC and the result described as a runtime primitive rather than a new architecture.\"},{\"claim\":\"The implementation preserves operational RLM controls: bounded context partitioning, explicit sub-call graphs, replayable child evidence, and rejectable parent synthesis.\",\"support\":\"The abstract and contribution list explicitly enumerate bounded context windows/partitioning, recursive sub-call graphs, explicit child evidence, replayable intermediate evidence, and parent synthesis under outer control.\"},{\"claim\":\"TraceGuard enforces evidence discipline by rejecting structured claims without accepted child evidence handles.\",\"support\":\"The contribution list states that TraceGuard rejects structured claims lacking accepted child evidence handles and reports deterministic contract ablations with 0.0 unsupported-claim rate for evidence-gated Hermes-RLM versus 1.0 failure for an ungated RLM-shaped policy.\"},{\"claim\":\"The live primary portability evidence in this chunk is contract-pass evidence, not a broad benchmark-win claim.\",\"support\":\"The abstract reports a 24-cell live primary portability run across Hermes+GLM, Claude Code, and Codex with 24 mandatory contract passes, and later explicitly says the systems claim is not that RLM-FORGE wins a benchmark.\"},{\"claim\":\"Operational memory is treated as a bounded runtime prior, not admissible factual evidence.\",\"support\":\"The abstract and contribution list state that memory stores only allowlisted operational observations such as schema-stability and repair-policy priors, while accepted evidence is rebuilt from fresh child outputs and memory is not admitted as factual evidence.\"},{\"claim\":\"The observed layered-memory effect distinguishes Hermes built-in memory from RLM-FORGE guarded memory.\",\"support\":\"The abstract states that Hermes built-in MEMORY.md can be injected before the explicit RLM-FORGE envelope because the Hermes adapter does not pass --ignore-rules, while RLM-FORGE guarded memory is separated and used only for runtime control.\"}],\"parent_synthesis_notes\":\"For parent synthesis, this chunk should be used as evidence for the paper's abstract-level thesis and contribution claims. It supports claims about runtime-lifted RLM, TraceGuard evidence gating, live contract-pass matrices, and bounded operational memory. It should not be used to infer implementation details, full experimental methodology, or complete results beyond the cited line ranges.\"},\"evidence_references\":[{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"source_path\":\"experiments/paper-ooo-rlm-key-sections-target.txt\",\"line_range\":\"42-54\",\"supports\":\"Runtime-lifted RLM thesis; Hermes RPC mapped to RLM sub-calls; Ouroboros owns recursive state, scheduling, trace replay, and evidence validation; preserved runtime controls.\"},{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"source_path\":\"experiments/paper-ooo-rlm-key-sections-target.txt\",\"line_range\":\"55-62\",\"supports\":\"TraceGuard introduction; claim-aware omitted-fact scorer; corrected truncation-fixture parity; 24-cell primary portability pass; memory-enabled primary matrix pass; memory as schema/retry prior only.\"},{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"source_path\":\"experiments/paper-ooo-rlm-key-sections-target.txt\",\"line_range\":\"63-74\",\"supports\":\"Layered-memory effect; Hermes MEMORY.md injection observation; deterministic memory-runtime benchmarks; bounded memory claim; systems claim that RLM-FORGE makes RLM executable, inspectable, and enforceable by existing agent infrastructure.\"},{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"source_path\":\"experiments/paper-ooo-rlm-key-sections-target.txt\",\"line_range\":\"108-123\",\"supports\":\"Contribution claims for runtime-lifted RLM, preserved control surfaces, and incremental integration through scaffold and acceptance-criterion decomposition paths.\"},{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"source_path\":\"experiments/paper-ooo-rlm-key-sections-target.txt\",\"line_range\":\"125-135\",\"supports\":\"Executable evidence discipline; TraceGuard rejection of unsupported claims; deterministic ablation rates; 24-cell live primary matrix across three runtime families; missing-handle repair loop; corrected truncation-fixture scoring tie.\"},{\"chunk_id\":\"experiments/paper-ooo-rlm-key-sections-target.txt:1-80\",\"source_path\":\"experiments/paper-ooo-rlm-key-sections-target.txt\",\"line_range\":\"136-150\",\"supports\":\"Memory without evidence leakage; allowlisted operational memory; fresh evidence manifest; separation between Hermes memory and RLM-FORGE guarded memory; safe claims about contamination rejection, separable runtime roles, and reduced repeated missing-handle repairs.\"}],\"residual_gaps\":[\"The supplied chunk is marked truncated and covers only lines 1-80 of the target extract, so later sections of the target are unavailable for this atomic step.\",\"The final contribution item appears to continue beyond line 150, but the supplied content ends mid-sentence after stating that the results do not show live model-quality, latency, token, or cost improvement.\",\"This atomic result cannot validate the reported 24-cell matrices, deterministic ablations, scorer correction, or memory-runtime benchmarks beyond the textual claims present in the supplied lines.\",\"No child results, sibling summaries, or parent synthesis are supplied, so this result is limited to local chunk-level evidence extraction.\"} }"
+      },
+      "system_prompt_has_hermes_memory": true
+    },
+    {
+      "order": 1,
+      "session_path": "/Users/jaegyu.lee/.hermes/sessions/session_20260507_184042_55e6b7.json",
+      "session_id": "20260507_184042_55e6b7",
+      "mode": "execute_atomic",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+      "verdict": "completed",
+      "confidence": 0.93,
+      "parse_warning": null,
+      "completion": {
+        "mode": "execute_atomic",
+        "verdict": "completed",
+        "confidence": 0.93,
+        "result": {
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+          "summary": "This chunk establishes the runtime architecture and execution contract for RLM-FORGE. It identifies the paper's main thesis as preserving RLM advantages at runtime through concrete mechanisms: bounded sub-calls over selected chunks for extended context, explicit parent-child call graphs for compositional reasoning, evidence handles and replayable outputs for inspectability, TraceGuard validation for safer synthesis, and HermesCliRuntime for provider portability. The chunk then defines the two-layer ownership model: Ouroboros owns recursion control, scheduling, termination, guardrails, and trace persistence, while Hermes performs one bounded inner inference at a time. Hermes is explicitly prohibited from recursively calling Ouroboros or invoking ooo commands inside the RLM loop. The handoff from the outer scaffold to Hermes is described as a structured envelope containing mode, call context, constraints, selected context, and permitted evidence handles. Hermes responses must include verdict, confidence, result, evidence references, and residual gaps, and are validated before the outer scaffold mutates state.",
+          "key_points": [
+            "Table 1 is presented as the main thesis: RLM-FORGE preserves RLM advantages through runtime mechanisms and concrete artifacts.",
+            "The live fixture is not claimed to show a quality delta; it demonstrates that the relevant RLM control surfaces exist in a real agent runtime and can be exercised.",
+            "The architecture separates responsibilities: Ouroboros is the recursion controller, while Hermes is the bounded inner LM.",
+            "Hermes performs local bounded work and must not recursively call Ouroboros or invoke ooo commands as part of the RLM loop.",
+            "TraceGuard mediates whether parent synthesis may be committed by validating parent claims against child observations.",
+            "Each outer-to-inner handoff is a structured envelope passed through HermesCliRuntime.",
+            "The envelope includes mode, call_context, constraints, selected context, and evidence_handles.",
+            "The response contract includes verdict, confidence, result, evidence references, and residual gaps, all validated before state mutation."
+          ],
+          "partial_answer_for_parent_synthesis": "For the architecture/roles portion of the target, the supplied evidence supports describing RLM-FORGE as a two-layer system where Ouroboros owns recursive orchestration and persistent trace/control state, Hermes executes bounded inner calls, and TraceGuard validates whether parent synthesis may be committed. The paper explicitly frames Table 1 as its main thesis: RLM-FORGE preserves RLM benefits at runtime through bounded chunk sub-calls, explicit parent-child call graphs, evidence handles, replayable traces, TraceGuard validation, and a swappable Hermes runtime adapter. The text also defines the structured Hermes envelope and response contract that enforce bounded execution and evidence-grounded synthesis."
+        },
+        "evidence_references": [
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "241-242",
+            "supports": "Architecture caption states that Ouroboros owns control and trace state, Hermes executes bounded inner calls, and TraceGuard decides whether parent synthesis may be committed."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "246-270",
+            "supports": "Table lists RLM advantages, runtime mechanisms, and concrete artifacts preserved by RLM-FORGE."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "272-275",
+            "supports": "The table is identified as the paper's main thesis, while the live fixture is limited to demonstrating runtime control surfaces rather than a quality delta."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "280-286",
+            "supports": "The text defines the two-layer integration and states that Hermes never recursively calls Ouroboros or invokes ooo commands during the RLM loop."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "288-291",
+            "supports": "The ownership split is described as preserving RLM control advantages: Hermes does local work, Ouroboros owns the recursive state machine, and TraceGuard validates parent claims."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "293-309",
+            "supports": "The outer-to-inner handoff envelope fields are enumerated: mode, call_context, constraints, context, and evidence_handles."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+            "lines": "311-313",
+            "supports": "The Hermes response contract and validation before state mutation are specified."
+          }
+        ],
+        "residual_gaps": [
+          "The chunk begins after line 151 and includes a section boundary; earlier context from lines 1-80 is not supplied in this atomic call.",
+          "The subsection 'Sub-call lifecycle' starts at lines 315-317 but its substantive content is not included in this chunk.",
+          "This atomic result cannot assess the full target file or later sections beyond the supplied lines 241-317."
+        ]
+      },
+      "system_prompt_has_hermes_memory": true
+    },
+    {
+      "order": 2,
+      "session_path": "/Users/jaegyu.lee/.hermes/sessions/session_20260507_184105_820761.json",
+      "session_id": "20260507_184105_820761",
+      "mode": "execute_atomic",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+      "verdict": "completed",
+      "confidence": 0.91,
+      "parse_warning": null,
+      "completion": {
+        "mode": "execute_atomic",
+        "verdict": "completed",
+        "confidence": 0.91,
+        "result": {
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+          "summary": "This chunk covers the paper subsection on the RLM-FORGE operational memory experiment. It states that the memory backend is a local JSONL store constrained by an allowlisted schema and limited to operational records, while rejecting evidence-bearing content such as fixture answers, fact IDs, chunk IDs, raw fixture paths, prompt injection text, and unknown fields. Memory can only enter prompts as structured memory_priors that suggest runtime policies; these priors are excluded from the accepted evidence manifest. Accepted evidence is rebuilt from current child outputs, intersected with the fixture contract, and normalized only for harmless provider formatting differences. The reported memory-enabled live primary portability matrix shows three provider/runtime families each passing 8/8 cells with zero fresh evidence failures. Across all 24 live cells, mandatory contracts passed, TraceGuard accepted every final parent synthesis, the fresh child evidence gate had zero failures, and the backend stored 24 operational observations while rejecting zero candidates. The paper frames this as support for a narrow claim: memory-shaped recursion can operate as a live runtime feedback loop across three agent/runtime families without making durable memory admissible factual evidence, but it does not show downstream model-quality improvement. The chunk also records an emergent second memory layer: Hermes built-in memory may be injected into chat turns unless --ignore-rules is used, and the HermesCliRuntime path described does not pass that flag. The paper treats this Hermes built-in memory as a behavioral prior, separate from the evidence contract. Finally, a deterministic benchmark table reports runtime-control benefit, not live model quality: guarded operational memory prior improves initial and final accept rates to 1.0 with zero mean repairs and one mean call, compared with poorer no-memory and unsafe-answer-memory-prior policies.",
+          "key_findings": [
+            {
+              "finding": "The memory backend is deliberately restricted to operational metadata and rejects evidence-bearing fields or prompt-injection content.",
+              "evidence": [
+                "paper/main.tex:480-485"
+              ]
+            },
+            {
+              "finding": "Memory priors may influence child extraction and parent synthesis policies, but they are not part of the accepted evidence manifest.",
+              "evidence": [
+                "paper/main.tex:487-490"
+              ]
+            },
+            {
+              "finding": "Accepted evidence is rebuilt from current child outputs and checked against the fixture contract, preserving a fresh-evidence boundary.",
+              "evidence": [
+                "paper/main.tex:490-495"
+              ]
+            },
+            {
+              "finding": "The memory-enabled primary portability matrix reports all three families passing 8/8 cells with zero fresh evidence failures.",
+              "evidence": [
+                "paper/main.tex:497-513"
+              ]
+            },
+            {
+              "finding": "The aggregate memory-enabled run completed 24 live cells with 24 mandatory contract passes, all TraceGuard final syntheses accepted, and zero fresh child evidence failures.",
+              "evidence": [
+                "paper/main.tex:515-518"
+              ]
+            },
+            {
+              "finding": "The supported claim is narrow: guarded memory can run as runtime feedback without becoming admissible factual evidence; it does not establish downstream model-quality improvement.",
+              "evidence": [
+                "paper/main.tex:518-522"
+              ]
+            },
+            {
+              "finding": "Hermes built-in memory injection is observed as a separate behavioral-prior layer when HermesCliRuntime invokes hermes chat without --ignore-rules.",
+              "evidence": [
+                "paper/main.tex:524-535"
+              ]
+            },
+            {
+              "finding": "The deterministic benchmark characterizes guarded operational memory as improving runtime-control performance: fewer initial rejections and repair calls, not live model quality.",
+              "evidence": [
+                "paper/main.tex:537-550"
+              ]
+            }
+          ]
+        },
+        "evidence_references": [
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "line_range": "477-551",
+            "referenced_source_lines": [
+              "paper/main.tex:477-551"
+            ]
+          }
+        ],
+        "residual_gaps": [
+          "The supplied chunk begins with a truncated carryover from a prior section at lines 318-320 and does not include the rest of that lifecycle enumeration, so no conclusion is drawn from it.",
+          "The table labeled memory-runtime-benefit is truncated after line 551, so any rows or explanatory text following the visible rows are not available in this atomic result.",
+          "This atomic result only covers chunk 003 and does not synthesize claims from sibling chunks 001, 002, or 004."
+        ]
+      },
+      "system_prompt_has_hermes_memory": true
+    },
+    {
+      "order": 3,
+      "session_path": "/Users/jaegyu.lee/.hermes/sessions/session_20260507_184126_0ef558.json",
+      "session_id": "20260507_184126_0ef558",
+      "mode": "execute_atomic",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+      "verdict": "passed",
+      "confidence": 0.93,
+      "parse_warning": null,
+      "completion": {
+        "mode": "execute_atomic",
+        "verdict": "passed",
+        "confidence": 0.93,
+        "result": {
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+          "atomic_summary": "This chunk provides evidence for the paper's memory-related runtime claims and conclusion. It states that a Hermes-free deterministic table compares memory policies and that a guarded operational-memory policy preserves fact_id and evidence_chunk_id together, eliminating a repair call required by a no-memory policy while TraceGuard rejects unsafe answer-memory contamination. It then reports three deterministic contribution benchmarks: contamination robustness, layered-memory ablation, and adaptive repair memory. The chunk also begins the conclusion, stating that RLM-FORGE is an open-source runtime lifting of Recursive Language Models onto Hermes Agent, and that RLM advantages can be exposed without new model architecture through bounded sub-calls, recursive trace state, replayable child evidence, provider-swappable inner execution, and evidence-gated parent synthesis. The conclusion claims live fixture score parity after claim-aware rescoring, cross-provider passing in a 24-cell primary matrix, and a second 24-cell matrix showing experimental read-write memory can store operational priors while TraceGuard still requires fresh child evidence.",
+          "key_claims": [
+            {
+              "claim": "Guarded operational memory can reduce validation and repair work for known schema failures while preserving the fresh-evidence boundary.",
+              "support": "Lines 555-564 describe a guarded operational-memory policy preserving fact_id and evidence_chunk_id together, eliminating a repair call required by no-memory policy, while unsafe answer-memory is rejected by TraceGuard."
+            },
+            {
+              "claim": "TraceGuard prevents adversarial answer-memory contamination in the deterministic benchmark.",
+              "support": "Lines 566-571 state that without TraceGuard adversarial memory is accepted in every case, while with TraceGuard the accepted memory-answer rate is 0.0000 because the fact is absent from the fresh child evidence manifest."
+            },
+            {
+              "claim": "Hermes-style prompt memory and RLM-FORGE guarded memory are separable layers with complementary effects.",
+              "support": "Lines 571-575 describe a 2x2 layered-memory ablation where Hermes memory prevents chunk-only parent synthesis and RLM-FORGE guarded memory prevents missing handles, with both together reaching 1.0000 initial acceptance and zero repair calls."
+            },
+            {
+              "claim": "Adaptive repair memory reduces mean repair calls while preserving final TraceGuard acceptance.",
+              "support": "Lines 576-578 state that recording a missing-handle prior after the first repair reduces mean repair calls from 1.0000 to 0.1250 while preserving 1.0000 final TraceGuard acceptance."
+            },
+            {
+              "claim": "RLM-FORGE's central systems claim is that RLM operational advantages can be exposed as runtime properties without requiring a new model architecture.",
+              "support": "Lines 970-975 state that RLM-FORGE lifts Recursive Language Models onto Hermes Agent and exposes runtime properties including bounded sub-calls, recursive trace state, replayable child evidence, provider-swappable inner execution, and evidence-gated parent synthesis."
+            },
+            {
+              "claim": "The conclusion ties together live fixture parity, cross-provider contract passing, and memory results.",
+              "support": "Lines 976-983 state that the committed live fixture shows score parity after claim-aware rescoring, the 24-cell live primary matrix passes across Hermes+GLM, Claude Code, and Codex, and a second 24-cell matrix plus deterministic benchmark support guarded memory reducing repair work."
+            }
+          ],
+          "parent_synthesis_value": "For parent synthesis, this chunk supplies the closing evidence that the paper's contribution is primarily a runtime-systems contribution: recursive execution, evidence gating, provider interchangeability, and guarded operational memory. It also supplies specific numeric benchmark outcomes for memory contamination, layered memory, and adaptive repair that can be used to substantiate memory-related claims in the final synthesis."
+        },
+        "evidence_references": [
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "lines": "555-564",
+            "fact": "Guarded operational memory preserves fact_id and evidence_chunk_id together, eliminates a repair call required by no-memory policy, and unsafe answer-memory is rejected by TraceGuard."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "lines": "566-571",
+            "fact": "The contamination benchmark reports unguarded adversarial memory acceptance in every case and TraceGuard memory-answer acceptance of 0.0000."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "lines": "571-575",
+            "fact": "The layered-memory ablation distinguishes Hermes prompt memory from RLM-FORGE guarded memory and reports 1.0000 initial acceptance with zero repair calls when both are used."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "lines": "576-578",
+            "fact": "Adaptive repair memory reduces mean repair calls from 1.0000 to 0.1250 while preserving 1.0000 final TraceGuard acceptance."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "lines": "970-975",
+            "fact": "The conclusion defines RLM-FORGE as a Hermes Agent runtime lifting of RLM and lists bounded sub-calls, recursive trace state, replayable child evidence, provider-swappable inner execution, and evidence-gated parent synthesis as runtime properties."
+          },
+          {
+            "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+            "source_path": "experiments/paper-ooo-rlm-key-sections-target.txt",
+            "lines": "976-983",
+            "fact": "The conclusion summarizes score parity after claim-aware rescoring, cross-provider passing across Hermes+GLM, Claude Code, and Codex, and memory results showing operational priors plus fresh-evidence enforcement."
+          }
+        ],
+        "residual_gaps": [
+          "The supplied chunk begins mid-table and does not include the earlier rows or full caption/context for Table tab:memory-runtime-benefit.",
+          "The supplied chunk cuts off at line 985 in the middle of the final sentence, so the conclusion's final claims after 'separable runtime' are not available in this atomic context.",
+          "This atomic result cannot verify claims about the earlier 24-cell matrices, committed live fixture, or full deterministic benchmark setup beyond the lines supplied here."
+        ]
+      },
+      "system_prompt_has_hermes_memory": true
+    }
+  ],
+  "parent_record": {
+    "order": 4,
+    "session_path": "/Users/jaegyu.lee/.hermes/sessions/session_20260507_184147_b161a5.json",
+    "session_id": "20260507_184147_b161a5",
+    "mode": "synthesize_parent",
+    "chunk_id": null,
+    "verdict": "completed",
+    "confidence": 0.91,
+    "parse_warning": null,
+    "completion": {
+      "mode": "synthesize_parent",
+      "verdict": "completed",
+      "confidence": 0.91,
+      "result": {
+        "parent_ac_node_id": "rlm_ac_root",
+        "parent_node_id": "rlm_node_root",
+        "generation_id": "rlm_generation_0",
+        "consumed_child_result_ids": [
+          "rlm_node_root:child_result:000",
+          "rlm_node_root:child_result:001",
+          "rlm_node_root:child_result:002",
+          "rlm_node_root:child_result:003"
+        ],
+        "child_status_summary": {
+          "total_children": 4,
+          "completed_children": 4,
+          "failed_children": 0,
+          "child_verdicts": [
+            {
+              "child_result_id": "rlm_node_root:child_result:000",
+              "call_id": "rlm_call_atomic_chunk_001",
+              "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+              "completion_status": "completed",
+              "verdict": "success_from_completion_payload",
+              "confidence": 0.91
+            },
+            {
+              "child_result_id": "rlm_node_root:child_result:001",
+              "call_id": "rlm_call_atomic_chunk_002",
+              "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+              "completion_status": "completed",
+              "verdict": "completed",
+              "confidence": 0.93
+            },
+            {
+              "child_result_id": "rlm_node_root:child_result:002",
+              "call_id": "rlm_call_atomic_chunk_003",
+              "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+              "completion_status": "completed",
+              "verdict": "completed",
+              "confidence": 0.91
+            },
+            {
+              "child_result_id": "rlm_node_root:child_result:003",
+              "call_id": "rlm_call_atomic_chunk_004",
+              "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+              "completion_status": "completed",
+              "verdict": "passed",
+              "confidence": 0.93
+            }
+          ]
+        },
+        "parent_summary": "The supplied child results collectively support a bounded parent synthesis of the target as a runtime-systems paper about RLM-FORGE. Across the abstract, contribution framing, architecture section, operational-memory experiment, deterministic memory benchmarks, and conclusion excerpt, the target argues that Recursive Language Models can be runtime-lifted into an existing Hermes Agent execution contract rather than requiring a new recursive model architecture. The central mechanism is a two-layer ownership split: Ouroboros owns recursive scheduling, termination, trace persistence, evidence validation, and state mutation, while Hermes executes one bounded inner inference at a time through HermesCliRuntime and is explicitly constrained not to recursively call Ouroboros or invoke ooo commands. TraceGuard acts as the evidence gate for parent synthesis, rejecting unsupported structured claims before committed state mutation. The preserved RLM control surfaces are bounded context partitioning, explicit parent-child call graphs, child evidence handles, replayable intermediate outputs, provider-swappable inner execution, and evidence-gated parent synthesis. The supplied results also support a narrow experimental framing: the live truncation fixture is described as showing score parity after claim-aware rescoring, not a quality win; a 24-cell primary portability matrix across Hermes+GLM, Claude Code, and Codex is reported as passing the mandatory runtime contract; and a second 24-cell matrix with experimental read-write operational memory enabled is reported as passing while still requiring fresh child evidence. The memory claims are deliberately bounded. RLM-FORGE memory is described as an allowlisted operational-prior store, not factual evidence: it may carry schema or retry priors such as preserving fact_id with evidence_chunk_id, but accepted evidence manifests are rebuilt from current child outputs. The target further distinguishes Hermes built-in prompt memory from RLM-FORGE guarded memory as separable behavioral/runtime layers. Deterministic memory benchmarks are presented as runtime-control evidence only: TraceGuard rejects adversarial answer-memory contamination, guarded operational memory reduces missing-handle repair work, layered memory improves initial acceptance in the modeled setting, and adaptive repair memory reduces mean repair calls while preserving final TraceGuard acceptance.",
+        "key_synthesized_claims": [
+          {
+            "claim": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:000",
+              "rlm_node_root:child_result:003"
+            ],
+            "evidence": "Chunk 001 cites abstract lines 42-54 and contribution lines 108-117; chunk 004 cites conclusion lines 970-975."
+          },
+          {
+            "claim": "The architecture separates recursive orchestration from bounded inner inference: Ouroboros owns recursion and trace/control state, Hermes performs bounded local calls, and TraceGuard decides whether parent synthesis can be committed.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:001"
+            ],
+            "evidence": "Chunk 002 cites lines 241-242, 280-291, and 311-313."
+          },
+          {
+            "claim": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:000",
+              "rlm_node_root:child_result:001",
+              "rlm_node_root:child_result:003"
+            ],
+            "evidence": "Chunk 001 cites lines 42-54 and 114-117; chunk 002 cites lines 246-270 and 272-275; chunk 004 cites lines 970-975."
+          },
+          {
+            "claim": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:000",
+              "rlm_node_root:child_result:001",
+              "rlm_node_root:child_result:004"
+            ],
+            "evidence": "Chunk 001 cites lines 125-135; chunk 002 cites lines 288-291; chunk 004 cites lines 566-571."
+          },
+          {
+            "claim": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:000",
+              "rlm_node_root:child_result:001",
+              "rlm_node_root:child_result:002",
+              "rlm_node_root:child_result:003"
+            ],
+            "evidence": "Chunk 001 cites lines 69-74 and 146-150; chunk 002 cites lines 272-275; chunk 003 cites lines 518-522 and 537-541; chunk 004 cites lines 555-564 and 580-583."
+          },
+          {
+            "claim": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:000",
+              "rlm_node_root:child_result:002",
+              "rlm_node_root:child_result:003"
+            ],
+            "evidence": "Chunk 001 cites lines 136-150; chunk 003 cites lines 480-495 and 515-522; chunk 004 cites lines 555-564 and 976-983."
+          },
+          {
+            "claim": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles.",
+            "supported_by_child_result_ids": [
+              "rlm_node_root:child_result:000",
+              "rlm_node_root:child_result:002",
+              "rlm_node_root:child_result:003"
+            ],
+            "evidence": "Chunk 001 cites lines 63-68 and 143-150; chunk 003 cites lines 524-535; chunk 004 cites lines 571-575 and 984-985."
+          }
+        ],
+        "bounded_verdict_rationale": "All four recorded child results completed with exit_code 0 and no failed siblings. The parent verdict is therefore completed. The verdict is bounded to synthesis over the supplied chunks and child outputs only. It does not independently verify the underlying benchmark artifacts, live matrices, scorer correction, or implementation behavior beyond the textual evidence and child summaries included in the envelope."
+      },
+      "evidence_references": [
+        {
+          "child_result_id": "rlm_node_root:child_result:000",
+          "call_id": "rlm_call_atomic_chunk_001",
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+          "supports": "Abstract and contribution framing for runtime-lifted RLM, preserved control surfaces, TraceGuard evidence discipline, portability contract-pass claims, and bounded operational memory.",
+          "line_ranges": [
+            "42-74",
+            "108-150"
+          ]
+        },
+        {
+          "child_result_id": "rlm_node_root:child_result:001",
+          "call_id": "rlm_call_atomic_chunk_002",
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+          "supports": "Architecture and response-contract claims: Ouroboros owns control and trace state, Hermes executes bounded inner calls, TraceGuard controls parent commit, and the handoff/response envelope is validated before state mutation.",
+          "line_ranges": [
+            "241-242",
+            "246-275",
+            "280-313"
+          ]
+        },
+        {
+          "child_result_id": "rlm_node_root:child_result:002",
+          "call_id": "rlm_call_atomic_chunk_003",
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+          "supports": "Operational-memory experiment: allowlisted JSONL operational records, memory_priors excluded from accepted evidence, fresh evidence manifests rebuilt from current child outputs, 24-cell memory-enabled matrix claim, Hermes built-in memory observation, and deterministic runtime-control benchmark framing.",
+          "line_ranges": [
+            "480-551"
+          ]
+        },
+        {
+          "child_result_id": "rlm_node_root:child_result:003",
+          "call_id": "rlm_call_atomic_chunk_004",
+          "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+          "supports": "Memory-runtime benchmark details, contamination robustness, layered-memory ablation, adaptive repair memory, and conclusion claims about runtime-lifted RLM, provider portability, live contract passing, and fresh-evidence enforcement under memory.",
+          "line_ranges": [
+            "555-578",
+            "970-985"
+          ]
+        }
+      ],
+      "residual_gaps": [
+        "This parent synthesis is limited to the supplied target excerpts and child results; it does not access or verify the full file outside the provided chunks.",
+        "Several supplied chunks are marked truncated or begin/end mid-section, including contribution text after line 150, lifecycle content after line 317, the full memory-runtime-benefit table context, and the conclusion sentence after line 985.",
+        "The first child result has wrapper-level null verdict/confidence/evidence fields despite containing a JSON completion with verdict success and confidence 0.91; this synthesis consumes it using the embedded completion payload and notes the wrapper inconsistency.",
+        "The reported 24-cell live matrices, scorer correction, deterministic ablations, and memory benchmarks are treated as textual claims in the supplied evidence, not independently validated experimental results.",
+        "The conclusion excerpt cuts off after stating that the two memory layers have separable runtime, so any final concluding claims beyond that point are unavailable."
+      ]
+    },
+    "system_prompt_has_hermes_memory": true
+  },
+  "accepted_claims": [
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-001",
+      "text": "RLM-FORGE presents RLM as a deployable runtime primitive in an existing agent runtime, not as a new model architecture.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:000",
+        "rlm_node_root:child_result:003"
+      ],
+      "evidence": "Chunk 001 cites abstract lines 42-54 and contribution lines 108-117; chunk 004 cites conclusion lines 970-975."
+    },
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-002",
+      "text": "The architecture separates recursive orchestration from bounded inner inference: Ouroboros owns recursion and trace/control state, Hermes performs bounded local calls, and TraceGuard decides whether parent synthesis can be committed.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:001"
+      ],
+      "evidence": "Chunk 002 cites lines 241-242, 280-291, and 311-313."
+    },
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-003",
+      "text": "RLM-FORGE preserves operational RLM control surfaces at runtime: bounded sub-calls, explicit parent-child call graphs, evidence handles, replayable outputs, provider portability, and evidence-gated synthesis.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:000",
+        "rlm_node_root:child_result:001",
+        "rlm_node_root:child_result:003"
+      ],
+      "evidence": "Chunk 001 cites lines 42-54 and 114-117; chunk 002 cites lines 246-270 and 272-275; chunk 004 cites lines 970-975."
+    },
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-004",
+      "text": "TraceGuard enforces evidence discipline by requiring accepted child evidence handles and rejecting unsupported or memory-contaminated factual claims.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:000",
+        "rlm_node_root:child_result:001",
+        "rlm_node_root:child_result:004"
+      ],
+      "evidence": "Chunk 001 cites lines 125-135; chunk 002 cites lines 288-291; chunk 004 cites lines 566-571."
+    },
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-005",
+      "text": "The reported live evidence is contract-pass and runtime-control evidence, not a broad live model-quality, latency, token, or cost improvement claim.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:000",
+        "rlm_node_root:child_result:001",
+        "rlm_node_root:child_result:002",
+        "rlm_node_root:child_result:003"
+      ],
+      "evidence": "Chunk 001 cites lines 69-74 and 146-150; chunk 002 cites lines 272-275; chunk 003 cites lines 518-522 and 537-541; chunk 004 cites lines 555-564 and 580-583."
+    },
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-006",
+      "text": "Operational memory is bounded to runtime priors and is excluded from admissible factual evidence; accepted evidence is rebuilt from fresh child outputs.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:000",
+        "rlm_node_root:child_result:002",
+        "rlm_node_root:child_result:003"
+      ],
+      "evidence": "Chunk 001 cites lines 136-150; chunk 003 cites lines 480-495 and 515-522; chunk 004 cites lines 555-564 and 976-983."
+    },
+    {
+      "claim_id": "KEY-OOO-RLM-CLAIM-007",
+      "text": "Hermes built-in memory and RLM-FORGE guarded memory are treated as separable runtime layers with different roles.",
+      "supporting_child_result_ids": [
+        "rlm_node_root:child_result:000",
+        "rlm_node_root:child_result:002",
+        "rlm_node_root:child_result:003"
+      ],
+      "evidence": "Chunk 001 cites lines 63-68 and 143-150; chunk 003 cites lines 524-535; chunk 004 cites lines 571-575 and 984-985."
+    }
+  ],
+  "residual_gaps": [
+    "This parent synthesis is limited to the supplied target excerpts and child results; it does not access or verify the full file outside the provided chunks.",
+    "Several supplied chunks are marked truncated or begin/end mid-section, including contribution text after line 150, lifecycle content after line 317, the full memory-runtime-benefit table context, and the conclusion sentence after line 985.",
+    "The first child result has wrapper-level null verdict/confidence/evidence fields despite containing a JSON completion with verdict success and confidence 0.91; this synthesis consumes it using the embedded completion payload and notes the wrapper inconsistency.",
+    "The reported 24-cell live matrices, scorer correction, deterministic ablations, and memory benchmarks are treated as textual claims in the supplied evidence, not independently validated experimental results.",
+    "The conclusion excerpt cuts off after stating that the two memory layers have separable runtime, so any final concluding claims beyond that point are unavailable."
+  ],
+  "evidence_references": [
+    {
+      "child_result_id": "rlm_node_root:child_result:000",
+      "call_id": "rlm_call_atomic_chunk_001",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:1-80",
+      "supports": "Abstract and contribution framing for runtime-lifted RLM, preserved control surfaces, TraceGuard evidence discipline, portability contract-pass claims, and bounded operational memory.",
+      "line_ranges": [
+        "42-74",
+        "108-150"
+      ]
+    },
+    {
+      "child_result_id": "rlm_node_root:child_result:001",
+      "call_id": "rlm_call_atomic_chunk_002",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:81-160",
+      "supports": "Architecture and response-contract claims: Ouroboros owns control and trace state, Hermes executes bounded inner calls, TraceGuard controls parent commit, and the handoff/response envelope is validated before state mutation.",
+      "line_ranges": [
+        "241-242",
+        "246-275",
+        "280-313"
+      ]
+    },
+    {
+      "child_result_id": "rlm_node_root:child_result:002",
+      "call_id": "rlm_call_atomic_chunk_003",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:161-240",
+      "supports": "Operational-memory experiment: allowlisted JSONL operational records, memory_priors excluded from accepted evidence, fresh evidence manifests rebuilt from current child outputs, 24-cell memory-enabled matrix claim, Hermes built-in memory observation, and deterministic runtime-control benchmark framing.",
+      "line_ranges": [
+        "480-551"
+      ]
+    },
+    {
+      "child_result_id": "rlm_node_root:child_result:003",
+      "call_id": "rlm_call_atomic_chunk_004",
+      "chunk_id": "experiments/paper-ooo-rlm-key-sections-target.txt:241-302",
+      "supports": "Memory-runtime benchmark details, contamination robustness, layered-memory ablation, adaptive repair memory, and conclusion claims about runtime-lifted RLM, provider portability, live contract passing, and fresh-evidence enforcement under memory.",
+      "line_ranges": [
+        "555-578",
+        "970-985"
+      ]
+    }
+  ],
+  "evidence_gate_result": {
+    "gate_kind": "ooo_rlm_parent_ac_verdict_and_claim_boundary",
+    "parent_verdict": "completed",
+    "all_child_results_consumed": true,
+    "all_claims_have_child_support": true,
+    "memory_is_not_evidence": true,
+    "traceguard_function_called_by_ooo_rlm": false,
+    "caveat": "This is the actual ooo rlm recursive path: decomposition, child Hermes calls, and parent synthesis. The separate rlm_forge TraceGuard validator is not automatically invoked by this CLI command."
+  }
+}

@@ -1,0 +1,302 @@
+--- SECTION abstract paper/main.tex:42-75 ---
+42: \begin{abstract}
+43: The immediate value of Recursive Language Models (RLMs) extends beyond
+44: training a new recursive checkpoint. We argue that the RLM pattern can be
+45: \emph{runtime-lifted} into an execution contract inside an existing agent
+46: runtime, allowing ordinary provider-swappable LLM calls to inherit the
+47: operational controls associated with recursion. RLM-FORGE implements this
+48: claim by mapping RLM sub-calls onto the existing RPC mechanism of Hermes
+49: Agent. Ouroboros owns recursive state, scheduling, trace replay, and evidence
+50: validation. The result is a deployable runtime primitive for recursive
+51: inference, not a new model architecture. The primitive preserves the
+52: operational parts of RLM that matter most, including bounded context
+53: partitioning, explicit sub-call graphs, replayable intermediate evidence,
+54: and parent synthesis that can be rejected before state mutation. We introduce
+55: TraceGuard, a deterministic evidence gate for parent synthesis, and evaluate
+56: it with a claim-aware omitted-fact safety scorer. The live Hermes truncation
+57: fixture shows score parity between vanilla and recursive execution after
+58: scorer correction. A 24-cell live primary portability run across Hermes+GLM,
+59: Claude Code, and Codex completes with 24 mandatory contract passes. The
+60: same primary matrix also passes with experimental read-write operational
+61: memory enabled. Memory is admitted only as a schema and retry prior, while
+62: TraceGuard evidence is rebuilt from fresh child outputs in the current run.
+63: We also report an observed layered-memory effect: because the Hermes adapter
+64: does not pass \texttt{--ignore-rules}, Hermes' built-in \texttt{MEMORY.md}
+65: can be injected before the explicit RLM-FORGE envelope. Deterministic
+66: memory-runtime benchmarks then isolate a narrow performance benefit:
+67: guarded memory rejects answer-memory contamination, separates Hermes-style
+68: prompt memory from RLM-FORGE guarded memory, and reduces repeated repair calls
+69: under generated schema-failure profiles. The strongest supported statement is
+70: deliberately bounded: memory can improve runtime control and repair efficiency
+71: without becoming admissible factual evidence. The systems claim is not that
+72: RLM-FORGE wins a benchmark. It is that RLM-FORGE turns RLM from a research-time
+73: inference idea into a runtime surface that existing agent infrastructure can
+74: execute, inspect, and enforce.
+75: \end{abstract}
+
+--- SECTION contribution_list paper/main.tex:108-151 ---
+108: \item \textbf{Runtime-lifted RLM.} The existing RPC pattern in Hermes maps
+109: directly onto the RLM sub-call envelope. Hermes describes this pattern as
+110: Python scripts calling tools through RPC to collapse multi-step pipelines into
+111: zero-context turns~\citep{nous2025hermes}. This makes RLM executable as an
+112: agent-runtime capability, not as a special model endpoint.
+113: 
+114: \item \textbf{Preserved RLM control surfaces.} RLM-FORGE preserves the
+115: operational advantages of RLM at runtime. These include bounded context
+116: windows, recursive sub-call graphs, explicit child evidence, and parent
+117: synthesis under outer control.
+118: 
+119: \item \textbf{Incremental integration.} Two integration paths share the same
+120: Hermes adapter without modifying the default control flow of the host system.
+121: One path is a dedicated recursive scaffold (Section~\ref{sec:scaffold}).
+122: The other is an existing acceptance-criterion decomposition pipeline
+123: (Section~\ref{sec:decomposition}).
+124: 
+125: \item \textbf{Executable evidence discipline.} TraceGuard rejects structured
+126: claims that lack accepted child evidence handles. In deterministic contract
+127: ablations, evidence-gated Hermes-RLM has a 0.0 unsupported-claim rate while
+128: an ungated RLM-shaped policy fails at 1.0. In the 24-cell live primary matrix
+129: (Section~\ref{sec:experiment}), Hermes+GLM, Claude Code, and Codex all pass
+130: the same 8-fixture RLM-FORGE+TraceGuard contract. The implementation also
+131: includes a narrow repair loop for a missing-handle rejection class observed in
+132: an earlier Hermes+GLM run. On the
+133: original live truncation fixture, corrected scoring reports a tie rather than
+134: the earlier false $+0.20$ recursive-RLM win.
+135: 
+136: \item \textbf{Memory without evidence leakage.} The live harness includes an
+137: experimental read-write memory mode. It stores only allowlisted operational
+138: observations, such as schema-stability and repair-policy priors. A second
+139: 24-cell live primary matrix with memory enabled passes across the same three
+140: runtime families. The accepted evidence manifest is still rebuilt from fresh
+141: child outputs, not from durable memory.
+142: 
+143: \item \textbf{Evidence-admissible memory as runtime policy.} In the observed
+144: Hermes integration, built-in Hermes memory is injected into the inner-call
+145: system prompt, while RLM-FORGE's guarded memory enters only as structured
+146: \texttt{memory\_priors}. Deterministic benchmarks show three safe claims:
+147: TraceGuard rejects adversarial answer-memory contamination, the two memory
+148: layers have separable runtime roles, and adaptive repair memory reduces
+149: repeated missing-handle repairs. These results do not show live model-quality,
+150: latency, token, or cost improvement.
+151: \end{enumerate}
+
+--- SECTION architecture_roles paper/main.tex:241-320 ---
+241: control and trace state, Hermes executes bounded inner calls, and TraceGuard
+242: decides whether parent synthesis may become committed state.}
+243: \label{fig:architecture}
+244: \end{figure}
+245: 
+246: \begin{table}[t]
+247: \centering
+248: \caption{RLM advantages preserved by RLM-FORGE at runtime.}
+249: \label{tab:runtime}
+250: \small
+251: \begin{tabular}{%
+252:   >{\raggedright\arraybackslash}p{0.27\linewidth}
+253:   >{\raggedright\arraybackslash}p{0.35\linewidth}
+254:   >{\raggedright\arraybackslash}p{0.27\linewidth}}
+255: \toprule
+256: RLM advantage & Runtime mechanism & Concrete artifact \\
+257: \midrule
+258: Context beyond one prompt & Bounded sub-calls over selected chunks &
+259: \texttt{ooo rlm --truncation-benchmark} \\
+260: Compositional reasoning & Explicit parent-child RLM call graph &
+261: EventStore trace and RLM tree state \\
+262: Intermediate inspectability & Child evidence handles and replayable outputs &
+263: \texttt{benchmarks/*.json} replay \\
+264: Safer synthesis & TraceGuard validates parent claims before mutation &
+265: \texttt{run-traceguard-demo.py} \\
+266: Provider portability & Hermes keeps the inner model swappable &
+267: \texttt{HermesCliRuntime} adapter \\
+268: \bottomrule
+269: \end{tabular}
+270: \end{table}
+271: 
+272: Table~\ref{tab:runtime} is the main thesis of this paper. The live fixture
+273: does not show a quality delta, but it does show that these RLM control
+274: surfaces exist in a real agent runtime and can be exercised through the
+275: workflow in Figure~\ref{fig:architecture}.
+276: 
+277: \subsection{Two layers, one orchestration owner}
+278: \label{sec:layers}
+279: 
+280: The integration has two layers. Ouroboros is the recursion controller and
+281: owns scheduling, termination, guardrails, and trace persistence. Hermes is
+282: the inner LM, called through the existing adapter for one bounded
+283: inference at a time. Hermes never recursively calls Ouroboros or invokes
+284: \texttt{ooo} commands as part of the RLM loop. This constraint is encoded
+285: both in the system prompt sent to Hermes and in the structured contract that
+286: validates its responses.
+287: 
+288: This ownership split is what lets RLM-FORGE inherit the control advantage of
+289: RLM without pretending Hermes itself has become a new recursive model. Hermes
+290: does local work. Ouroboros owns the recursive state machine. TraceGuard decides
+291: whether a parent is allowed to claim what its children observed.
+292: 
+293: Each outer-to-inner handoff is a single envelope rendered as the prompt
+294: passed through the \texttt{HermesCliRuntime} adapter. The envelope carries
+295: the following fields.
+296: 
+297: \begin{itemize}[leftmargin=*]
+298: \item \texttt{mode}. One of \texttt{decompose\_ac}, \texttt{execute\_atomic},
+299:       \texttt{summarize\_chunk}, or \texttt{synthesize\_parent}.
+300: \item \texttt{call\_context}. The values \texttt{call\_id},
+301:       \texttt{parent\_call\_id}, \texttt{rlm\_node\_id}, and
+302:       \texttt{ac\_node\_id}.
+303: \item \texttt{constraints}. The flag \texttt{must\_not\_call\_ouroboros} set
+304:       to \texttt{true}, the ambiguity threshold, and the depth cap.
+305: \item \texttt{context}. Only the chunks, summaries, ancestry, and child
+306:       results selected by the outer scaffold.
+307: \item \texttt{evidence\_handles}. The set of identifiers Hermes is
+308:       permitted to cite.
+309: \end{itemize}
+310: 
+311: The response carries \texttt{verdict}, \texttt{confidence}, \texttt{result},
+312: evidence references, and residual gaps. All of this is validated before the
+313: outer scaffold mutates state.
+314: 
+315: \subsection{Sub-call lifecycle}
+316: \label{sec:lifecycle}
+317: 
+318: For one node at depth $d$ with mode $m$, the lifecycle is as follows.
+319: 
+320: \begin{enumerate}[leftmargin=*]
+
+--- SECTION operational_memory_and_benchmarks paper/main.tex:477-591 ---
+477: \subsection{Operational memory experiment}
+478: \label{sec:memory-experiment}
+479: 
+480: RLM-FORGE also evaluates an experimental memory-shaped recursion path. The
+481: memory backend is a local JSONL store with an allowlisted schema. It accepts
+482: only operational records such as provider schema stability, missing-handle
+483: repair hints, task family, provider family, outcome, and confidence. It
+484: rejects fixture answers, fact IDs, chunk IDs, raw fixture paths, prompt
+485: injection text, unknown fields, and other evidence-bearing content.
+486: 
+487: Memory recall can enter child extraction and parent synthesis prompts only as
+488: structured \texttt{memory\_priors}. These priors can recommend policies such
+489: as preserving \texttt{fact\_id} with \texttt{evidence\_chunk\_id}. They are
+490: not part of the accepted evidence manifest. For every cell, the manifest
+491: given to TraceGuard is rebuilt from the current run's child outputs and then
+492: intersected with the fixture contract. Provider-normalized child text is
+493: accepted only when it matches the canonical fixture text or the same text
+494: with the \texttt{FACT:<id>} prefix removed. This preserves a fresh-evidence
+495: boundary while tolerating harmless provider formatting differences.
+496: 
+497: \begin{table}[t]
+498: \centering
+499: \caption{Live primary portability matrix with experimental read-write memory
+500: enabled. Memory stores operational priors only; accepted evidence is rebuilt
+501: from current child outputs.}
+502: \label{tab:memory-primary}
+503: \small
+504: \begin{tabular}{lllll}
+505: \toprule
+506: Family & Memory mode & Cells & Fresh evidence failures & Result \\
+507: \midrule
+508: \texttt{hermes\_glm} & \texttt{read-write} & 8/8 pass & 0 & pass \\
+509: \texttt{claude\_code\_opus47} & \texttt{read-write} & 8/8 pass & 0 & pass \\
+510: \texttt{codex\_gpt55} & \texttt{read-write} & 8/8 pass & 0 & pass \\
+511: \bottomrule
+512: \end{tabular}
+513: \end{table}
+514: 
+515: The memory-enabled run completes all 24 live cells with 24 mandatory contract
+516: passes. TraceGuard accepts every final parent synthesis. The fresh child
+517: evidence gate reports zero failures. The memory backend stores 24 operational
+518: observations and rejects zero candidates. This supports a narrow but important
+519: claim: memory-shaped recursion can run as a live runtime feedback loop across
+520: three agent/runtime families without letting durable memory become admissible
+521: factual evidence. It does not show that memory improves model quality on
+522: downstream tasks.
+523: 
+524: The integration also revealed a second, emergent memory layer. Hermes built-in
+525: memory is normally injected into chat turns unless \texttt{--ignore-rules} is
+526: passed. The current \texttt{HermesCliRuntime} path uses
+527: \texttt{hermes chat -Q --source tool -q <prompt>} and does not pass that flag.
+528: Local Hermes sessions created after an RLM-FORGE run therefore contain
+529: RLM-FORGE operational prior entries in the Hermes system prompt before the
+530: explicit child or parent JSON envelope. We treat this as a behavioral prior,
+531: not as part of the evidence contract. In a real-document replay over the README
+532: and this paper's memory section, parent synthesis correctly reported that the
+533: document evidence supports RLM-FORGE guarded memory, while the locally observed
+534: Hermes built-in memory layer remains a separate observation rather than a
+535: document-supported claim.
+536: 
+537: \begin{table}[t]
+538: \centering
+539: \caption{Deterministic memory-runtime benefit benchmark. The benefit is
+540: runtime-control performance: fewer initial rejections and repair calls, not
+541: live model quality.}
+542: \label{tab:memory-runtime-benefit}
+543: \small
+544: \begin{tabular}{lrrrr}
+545: \toprule
+546: Policy & Initial accept & Final accept & Mean repairs & Mean calls \\
+547: \midrule
+548: \texttt{no\_memory} & 0.2500 & 0.5000 & 0.2500 & 1.2500 \\
+549: \texttt{guarded\_operational\_memory\_prior} & 1.0000 & 1.0000 & 0.0000 & 1.0000 \\
+550: \texttt{unsafe\_answer\_memory\_prior} & 0.0000 & 0.0000 & 0.0000 & 1.0000 \\
+551: \bottomrule
+552: \end{tabular}
+553: \end{table}
+554: 
+555: Table~\ref{tab:memory-runtime-benefit} is generated without Hermes calls. It
+556: compares three memory policies across generated fixtures and provider-failure
+557: profiles. The guarded operational-memory policy models a schema/retry prior
+558: that tells the parent to preserve \texttt{fact\_id} and
+559: \texttt{evidence\_chunk\_id} together. It eliminates the repair call required
+560: by the missing-handle-prone no-memory policy. The unsafe answer-memory policy
+561: models contaminated memory that adds a factual claim; TraceGuard rejects it.
+562: This supports a runtime-performance claim only: guarded memory can reduce
+563: validation and repair work for known schema failures while preserving the
+564: fresh-evidence boundary.
+565: 
+566: We further run three deterministic contribution benchmarks. First, the memory
+567: contamination robustness benchmark adds an unsupported answer fact from
+568: persistent memory. Without TraceGuard, the adversarial-memory policy accepts
+569: that memory answer in every case. With TraceGuard, the accepted memory-answer
+570: rate is 0.0000 because the fact is absent from the fresh child evidence
+571: manifest. Second, the layered-memory ablation evaluates a 2x2 design: Hermes
+572: memory on/off and RLM-FORGE memory on/off. Hermes-style prompt memory models a
+573: formatting prior that prevents chunk-only parent synthesis; RLM-FORGE guarded
+574: memory models an evidence-handle prior that prevents missing handles. Both
+575: together reach 1.0000 initial acceptance with zero repair calls. Third, the
+576: adaptive repair memory benchmark records a missing-handle prior after the first
+577: repair and reuses it on later related tasks, reducing mean repair calls from
+578: 1.0000 to 0.1250 while preserving 1.0000 final TraceGuard acceptance.
+579: 
+580: \begin{table}[t]
+581: \centering
+582: \caption{Deterministic memory contribution benchmarks. All results are
+583: Hermes-free runtime-control tests, not live quality benchmarks.}
+584: \label{tab:memory-contribution}
+585: \small
+586: \begin{tabular}{lrrr}
+587: \toprule
+588: Benchmark & Initial accept & Mean repairs & Memory answer accepted \\
+589: \midrule
+590: Contamination, unguarded adversarial & 1.0000 & 0.0000 & 1.0000 \\
+591: Contamination, TraceGuard adversarial & 0.0000 & 0.0000 & 0.0000 \\
+
+--- SECTION conclusion paper/main.tex:967-985 ---
+967: \section{Conclusion}
+968: \label{sec:conclusion}
+969: 
+970: We have presented RLM-FORGE, an open-source runtime lifting of Recursive
+971: Language Models onto the Hermes Agent runtime. The central systems claim is
+972: that the operational advantages of RLM do not require a new model architecture
+973: to become useful. They can be exposed as runtime properties, including bounded
+974: sub-calls, recursive trace state, replayable child evidence,
+975: provider-swappable inner execution, and evidence-gated parent synthesis. The
+976: committed live fixture shows score parity after claim-aware
+977: rescoring, but the recursive run produces a computation the runtime can
+978: inspect and enforce. The 24-cell live primary matrix further shows that the
+979: same evidence-gated runtime contract can pass across Hermes+GLM, Claude Code,
+980: and Codex. A second 24-cell primary matrix shows that experimental read-write
+981: memory can store operational priors while TraceGuard continues to require
+982: fresh child evidence, and a deterministic memory-runtime benchmark shows that
+983: guarded schema/retry priors can reduce repair work for known failure modes.
+984: Additional deterministic benchmarks show that TraceGuard rejects adversarial
+985: answer-memory contamination, the two memory layers have separable runtime
+
