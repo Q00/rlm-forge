@@ -213,14 +213,16 @@ self}, a goal-directed control structure that shapes what is retrieved and
 how it is organized~\citep{conway2000sms}. Later work frames autobiographical
 remembering as balancing \emph{correspondence} with past experience and
 \emph{coherence} with the current self and its goals~\citep{conway2004correspondence}.
-We do not claim that an agent runtime has a human self-memory system. The
-engineering lesson is narrower: remembered priors can guide retrieval and
-repair policy, but they should not by themselves prove a current factual
-claim. If a runtime lets retrieved memory both guide the search and certify
-the answer, it collapses the control layer and the evidence layer into one
-buffer. TraceGuard enforces the split. Memory may bias how children are
-prompted or how missing handles are repaired, but parent claims must still
-cite fresh child evidence from the current run.
+This analogy has a strict limit. Conway's account is a descriptive theory of
+human remembering, not an engineering architecture for agent runtimes.
+RLM-FORGE does not model a working self, autobiographical knowledge, or human
+recollection. We borrow only the design separation between goal-directed
+retrieval control and experience-grounded correspondence. In RLM-FORGE,
+memory-like priors may guide decomposition, retrieval, and repair, but
+TraceGuard tracks evidence handles from the current child trace and rejects
+parent claims that are not supported by that trace. The model's generation
+remains non-deterministic; the admissibility of a parent claim becomes
+deterministic.
 
 \section{System Design}
 \label{sec:system}
